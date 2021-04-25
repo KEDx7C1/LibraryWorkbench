@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LibraryWorkbench.Data;
+using LibraryWorkbench.DTO;
+using LibraryWorkbench.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Data;
-using LibraryWorkbench.Interfaces;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -14,43 +12,45 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class PersonsController : ControllerBase
     {
-        private readonly IPersonsRepository _users = new PersonsRepository();
+        private readonly IPersonsRepository _persons = new PersonsRepository();
 
         [HttpGet]
-        public async Task<IEnumerable<PersonDTO>> GetAll()
+        public async Task<IEnumerable<IPerson>> GetAllPersons()
         {
-            List<PersonDTO> users = await Task.Run(() => _users.Get());
-            return users;
+            List<IPerson> persons = await _persons.GetAllPersonsAsync();
+            return persons;
         }
 
         [HttpGet]
         [Route("{name}")]
-        public async Task<IEnumerable<PersonDTO>> GetByName(string name)
+        public async Task<IEnumerable<IPerson>> GetPersonByName(string name)
         {
-            List<PersonDTO> users = await Task.Run(() => _users.GetByName(name));
-            return users;
+            List<IPerson> persons = await _persons.GetPersonsByNameAsync(name);
+            return persons;
         }
 
         [HttpPost]
-        public async Task<IEnumerable<Person>> AddUser(PersonDTO user)
+        public async Task<IEnumerable<Person>> AddPerson(PersonDTO person)
         {
-            List<Person> users = await Task.Run(() =>
+            List<Person> persons = await Task.Run(() =>
             {
-                _users.Add(user);
-                return _users.Get().Cast<Person>().ToList();
+                _persons.AddPerson(person);
+                return _persons.GetAllPersons().Cast<Person>().ToList();
             });
-            return users;
-            
+            return persons;
+
         }
         [HttpDelete]
-        public async Task<IActionResult> RemoveUser(string firstName, string lastName, string patronym)
+        public async Task<IActionResult> RemovePerson(string firstName, string lastName, string patronym)
         {
-            IActionResult actionResult = await Task.Run(() =>
+            IPerson person = await _persons.GetPersonByFullNameAsync(firstName, lastName, patronym);
+            if (person != null)
             {
-                _users.Remove(firstName, lastName, patronym);
+                await _persons.RemovePersonAsync(person);
                 return Ok();
-            });
-            return actionResult;
+            }
+            else
+                return NotFound();
         }
     }
 }

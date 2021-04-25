@@ -1,9 +1,7 @@
-﻿using System;
+﻿using LibraryWorkbench.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Interfaces;
 
 namespace LibraryWorkbench.Data
 {
@@ -12,30 +10,55 @@ namespace LibraryWorkbench.Data
     /// </summary>
     public class BooksRepository : IBooksRepository
     {
-        public List<BookDTO> Get()
+        public List<IBook> GetAllBooks()
         {
             return Data.Books;
         }
 
-        public List<BookDTO> GetByAuthor(string author)
+        public async Task<List<IBook>> GetAllBooksAsync()
+        {
+            return await Task.Run(() => GetAllBooks());
+        }
+
+        public List<IBook> GetBooksByAuthor(string author)
         {
             return Data.Books.Where(x => x.Author.ToLower().Contains(author.ToLower()))
                 .Select(x => x).ToList();
         }
 
-        public BookDTO GetByAuthorAndTitle(string author, string title)
+        public async Task<List<IBook>> GetBooksByAuthorAsync(string author)
+        {
+            return await Task.Run(() => GetBooksByAuthor(author));
+        }
+
+        public IBook GetBookByAuthorAndTitle(string author, string title)
         {
             return Data.Books.Find(x => x.Author.Contains(author) && x.Title.Contains(title));
         }
 
-        public void Add(BookDTO book)
+        public async Task<IBook> GetBookByAuthorAndTitleAsync(string author, string title)
+        {
+            return await Task.Run(() => GetBookByAuthorAndTitle(author, title));
+        }
+
+        public void AddBook(IBook book)
         {
             Data.Books.Add(book);
         }
 
-        public void Remove(BookDTO book)
+        public async Task AddBookAsync(IBook book)
         {
-            Data.Books.RemoveAll(x=> x == book);
+            await Task.Run(() => AddBook(book));
+        }
+
+        public void RemoveBook(IBook book)
+        {
+            Data.Books.RemoveAll(x => x.Title == book.Title && x.Author == book.Author);
+        }
+
+        public async Task RemoveBookAsync(IBook book)
+        {
+            await Task.Run(() => RemoveBook(book));
         }
     }
 }

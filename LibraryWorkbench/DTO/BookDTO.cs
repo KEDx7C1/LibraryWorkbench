@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LibraryWorkbench.Interfaces;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LibraryWorkbench.DTO
 {
@@ -16,10 +13,11 @@ namespace LibraryWorkbench.DTO
         [Required]
         public string Author { get; set; }
     }
+
     /// <summary>
     /// 2.0
     /// </summary>
-    public class BookDTO : Book
+    public class BookDTO : Book, IBook
     {
         [Required]
         public string Genre { get; set; }

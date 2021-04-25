@@ -1,9 +1,7 @@
-﻿using System;
+﻿using LibraryWorkbench.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Interfaces;
 
 
 namespace LibraryWorkbench.Data
@@ -13,23 +11,50 @@ namespace LibraryWorkbench.Data
     /// </summary>
     public class PersonsRepository : IPersonsRepository
     {
-        public List<PersonDTO> Get()
+        public List<IPerson> GetAllPersons()
         {
             return Data.Users;
         }
 
-        public List<PersonDTO> GetByName(string name)
+        public async Task<List<IPerson>> GetAllPersonsAsync()
+        {
+            return await Task.Run(() => GetAllPersons());
+        }
+
+        public List<IPerson> GetPersonsByName(string name)
         {
             return Data.Users.Where(x => x.FirstName == name).Select(x => x).ToList();
         }
-        public void Add(PersonDTO user)
+
+        public async Task<List<IPerson>> GetPersonsByNameAsync(string name)
         {
-            Data.Users.Add(user);
+            return await Task.Run(() => GetPersonsByName(name));
+        }
+        public void AddPerson(IPerson person)
+        {
+            Data.Users.Add(person);
+        }
+        public async Task AddPersonAsync(IPerson person)
+        {
+            await Task.Run(() => AddPerson(person));
+        }
+        public IPerson GetPersonByFullName(string firstName, string lastName, string patronym)
+        {
+            return Data.Users.Find(x => x.FirstName == firstName && x.LastName == lastName && x.Patronym == patronym);
         }
 
-        public void Remove(string firstName, string lastName, string patronym)
+        public async Task<IPerson> GetPersonByFullNameAsync(string firstName, string lastName, string patronym)
         {
-            Data.Users.RemoveAll(x => x.FirstName == firstName && x.LastName == lastName && x.Patronym == patronym);
+            return await Task.Run(() => GetPersonByFullName(firstName, lastName, patronym));
+        }
+
+        public void RemovePerson(IPerson person)
+        {
+            Data.Users.RemoveAll(x => x.FirstName == person.FirstName && x.LastName == person.LastName && x.Patronym == person.Patronym);
+        }
+        public async Task RemovePersonAsync(IPerson person)
+        {
+            await Task.Run(() => RemovePerson(person));
         }
     }
 }

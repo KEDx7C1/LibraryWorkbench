@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LibraryWorkbench.Aggregators;
+using LibraryWorkbench.DTO;
+using LibraryWorkbench.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Aggregators;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -21,18 +20,18 @@ namespace LibraryWorkbench.Controllers
             List<ReadingPersonAggregator> readingUsers = await Task.Run(() => _readingUsers.GetReadingUsers());
             return readingUsers;
         }
-        
-        
+
+
         [HttpPost]
         public async Task<IEnumerable<Person>> AddReadingUser(ReadingPersonAggregator readingUser)
         {
             List<PersonDTO> persons = await Task.Run(() =>
             {
                 _readingUsers.AddReadingUser(readingUser);
-                return _readingUsers.GetReadingUsers().Select(x => x.User).ToList();
+                return _readingUsers.GetReadingUsers().Select(x => x.Person).ToList();
             });
-            return persons.Cast<Person>().ToList();
-            
+            return persons.Cast<Person>().ToList().Distinct();
+
         }
     }
 }

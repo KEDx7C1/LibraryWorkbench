@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LibraryWorkbench.Data;
+using LibraryWorkbench.DTO;
+using LibraryWorkbench.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Data;
-using LibraryWorkbench.Interfaces;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -17,27 +15,27 @@ namespace LibraryWorkbench.Controllers
         private readonly IBooksRepository _books = new BooksRepository();
 
         [HttpGet]
-        public async Task<IEnumerable<BookDTO>> Get()
+        public async Task<IEnumerable<IBook>> Get()
         {
-            List<BookDTO> books = await Task.Run(() => _books.Get());
+            List<IBook> books = await _books.GetAllBooksAsync();
             return books;
         }
 
         [Route("{author}")]
         [HttpGet]
-        public async Task<IEnumerable<BookDTO>> GetByAuthor(string author)
+        public async Task<IEnumerable<IBook>> GetByAuthor(string author)
         {
-            List<BookDTO> books = await Task.Run(() => _books.GetByAuthor(author));
+            List<IBook> books = await _books.GetBooksByAuthorAsync(author);
             return books;
         }
 
         [HttpPost]
         public async Task<IEnumerable<Book>> Add(BookDTO book)
         {
-            List<BookDTO> books = await Task.Run(() =>
+            List<IBook> books = await Task.Run(() =>
             {
-                _books.Add(book);
-                return _books.Get();
+                _books.AddBook((IBook)book);
+                return _books.GetAllBooks();
             });
             return books.Cast<Book>().ToList();
         }
@@ -45,16 +43,11 @@ namespace LibraryWorkbench.Controllers
         [HttpDelete]
         public async Task<IActionResult> Remove(string author, string title)
         {
-            BookDTO book = await Task.Run(() => _books.GetByAuthorAndTitle(author, title));
+            IBook book = await _books.GetBookByAuthorAndTitleAsync(author, title);
             if (book != null)
             {
-                IActionResult actionResult = await Task.Run(()=>
-                {
-                    _books.Remove(book);
-                    return Ok();
-                });
-                return actionResult;
-                
+                await _books.RemoveBookAsync(book);
+                return Ok();
             }
             else return NotFound();
         }

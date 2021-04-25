@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using LibraryWorkbench.DTO;
+
 
 namespace LibraryWorkbench.Interfaces
 {
@@ -11,10 +9,15 @@ namespace LibraryWorkbench.Interfaces
     /// </summary>
     interface IBooksRepository
     {
-        public List<BookDTO> Get();
-        public List<BookDTO> GetByAuthor(string author);
-        public void Add(BookDTO book);
-        public BookDTO GetByAuthorAndTitle(string author, string title);
-        public void Remove(BookDTO book);
+        List<IBook> GetAllBooks();
+        Task<List<IBook>> GetAllBooksAsync();
+        List<IBook> GetBooksByAuthor(string author);
+        Task<List<IBook>> GetBooksByAuthorAsync(string author);
+        void AddBook(IBook book);
+        Task AddBookAsync(IBook book);
+        IBook GetBookByAuthorAndTitle(string author, string title);
+        Task<IBook> GetBookByAuthorAndTitleAsync(string author, string title);
+        void RemoveBook(IBook book);
+        Task RemoveBookAsync(IBook book);
     }
 }

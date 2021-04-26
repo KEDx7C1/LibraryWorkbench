@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace LibraryWorkbench.Controllers
 {
+    /// <summary>
+    /// 2.1.2
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ReadingPersonsController : ControllerBase
@@ -21,7 +24,9 @@ namespace LibraryWorkbench.Controllers
             return readingUsers;
         }
 
-
+        /// <summary>
+        /// 2.1.4
+        /// </summary>
         [HttpPost]
         public async Task<IEnumerable<Person>> AddReadingUser(ReadingPersonAggregator readingPerson)
         {

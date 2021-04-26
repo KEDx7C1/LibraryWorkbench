@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LibraryWorkbench.DTO
 {
     /// <summary>
-    /// 2.2
+    /// 2.2.1, 2.2.2.A
     /// </summary>
     public abstract class Book
     {
@@ -15,7 +15,7 @@ namespace LibraryWorkbench.DTO
     }
 
     /// <summary>
-    /// 2.0
+    /// 2.0.2, 2.2.1
     /// </summary>
     public class BookDTO : Book, IBook
     {

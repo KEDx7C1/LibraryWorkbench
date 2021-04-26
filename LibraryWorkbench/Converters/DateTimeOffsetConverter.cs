@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace LibraryWorkbench
 {
     /// <summary>
-    /// 2.1
+    /// 2.1.4
     /// </summary>
     public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
     {

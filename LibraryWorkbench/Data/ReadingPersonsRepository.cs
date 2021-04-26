@@ -14,17 +14,14 @@ namespace LibraryWorkbench.Data
         {
             return Data.ReadingPersons;
         }
-
         public async Task<List<ReadingPersonAggregator>> GetReadingPersonsAsync()
         {
             return await Task.Run(() => GetReadingPersons());
         }
-
         public void AddReadingPerson(ReadingPersonAggregator person)
         {
             Data.ReadingPersons.Add(person);
         }
-
         public async Task AddReadingPersonAsync(ReadingPersonAggregator person)
         {
             await Task.Run(() => AddReadingPerson(person));

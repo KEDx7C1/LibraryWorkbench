@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LibraryWorkbench.DTO
 {
     /// <summary>
-    /// 2.2
+    /// 2.2.1, 2.2.2.Б
     /// </summary>
     public abstract class Person : IEquatable<Person>
     {
@@ -37,13 +37,12 @@ namespace LibraryWorkbench.DTO
         { }
     }
     /// <summary>
-    /// 2.0
+    /// 2.0.2, 2.2.1
     /// </summary>
     public class PersonDTO : Person, IPerson
     {
         [Required]
         public DateTime Birthday { get; set; }
-
         public PersonDTO()
         { }
     }

@@ -8,7 +8,7 @@ namespace LibraryWorkbench.Interfaces
     /// </summary>
     interface IReadingPersonsRepository
     {
-        List<ReadingPersonAggregator> GetReadingUsers();
-        void AddReadingUser(ReadingPersonAggregator user);
+        List<ReadingPersonAggregator> GetReadingPersons();
+        void AddReadingPerson(ReadingPersonAggregator user);
     }
 }

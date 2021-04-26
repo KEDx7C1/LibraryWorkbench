@@ -11,7 +11,7 @@ namespace LibraryWorkbench.Data
     /// </summary>
     public class Data
     {
-        public static List<IPerson> Users = new()
+        public static List<IPerson> Persons = new()
         {
             new PersonDTO { FirstName = "Николай", LastName = "Петров", Patronym = "Владимирович", Birthday = new DateTime(1980, 12, 1) },
             new PersonDTO { FirstName = "Владимир", LastName = "Савельев", Patronym = "Сергеевич", Birthday = new DateTime(2000, 1, 7) },
@@ -27,7 +27,7 @@ namespace LibraryWorkbench.Data
             new BookDTO { Title = "Божественная комедия", Author = "Данте Алигьери", Genre = "Поэма" }
         };
 
-        public static List<ReadingPersonAggregator> ReadingUsers = new();
+        public static List<ReadingPersonAggregator> ReadingPersons = new();
         
     }
 }

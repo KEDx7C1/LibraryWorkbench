@@ -13,7 +13,7 @@ namespace LibraryWorkbench.Data
     {
         public List<IPerson> GetAllPersons()
         {
-            return Data.Users;
+            return Data.Persons;
         }
 
         public async Task<List<IPerson>> GetAllPersonsAsync()
@@ -23,7 +23,7 @@ namespace LibraryWorkbench.Data
 
         public List<IPerson> GetPersonsByName(string name)
         {
-            return Data.Users.Where(x => x.FirstName == name).Select(x => x).ToList();
+            return Data.Persons.Where(x => x.FirstName == name).Select(x => x).ToList();
         }
 
         public async Task<List<IPerson>> GetPersonsByNameAsync(string name)
@@ -32,7 +32,7 @@ namespace LibraryWorkbench.Data
         }
         public void AddPerson(IPerson person)
         {
-            Data.Users.Add(person);
+            Data.Persons.Add(person);
         }
         public async Task AddPersonAsync(IPerson person)
         {
@@ -40,7 +40,7 @@ namespace LibraryWorkbench.Data
         }
         public IPerson GetPersonByFullName(string firstName, string lastName, string patronym)
         {
-            return Data.Users.Find(x => x.FirstName == firstName && x.LastName == lastName && x.Patronym == patronym);
+            return Data.Persons.Find(x => x.FirstName == firstName && x.LastName == lastName && x.Patronym == patronym);
         }
 
         public async Task<IPerson> GetPersonByFullNameAsync(string firstName, string lastName, string patronym)
@@ -50,7 +50,7 @@ namespace LibraryWorkbench.Data
 
         public void RemovePerson(IPerson person)
         {
-            Data.Users.RemoveAll(x => x.FirstName == person.FirstName && x.LastName == person.LastName && x.Patronym == person.Patronym);
+            Data.Persons.RemoveAll(x => x.FirstName == person.FirstName && x.LastName == person.LastName && x.Patronym == person.Patronym);
         }
         public async Task RemovePersonAsync(IPerson person)
         {

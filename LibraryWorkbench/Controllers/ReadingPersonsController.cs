@@ -17,18 +17,18 @@ namespace LibraryWorkbench.Controllers
         [HttpGet]
         public async Task<IEnumerable<ReadingPersonAggregator>> GetReadingUsers()
         {
-            List<ReadingPersonAggregator> readingUsers = await Task.Run(() => _readingUsers.GetReadingUsers());
+            List<ReadingPersonAggregator> readingUsers = await _readingUsers.GetReadingPersonsAsync();
             return readingUsers;
         }
 
 
         [HttpPost]
-        public async Task<IEnumerable<Person>> AddReadingUser(ReadingPersonAggregator readingUser)
+        public async Task<IEnumerable<Person>> AddReadingUser(ReadingPersonAggregator readingPerson)
         {
             List<PersonDTO> persons = await Task.Run(() =>
             {
-                _readingUsers.AddReadingUser(readingUser);
-                return _readingUsers.GetReadingUsers().Select(x => x.Person).ToList();
+                _readingUsers.AddReadingPerson(readingPerson);
+                return _readingUsers.GetReadingPersons().Select(x => x.Person).ToList();
             });
             return persons.Cast<Person>().ToList().Distinct();
 

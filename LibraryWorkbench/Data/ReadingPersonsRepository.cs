@@ -1,6 +1,7 @@
 ﻿using LibraryWorkbench.Aggregators;
 using LibraryWorkbench.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LibraryWorkbench.Data
 {
@@ -9,14 +10,24 @@ namespace LibraryWorkbench.Data
     /// </summary>
     public class ReadingPersonsRepository : IReadingPersonsRepository
     {
-        public List<ReadingPersonAggregator> GetReadingUsers()
+        public List<ReadingPersonAggregator> GetReadingPersons()
         {
-            return Data.ReadingUsers;
+            return Data.ReadingPersons;
         }
 
-        public void AddReadingUser(ReadingPersonAggregator user)
+        public async Task<List<ReadingPersonAggregator>> GetReadingPersonsAsync()
         {
-            Data.ReadingUsers.Add(user);
+            return await Task.Run(() => GetReadingPersons());
+        }
+
+        public void AddReadingPerson(ReadingPersonAggregator person)
+        {
+            Data.ReadingPersons.Add(person);
+        }
+
+        public async Task AddReadingPersonAsync(ReadingPersonAggregator person)
+        {
+            await Task.Run(() => AddReadingPerson(person));
         }
     }
 }

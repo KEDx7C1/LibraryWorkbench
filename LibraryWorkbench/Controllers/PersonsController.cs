@@ -1,6 +1,8 @@
 ﻿using LibraryWorkbench.Data;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Interfaces;
+using LibraryWorkbench.Data.Data.Interfaces;
+using LibraryWorkbench.Data.Models;
+using LibraryWorkbench.Data.Models.Interfaces;
+using LibraryWorkbench.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +41,12 @@ namespace LibraryWorkbench.Controllers
         /// 2.0.5, 2.2.2.Б
         /// </summary>
         [HttpPost]
-        public async Task<IEnumerable<Person>> AddPerson(PersonDTO person)
+        public async Task<IEnumerable<PersonShort>> AddPerson(Person person)
         {
-            List<Person> persons = await Task.Run(() =>
+            List<PersonShort> persons = await Task.Run(() =>
             {
                 _persons.AddPerson(person);
-                return _persons.GetAllPersons().Cast<Person>().ToList();
+                return _persons.GetAllPersons().Cast<PersonShort>().ToList();
             });
             return persons;
         }
@@ -54,19 +56,8 @@ namespace LibraryWorkbench.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemovePerson(string firstName, string lastName, string patronym)
         {
-            if (firstName == null || lastName == null || patronym == null)
-                return BadRequest();
-            else
-            {
-                IPerson person = await _persons.GetPersonByFullNameAsync(firstName, lastName, patronym);
-                if (person != null)
-                {
-                    await _persons.RemovePersonAsync(person);
-                    return Ok();
-                }
-                else
-                    return NotFound();
-            }
+            return StatusCode(await RemovePersons.RemovePerson(firstName, lastName, patronym, _persons));
+            
         }
     }
 }

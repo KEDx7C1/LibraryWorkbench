@@ -1,6 +1,8 @@
 ﻿using LibraryWorkbench.Data;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Interfaces;
+using LibraryWorkbench.Data.Data.Interfaces;
+using LibraryWorkbench.Data.Models.Interfaces;
+using LibraryWorkbench.Data.Models;
+using LibraryWorkbench.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,14 +41,14 @@ namespace LibraryWorkbench.Controllers
         /// 2.0.5, 2.2.2.A
         /// </summary>
         [HttpPost]
-        public async Task<IEnumerable<Book>> Add(BookDTO book)
+        public async Task<IEnumerable<BookShort>> Add(Book book)
         {
             List<IBook> books = await Task.Run(() =>
             {
-                _books.AddBook((IBook)book);
+                _books.AddBook(book);
                 return _books.GetAllBooks();
             });
-            return books.Cast<Book>().ToList();
+            return books.Cast<BookShort>().ToList();
         }
         /// <summary>
         /// 2.0.6
@@ -54,19 +56,7 @@ namespace LibraryWorkbench.Controllers
         [HttpDelete]
         public async Task<IActionResult> Remove(string author, string title)
         {
-            if (author == null || title == null)
-                return BadRequest();
-            else
-            {
-                IBook book = await _books.GetBookByAuthorAndTitleAsync(author, title);
-                if (book != null)
-                {
-                    await _books.RemoveBookAsync(book);
-                    return Ok();
-                }
-                else return NotFound();
-            }
-            
+            return StatusCode(await RemoveBooks.RemoveBook(author, title, _books));
         }
     }
 }

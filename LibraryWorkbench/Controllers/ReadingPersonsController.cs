@@ -1,6 +1,4 @@
-﻿using LibraryWorkbench.Aggregators;
-using LibraryWorkbench.DTO;
-using LibraryWorkbench.Interfaces;
+﻿using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +13,12 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class ReadingPersonsController : ControllerBase
     {
-        private readonly Data.ReadingPersonsRepository _readingUsers = new();
+        private readonly Data.ReadingPersonsRepository _readingUsers = new Data.ReadingPersonsRepository();
 
         [HttpGet]
-        public async Task<IEnumerable<ReadingPersonAggregator>> GetReadingUsers()
+        public async Task<IEnumerable<ReadingPerson>> GetReadingUsers()
         {
-            List<ReadingPersonAggregator> readingUsers = await _readingUsers.GetReadingPersonsAsync();
+            List<ReadingPerson> readingUsers = await _readingUsers.GetReadingPersonsAsync();
             return readingUsers;
         }
 
@@ -28,14 +26,14 @@ namespace LibraryWorkbench.Controllers
         /// 2.1.4
         /// </summary>
         [HttpPost]
-        public async Task<IEnumerable<Person>> AddReadingUser(ReadingPersonAggregator readingPerson)
+        public async Task<IEnumerable<PersonShort>> AddReadingUser(ReadingPerson readingPerson)
         {
-            List<PersonDTO> persons = await Task.Run(() =>
+            List<Person> persons = await Task.Run(() =>
             {
                 _readingUsers.AddReadingPerson(readingPerson);
                 return _readingUsers.GetReadingPersons().Select(x => x.Person).ToList();
             });
-            return persons.Cast<Person>().ToList().Distinct();
+            return persons.Cast<PersonShort>().ToList().Distinct();
 
         }
     }

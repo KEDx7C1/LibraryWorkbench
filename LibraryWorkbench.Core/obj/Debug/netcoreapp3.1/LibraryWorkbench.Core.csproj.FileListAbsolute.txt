@@ -1,0 +1,12 @@
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\bin\Debug\netcoreapp3.1\LibraryWorkbench.Core.deps.json
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\bin\Debug\netcoreapp3.1\LibraryWorkbench.Core.dll
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\bin\Debug\netcoreapp3.1\LibraryWorkbench.Core.pdb
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.csprojAssemblyReference.cache
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.AssemblyInfoInputs.cache
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.AssemblyInfo.cs
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.csproj.CoreCompileInputs.cache
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.dll
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.pdb
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\bin\Debug\netcoreapp3.1\LibraryWorkbench.Data.dll
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\bin\Debug\netcoreapp3.1\LibraryWorkbench.Data.pdb
+D:\dev\LibraryWorkbench\LibraryWorkbench.Core\obj\Debug\netcoreapp3.1\LibraryWorkbench.Core.csproj.CopyComplete

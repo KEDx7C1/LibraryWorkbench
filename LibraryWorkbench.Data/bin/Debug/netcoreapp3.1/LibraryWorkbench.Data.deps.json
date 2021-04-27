@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "LibraryWorkbench.Data/1.0.0": {
+        "runtime": {
+          "LibraryWorkbench.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LibraryWorkbench.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

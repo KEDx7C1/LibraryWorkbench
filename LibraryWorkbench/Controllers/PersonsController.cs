@@ -2,6 +2,7 @@
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,12 +45,13 @@ namespace LibraryWorkbench.Controllers
         /// 2.0.5, 2.2.2.Б
         /// </summary>
         [HttpPost]
-        public PersonShort CreatePerson(Person person)
+        public IActionResult CreatePerson(Person person)
         {
-            _persons.Create(person);
-            _persons.Save();
-            PersonShort result = person;
-            return result;
+            Object result =  PersonsServices.CreatePerson(person, _context);
+            if (result != null)
+                return new ObjectResult(result);
+            else
+                return new BadRequestObjectResult("Person already exist");
         }
         [HttpPut]
         public Person UpdatePerson(Person person)

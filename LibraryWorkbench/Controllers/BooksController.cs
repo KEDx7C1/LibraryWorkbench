@@ -32,21 +32,35 @@ namespace LibraryWorkbench.Controllers
         ///// <summary>
         ///// 2.0.4.B
         ///// </summary>
-        //[Route("{author}")]
-        //[HttpGet]
-        //public async Task<IEnumerable<IBook>> GetByAuthor(string author)
-        //{
-        //    List<IBook> books = await _books.GetBooksByAuthorAsync(author);
-        //    return books;
-        //}
+        
+        [HttpGet]
+        [Route("byAuthor")]
+        public IEnumerable<Book> GetBooksByAuthor(string firstName, string lastName, string middleName)
+        {
+
+            return BooksServices.GetBooksByAuthor(firstName, lastName, middleName, _context);
+        }
         ///// <summary>
         ///// 2.0.5, 2.2.2.A
         ///// </summary>
         [HttpGet]
-        [Route("{id}")]
-        public Book GetBookById(int id)
+        [Route("byGenre")]
+        public IEnumerable<Book> GetBooksByGenre(string genre)
         {
-            return BooksServices.GetBook(id, _context);
+            return BooksServices.GetBooksByGenre(genre, _context);
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetBookById(int id)
+        {
+            try
+            {
+                return new ObjectResult(BooksServices.GetBook(id, _context));
+            }
+            catch 
+            {
+                return new BadRequestResult();
+            }
         }
         [HttpPost]
         public void CreateBook(Book book)

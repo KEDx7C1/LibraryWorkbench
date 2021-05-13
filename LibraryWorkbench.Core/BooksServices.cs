@@ -47,7 +47,16 @@ namespace LibraryWorkbench.Core
         public static int DeleteBook(int id, DataContext context)
         {
             BooksRepository books = new BooksRepository(context);
-            Book book = books.Get(id);
+            Book book;
+            try
+            {
+                book = books.Get(id);
+            }
+            catch
+            {
+                return StatusCodes.Status404NotFound;
+            }
+            
             if (!context.Persons.Any(x => x.Books.Contains(book)))
                 {
                 books.Delete(id);
@@ -60,14 +69,26 @@ namespace LibraryWorkbench.Core
         public static Book ChangeGanre(Book book, DataContext context)
         {
             BooksRepository books = new BooksRepository(context);
-            Book bookToUpdate = context.Books.Where(x => x.Name.Equals(book.Name)).FirstOrDefault();
-            var genresOld = bookToUpdate.Genres;
-            var genresNew = book.Genres;
-            genresOld.RemoveAll(g => !genresNew.Exists(gg => gg.GenreName == g.GenreName));
+            Book bookToUpdate = context.Books.Where(x => x.Name.ToLower().Equals(book.Name.ToLower()) && x.Author.FirstName.Equals(book.Author.FirstName)
+                && x.Author.MiddleName.Equals(book.Author.MiddleName)).Include(x=>x.Genres).FirstOrDefault();
+            
+            bookToUpdate.Genres.RemoveAll(g => !book.Genres.Exists(gg => gg.GenreName.ToLower().Equals(g.GenreName.ToLower())));
+            bookToUpdate.Genres.AddRange(book.Genres.Where(x => !bookToUpdate.Genres.Any(y=>y.GenreName.ToLower().Equals(x.GenreName.ToLower()))));
             
             books.Update(bookToUpdate);
             books.Save();
-            return context.Books.Where(x=>x.BookId==bookToUpdate.BookId).Include(g=>g.Genres).FirstOrDefault();
+            return context.Books.Where(x=>x.BookId==bookToUpdate.BookId).Include(g=>g.Genres).Include(a=>a.Author).FirstOrDefault();
+        }
+        public static IEnumerable<Book> GetBooksByAuthor(string firstName, string lastName, string middleName, DataContext context)
+        {
+            return context.Books.Where(x => (x.Author.FirstName.Equals(firstName) || firstName==null) &&
+                (x.Author.LastName.Equals(lastName) || lastName == null) &&
+                (x.Author.MiddleName.Equals(middleName) || middleName == null));
+        }
+
+        public static IEnumerable<Book> GetBooksByGenre(string genre, DataContext context)
+        {
+            return context.Books.Include(x=>x.Author).Include(x=>x.Genres).Where(x => x.Genres.Any(y => y.GenreName.Equals(genre)));
         }
     }
 }

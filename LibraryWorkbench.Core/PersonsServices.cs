@@ -6,11 +6,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryWorkbench.Core
 {
     public class PersonsServices
     {
+        public static Object CreatePerson(Person person, DataContext context)
+        {
+            if (!context.Persons.Any(x => x.FirstName.Equals(person.FirstName) && x.LastName.Equals(person.LastName)
+            && x.MiddleName.Equals(person.MiddleName) && x.Birthday.Equals(person.Birthday)))
+            {
+                PersonsRepository persons = new PersonsRepository(context);
+                persons.Create(person);
+                persons.Save();
+                return person;
+            }
+            else
+                return null;
+        }
         public static int DeletePersonById(int id, DataContext context)
         {
             PersonsRepository persons = new PersonsRepository(context);

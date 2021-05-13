@@ -1,8 +1,6 @@
-﻿using LibraryWorkbench.Data;
-using LibraryWorkbench.Data.Data.Interfaces;
+﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
-using LibraryWorkbench.Data.Models.Interfaces;
-using LibraryWorkbench.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,47 +15,79 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class PersonsController : ControllerBase
     {
-        private readonly IPersonsRepository _persons = new PersonsRepository();
+        private readonly DataContext _context;
+        private readonly PersonsRepository _persons;
+
+        public PersonsController(DataContext context)
+        {
+            _context = context;
+            _persons = new PersonsRepository(_context);
+        }
         /// <summary>
         /// 2.0.4.A
         /// </summary>
         [HttpGet]
-        public async Task<IEnumerable<IPerson>> GetAllPersons()
+        public IEnumerable<Person> GetAllPersons()
         {
-            List<IPerson> persons = await _persons.GetAllPersonsAsync();
-            return persons;
+            return _persons.GetAll();
         }
         /// <summary>
         /// 2.0.4.C
         /// </summary>
         [HttpGet]
-        [Route("{name}")]
-        public async Task<IEnumerable<IPerson>> GetPersonByName(string name)
+        [Route("{id}")]
+        public IEnumerable<Book> GetPersonBooksById(int id)
         {
-            List<IPerson> persons = await _persons.GetPersonsByNameAsync(name);
-            return persons;
+            return _persons.Get(id).Books;
         }
         /// <summary>
         /// 2.0.5, 2.2.2.Б
         /// </summary>
         [HttpPost]
-        public async Task<IEnumerable<PersonShort>> AddPerson(Person person)
+        public PersonShort CreatePerson(Person person)
         {
-            List<PersonShort> persons = await Task.Run(() =>
-            {
-                _persons.AddPerson(person);
-                return _persons.GetAllPersons().Cast<PersonShort>().ToList();
-            });
-            return persons;
+            _persons.Create(person);
+            _persons.Save();
+            PersonShort result = person;
+            return result;
+        }
+        [HttpPut]
+        public Person UpdatePerson(Person person)
+        {
+            _persons.Update(person);
+            _persons.Save();
+            return person;
+        }
+
+        [HttpPut]
+        [Route("{personId}")]
+        public Person GiveBook(int bookId, int personId)
+        {
+            
+            PersonsServices.GiveBook(personId, bookId, _context);
+            return _persons.Get(personId);
+        }
+        [HttpDelete]
+        [Route("{personId}")]
+        public Person ReturnBook(int bookId, int personId)
+        {
+            PersonsServices.ReturnBook(personId, bookId, _context);
+            return _persons.Get(personId);
         }
         /// <summary>
         /// 2.0.6
         /// </summary>
         [HttpDelete]
-        public async Task<IActionResult> RemovePerson(string firstName, string lastName, string patronym)
+        public IActionResult DeletePerson(int id)
         {
-            return StatusCode(await RemovePersons.RemovePerson(firstName, lastName, patronym, _persons));
-            
+            return StatusCode(PersonsServices.DeletePersonById(id, _context));
+        }
+        [HttpDelete]
+        [Route("byFullName")]
+        public IActionResult DeletePersonsByFullName(string firstName, string lastName, string middleName)
+        {
+            PersonShort person = new Person() { FirstName = firstName, LastName = lastName, MiddleName = middleName };
+            return StatusCode(PersonsServices.DeletePersonsByFullName(person, _context));
         }
     }
 }

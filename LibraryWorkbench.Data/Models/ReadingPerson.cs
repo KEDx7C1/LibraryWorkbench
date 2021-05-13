@@ -13,15 +13,15 @@ namespace LibraryWorkbench.Data.Models
         public Person Person { get; set; }
         [Required]
         public Book Book { get; set; }
-        [Required]
-        public DateTimeOffset GettingTime { get; set; }
+        //[Required]
+        //public DateTimeOffset GettingTime { get; set; }
         public ReadingPerson()
         { }
-        public ReadingPerson(Person person, Book book, DateTimeOffset gettingTime)
+        public ReadingPerson(Person person, Book book)
         {
             Person = person;
             Book = book;
-            GettingTime = gettingTime;
+            //GettingTime = gettingTime;
         }
     }
 }

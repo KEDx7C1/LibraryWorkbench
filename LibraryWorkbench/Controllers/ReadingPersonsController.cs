@@ -13,28 +13,28 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class ReadingPersonsController : ControllerBase
     {
-        private readonly Data.ReadingPersonsRepository _readingUsers = new Data.ReadingPersonsRepository();
+    //    //private readonly Data.ReadingPersonsRepository _readingUsers = new Data.ReadingPersonsRepository();
 
-        [HttpGet]
-        public async Task<IEnumerable<ReadingPerson>> GetReadingUsers()
-        {
-            List<ReadingPerson> readingUsers = await _readingUsers.GetReadingPersonsAsync();
-            return readingUsers;
-        }
+    //    [HttpGet]
+    //    public async Task<IEnumerable<ReadingPerson>> GetReadingUsers()
+    //    {
+    //        List<ReadingPerson> readingUsers = await _readingUsers.GetReadingPersonsAsync();
+    //        return readingUsers;
+    //    }
 
-        /// <summary>
-        /// 2.1.4
-        /// </summary>
-        [HttpPost]
-        public async Task<IEnumerable<PersonShort>> AddReadingUser(ReadingPerson readingPerson)
-        {
-            List<Person> persons = await Task.Run(() =>
-            {
-                _readingUsers.AddReadingPerson(readingPerson);
-                return _readingUsers.GetReadingPersons().Select(x => x.Person).ToList();
-            });
-            return persons.Cast<PersonShort>().ToList().Distinct();
+    //    /// <summary>
+    //    /// 2.1.4
+    //    /// </summary>
+    //    [HttpPost]
+    //    public async Task<IEnumerable<PersonShort>> AddReadingUser(ReadingPerson readingPerson)
+    //    {
+    //        List<Person> persons = await Task.Run(() =>
+    //        {
+    //            _readingUsers.AddReadingPerson(readingPerson);
+    //            return _readingUsers.GetReadingPersons().Select(x => x.Person).ToList();
+    //        });
+    //        return persons.Cast<PersonShort>().ToList().Distinct();
 
-        }
+    //    }
     }
 }

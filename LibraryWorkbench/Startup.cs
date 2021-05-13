@@ -1,9 +1,12 @@
 using LibraryWorkbench.Converters;
+using LibraryWorkbench.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json.Serialization;
 
 namespace LibraryWorkbench
 {
@@ -26,7 +29,14 @@ namespace LibraryWorkbench
             }).AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
+
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString,
+                b=>b.MigrationsAssembly("LibraryWorkbench")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

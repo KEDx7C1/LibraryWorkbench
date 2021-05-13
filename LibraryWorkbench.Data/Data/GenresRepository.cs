@@ -9,36 +9,36 @@ namespace LibraryWorkbench.Data
     /// <summary>
     /// 2.0
     /// </summary>
-    public class BooksRepository : IRepository<Book>
+    public class GenresRepository : IRepository<DimGenre>
     {
         private readonly DataContext _context;
 
-        public BooksRepository(DataContext context)
+        public GenresRepository(DataContext context)
         {
             _context = context;
         }
-        public IEnumerable<Book> GetAll()
-        {
-            return _context.Books;
-        }
-        public Book Get(int id)
-        {
 
-            return _context.Books.Include(b => b.Author).Include(a => a.Genres).Where(x => x.BookId == id).First();
-        }
-        public void Create(Book book)
+        public IEnumerable<DimGenre> GetAll()
         {
-            _context.Books.Add(book);
+            return _context.DimGenres;
         }
-        public void Update(Book book)
+        public DimGenre Get(int id)
         {
-            _context.Entry(book).State = EntityState.Modified;
+            return _context.DimGenres.Find(id);
+        }
+        public void Create(DimGenre genre)
+        {
+            _context.DimGenres.Add(genre);
+        }
+        public void Update(DimGenre genre)
+        {
+            _context.Entry(genre).State = EntityState.Modified;
         }
         public void Delete(int id)
         {
-            Book book = _context.Books.Find(id);
-            if (book != null)
-                _context.Books.Remove(book);
+            DimGenre genre = _context.DimGenres.Find(id);
+            if (genre != null)
+                _context.DimGenres.Remove(genre);
         }
         public void Save()
         {

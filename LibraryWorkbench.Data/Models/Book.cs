@@ -1,5 +1,7 @@
-﻿using LibraryWorkbench.Data.Models.Interfaces;
+﻿using LibraryWorkbench.Data.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace LibraryWorkbench.Data.Models
 {
@@ -9,9 +11,9 @@ namespace LibraryWorkbench.Data.Models
     public abstract class BookShort
     {
         [Required]
-        public string Title { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string Author { get; set; }
+        public Author Author { get; set; }
     }
 
     /// <summary>
@@ -19,7 +21,10 @@ namespace LibraryWorkbench.Data.Models
     /// </summary>
     public class Book : BookShort, IBook
     {
+        public int BookId { get; set; }
         [Required]
-        public string Genre { get; set; }
+        public List<DimGenre> Genres { get; set; } = new List<DimGenre>();
+        [JsonIgnore]
+        public virtual List<Person> Persons { get; set; } = new List<Person>();
     }
 }

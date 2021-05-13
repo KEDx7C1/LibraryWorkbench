@@ -9,36 +9,36 @@ namespace LibraryWorkbench.Data
     /// <summary>
     /// 2.0
     /// </summary>
-    public class BooksRepository : IRepository<Book>
+    public class AuthorsRepository : IRepository<Author>
     {
         private readonly DataContext _context;
 
-        public BooksRepository(DataContext context)
+        public AuthorsRepository(DataContext context)
         {
             _context = context;
         }
-        public IEnumerable<Book> GetAll()
-        {
-            return _context.Books;
-        }
-        public Book Get(int id)
-        {
 
-            return _context.Books.Include(b => b.Author).Include(a => a.Genres).Where(x => x.BookId == id).First();
-        }
-        public void Create(Book book)
+        public IEnumerable<Author> GetAll()
         {
-            _context.Books.Add(book);
+            return _context.Authors;
         }
-        public void Update(Book book)
+        public Author Get(int id)
         {
-            _context.Entry(book).State = EntityState.Modified;
+            return _context.Authors.Find(id);
+        }
+        public void Create(Author author)
+        {
+            _context.Authors.Add(author);
+        }
+        public void Update(Author author)
+        {
+            _context.Entry(author).State = EntityState.Modified;
         }
         public void Delete(int id)
         {
-            Book book = _context.Books.Find(id);
-            if (book != null)
-                _context.Books.Remove(book);
+            Author author = _context.Authors.Find(id);
+            if (author != null)
+                _context.Authors.Remove(author);
         }
         public void Save()
         {

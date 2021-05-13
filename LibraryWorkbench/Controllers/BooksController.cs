@@ -1,12 +1,8 @@
-﻿using LibraryWorkbench.Data;
-using LibraryWorkbench.Data.Data.Interfaces;
-using LibraryWorkbench.Data.Models.Interfaces;
+﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
-using LibraryWorkbench.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -17,46 +13,62 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IBooksRepository _books = new BooksRepository();
+        private readonly DataContext _context;
+        private readonly BooksRepository _books;
+        public BooksController(DataContext context)
+        {
+            _context = context;
+            _books = new BooksRepository(_context);
+        }
         /// <summary>
         /// 2.0.4.A
         /// </summary>
         [HttpGet]
-        public async Task<IEnumerable<IBook>> Get()
+        public IEnumerable<Book> Get()
         {
-            List<IBook> books = await _books.GetAllBooksAsync();
-            return books;
+            
+            return _books.GetAll();
         }
-        /// <summary>
-        /// 2.0.4.B
-        /// </summary>
-        [Route("{author}")]
+        ///// <summary>
+        ///// 2.0.4.B
+        ///// </summary>
+        //[Route("{author}")]
+        //[HttpGet]
+        //public async Task<IEnumerable<IBook>> GetByAuthor(string author)
+        //{
+        //    List<IBook> books = await _books.GetBooksByAuthorAsync(author);
+        //    return books;
+        //}
+        ///// <summary>
+        ///// 2.0.5, 2.2.2.A
+        ///// </summary>
         [HttpGet]
-        public async Task<IEnumerable<IBook>> GetByAuthor(string author)
+        [Route("{id}")]
+        public Book GetBookById(int id)
         {
-            List<IBook> books = await _books.GetBooksByAuthorAsync(author);
-            return books;
+            return BooksServices.GetBook(id, _context);
         }
-        /// <summary>
-        /// 2.0.5, 2.2.2.A
-        /// </summary>
         [HttpPost]
-        public async Task<IEnumerable<BookShort>> Add(Book book)
+        public void CreateBook(Book book)
         {
-            List<IBook> books = await Task.Run(() =>
-            {
-                _books.AddBook(book);
-                return _books.GetAllBooks();
-            });
-            return books.Cast<BookShort>().ToList();
+            BooksServices.CreateBook(book, _context);
         }
-        /// <summary>
-        /// 2.0.6
-        /// </summary>
+        ///// <summary>
+        ///// 2.0.6
+        ///// </summary>
         [HttpDelete]
-        public async Task<IActionResult> Remove(string author, string title)
+        [Route("{id}")]
+        public IActionResult DeleteBook(int id)
         {
-            return StatusCode(await RemoveBooks.RemoveBook(author, title, _books));
+            
+            return StatusCode(BooksServices.DeleteBook(id, _context));
+        }
+
+        [HttpPut]
+        public Book ChangeGanre (Book book)
+        {
+            
+            return BooksServices.ChangeGanre(book, _context);
         }
     }
 }

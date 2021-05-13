@@ -1,9 +1,0 @@
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\obj\Debug\netcoreapp3.1\LibraryWorkbench.Data.AssemblyInfoInputs.cache
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\obj\Debug\netcoreapp3.1\LibraryWorkbench.Data.AssemblyInfo.cs
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\obj\Debug\netcoreapp3.1\LibraryWorkbench.Data.csproj.CoreCompileInputs.cache
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\obj\Debug\netcoreapp3.1\LibraryWorkbench.Data.csprojAssemblyReference.cache
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\bin\Debug\netcoreapp3.1\LibraryWorkbench.Data.deps.json
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\bin\Debug\netcoreapp3.1\LibraryWorkbench.Data.dll
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\bin\Debug\netcoreapp3.1\LibraryWorkbench.Data.pdb
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\obj\Debug\netcoreapp3.1\LibraryWorkbench.Data.dll
-D:\dev\LibraryWorkbench\LibraryWorkbench.Data\obj\Debug\netcoreapp3.1\LibraryWorkbench.Data.pdb

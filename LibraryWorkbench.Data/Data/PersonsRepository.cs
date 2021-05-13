@@ -1,57 +1,67 @@
-﻿using LibraryWorkbench.Data.Data.Interfaces;
-using LibraryWorkbench.Data.Models.Interfaces;
-using LibraryWorkbench.DataTables;
+﻿using LibraryWorkbench.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace LibraryWorkbench.Data
 {
     /// <summary>
     /// 2.0
     /// </summary>
-    public class PersonsRepository : IPersonsRepository
+    public class PersonsRepository : IRepository<Person>
     {
-        public List<IPerson> GetAllPersons()
+        private readonly DataContext _context;
+
+        public PersonsRepository(DataContext context)
         {
-            return DataTables.DataTables.Persons;
+            _context = context;
         }
-        public async Task<List<IPerson>> GetAllPersonsAsync()
+
+        public IEnumerable<Person> GetAll()
         {
-            return await Task.Run(() => GetAllPersons());
+            return _context.Persons.Include(b=>b.Books);
         }
-        public List<IPerson> GetPersonsByName(string name)
+        public Person Get(int id)
         {
-            return DataTables.DataTables.Persons.Where(x => x.FirstName == name).Select(x => x).ToList();
+            return (Person)_context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres).Include(x => x.Books).ThenInclude(a => a.Author).Where( x=> x.PersonId == id).First();
         }
-        public async Task<List<IPerson>> GetPersonsByNameAsync(string name)
+        public void Create(Person person)
         {
-            return await Task.Run(() => GetPersonsByName(name));
+            _context.Persons.Add(person);
         }
-        public void AddPerson(IPerson person)
+        public void Update(Person person)
         {
-            DataTables.DataTables.Persons.Add(person);
+            _context.Entry(person).State = EntityState.Modified;
         }
-        public async Task AddPersonAsync(IPerson person)
+        public void Delete(int id)
         {
-            await Task.Run(() => AddPerson(person));
+            Person person = _context.Persons.Find(id);
+            if (person != null)
+                _context.Persons.Remove(person);
         }
-        public IPerson GetPersonByFullName(string firstName, string lastName, string patronym)
+        public void Save()
         {
-            return DataTables.DataTables.Persons.Find(x => x.FirstName == firstName && x.LastName == lastName && x.Patronym == patronym);
+            _context.SaveChanges();
         }
-        public async Task<IPerson> GetPersonByFullNameAsync(string firstName, string lastName, string patronym)
+        private bool disposed = false;
+
+        public virtual void Dispose(bool disposing)
         {
-            return await Task.Run(() => GetPersonByFullName(firstName, lastName, patronym));
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            this.disposed = true;
         }
-        public void RemovePerson(IPerson person)
+
+        public void Dispose()
         {
-            DataTables.DataTables.Persons.RemoveAll(x => x.FirstName == person.FirstName && x.LastName == person.LastName && x.Patronym == person.Patronym);
-        }
-        public async Task RemovePersonAsync(IPerson person)
-        {
-            await Task.Run(() => RemovePerson(person));
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

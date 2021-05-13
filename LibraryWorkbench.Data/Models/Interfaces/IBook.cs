@@ -1,12 +1,12 @@
-﻿namespace LibraryWorkbench.Data.Models.Interfaces
+﻿namespace LibraryWorkbench.Data.Models
 {
     /// <summary>
     /// 2.0
     /// </summary>
     public interface IBook
     {
-        string Title { get; set; }
-        string Author { get; set; }
-        string Genre { get; set; }
+        int BookId { get; set; }
+        string Name { get; set; }
+        Author Author { get; set; }
     }
 }

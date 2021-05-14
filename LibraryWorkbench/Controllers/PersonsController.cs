@@ -26,18 +26,33 @@ namespace LibraryWorkbench.Controllers
         /// 2.0.4.A
         /// </summary>
         [HttpGet]
-        public IEnumerable<Person> GetAllPersons()
+        public IActionResult GetAllPersons()
         {
-            return _persons.GetAll();
+            try
+            {
+                return new OkObjectResult(_persons.GetAll());
+            }
+            catch
+            {
+                return new NotFoundResult();
+            }
+            
         }
         /// <summary>
         /// 2.0.4.C
         /// </summary>
         [HttpGet]
         [Route("{id}")]
-        public IEnumerable<Book> GetPersonBooksById(int id)
+        public IActionResult GetPersonBooksById(int id)
         {
-            return _persons.Get(id).Books;
+            try
+            {
+                return new OkObjectResult(_persons.Get(id).Books);
+            }
+            catch
+            {
+                return new BadRequestResult();
+            }
         }
         /// <summary>
         /// 2.0.5, 2.2.2.Б

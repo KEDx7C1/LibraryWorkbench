@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWorkbench.Data
 {
@@ -13,7 +8,7 @@ namespace LibraryWorkbench.Data
         public DbSet<Models.DimGenre> DimGenres { get; set; }
         public DbSet<Models.Author> Authors { get; set; }
         public DbSet<Models.Book> Books { get; set; }
-        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +39,8 @@ namespace LibraryWorkbench.Data
             modelBuilder.Entity<Models.Book>()
                 .Property(p => p.Name).HasColumnName("name")
                 .HasMaxLength(500);
+            modelBuilder.Entity<Models.Book>()
+                .HasOne(p => p.Author);
 
             modelBuilder.Entity<Models.Person>()
                 .HasKey(p => p.PersonId);
@@ -83,7 +80,7 @@ namespace LibraryWorkbench.Data
                 .WithMany(b => b.Books)
                 .UsingEntity(j => j.ToTable("library_card"));
         }
-        public DataContext(DbContextOptions<DataContext> options): base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
     }
 }

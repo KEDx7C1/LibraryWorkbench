@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210514103030_0007")]
+    partial class _0007
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +59,6 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("author_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(75)
@@ -76,12 +75,6 @@ namespace LibraryWorkbench.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)")
                         .HasColumnName("middle_name");
-
-                    b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("AuthorId");
 
@@ -132,18 +125,9 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("genre_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("GenreName")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("genre_name");
-
-                    b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("GenreId");
 
@@ -162,9 +146,6 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("birth_date");
 
-                    b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(75)
@@ -181,12 +162,6 @@ namespace LibraryWorkbench.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)")
                         .HasColumnName("middle_name");
-
-                    b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
 
                     b.HasKey("PersonId");
 

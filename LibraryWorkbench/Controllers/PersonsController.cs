@@ -4,8 +4,6 @@ using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -47,7 +45,7 @@ namespace LibraryWorkbench.Controllers
         [HttpPost]
         public IActionResult CreatePerson(Person person)
         {
-            Object result =  PersonsServices.CreatePerson(person, _context);
+            Object result = PersonsServices.CreatePerson(person, _context);
             if (result != null)
                 return new ObjectResult(result);
             else
@@ -65,7 +63,7 @@ namespace LibraryWorkbench.Controllers
         [Route("{personId}")]
         public Person GiveBook(int bookId, int personId)
         {
-            
+
             PersonsServices.GiveBook(personId, bookId, _context);
             return _persons.Get(personId);
         }

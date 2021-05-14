@@ -1,13 +1,9 @@
-﻿using LibraryWorkbench.Data;
-using LibraryWorkbench.Data.Models;
-using LibraryWorkbench.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LibraryWorkbench.Core;
 using LibraryWorkbench.Core.Models;
+using LibraryWorkbench.Data;
+using LibraryWorkbench.Data.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -23,7 +19,7 @@ namespace LibraryWorkbench.Controllers
         [HttpGet]
         public IEnumerable<Author> GetAuthors()
         {
-            return  AuthorsServices.GetAuthors(_context);
+            return AuthorsServices.GetAuthors(_context);
         }
         [HttpGet]
         [Route("books")]
@@ -48,7 +44,7 @@ namespace LibraryWorkbench.Controllers
                 return new BadRequestResult();
         }
         [HttpDelete]
-        public IActionResult DeleteAuthor([FromBody]Author author)
+        public IActionResult DeleteAuthor([FromBody] Author author)
         {
             int operationStatus = AuthorsServices.DeleteAuthor(author, _context);
             if (operationStatus == 405)

@@ -1,8 +1,8 @@
 ﻿using LibraryWorkbench.Data.Models;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LibraryWorkbench.Data
 {
@@ -28,10 +28,14 @@ namespace LibraryWorkbench.Data
         }
         public void Create(Book book)
         {
+            book.CreationDateTime = DateTimeOffset.Now;
+            book.Version = 1;
             _context.Books.Add(book);
         }
         public void Update(Book book)
         {
+            book.UpdationDateTime = DateTimeOffset.Now;
+            book.Version++;
             _context.Entry(book).State = EntityState.Modified;
         }
         public void Delete(int id)

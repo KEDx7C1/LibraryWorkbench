@@ -1,8 +1,8 @@
 ﻿using LibraryWorkbench.Data.Models;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LibraryWorkbench.Data
 {
@@ -20,18 +20,23 @@ namespace LibraryWorkbench.Data
 
         public IEnumerable<Person> GetAll()
         {
-            return _context.Persons.Include(b=>b.Books);
+            return _context.Persons.Include(b => b.Books);
         }
         public Person Get(int id)
         {
-            return (Person)_context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres).Include(x => x.Books).ThenInclude(a => a.Author).Where( x=> x.PersonId == id).First();
+            return (Person)_context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
+                .Include(x => x.Books).ThenInclude(a => a.Author).Where(x => x.PersonId == id).First();
         }
         public void Create(Person person)
         {
+            person.CreationDateTime = DateTimeOffset.Now;
+            person.Version = 1;
             _context.Persons.Add(person);
         }
         public void Update(Person person)
         {
+            person.UpdationDateTime = DateTimeOffset.Now;
+            person.Version++;
             _context.Entry(person).State = EntityState.Modified;
         }
         public void Delete(int id)
@@ -44,6 +49,7 @@ namespace LibraryWorkbench.Data
         {
             _context.SaveChanges();
         }
+
         private bool disposed = false;
 
         public virtual void Dispose(bool disposing)

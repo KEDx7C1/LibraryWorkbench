@@ -1,5 +1,4 @@
-﻿using LibraryWorkbench.Data.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -8,7 +7,7 @@ namespace LibraryWorkbench.Data.Models
     /// <summary>
     /// 2.2.1, 2.2.2.A
     /// </summary>
-    public abstract class BookShort
+    public abstract class BookShort : Properties
     {
         [Required]
         public string Name { get; set; }

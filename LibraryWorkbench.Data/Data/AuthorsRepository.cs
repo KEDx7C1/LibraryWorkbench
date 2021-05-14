@@ -1,9 +1,8 @@
 ﻿using LibraryWorkbench.Data.Models;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
-using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace LibraryWorkbench.Data
 {
@@ -29,10 +28,14 @@ namespace LibraryWorkbench.Data
         }
         public void Create(Author author)
         {
+            author.CreationDateTime = DateTimeOffset.Now;
+            author.Version = 1;
             _context.Authors.Add(author);
         }
         public void Update(Author author)
         {
+            author.UpdationDateTime = DateTimeOffset.Now;
+            author.Version++;
             _context.Entry(author).State = EntityState.Modified;
         }
         public void Delete(int id)
@@ -47,22 +50,22 @@ namespace LibraryWorkbench.Data
         }
         private bool disposed = false;
 
-        public IEnumerable<Author> GetAuthorByYear (int year, string order)
+        public IEnumerable<Author> GetAuthorByYear(int year, string order)
         {
             var connectionString = _context.Database.GetDbConnection().ConnectionString;
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 List<Author> authors = new List<Author>();
                 connection.Open();
                 string query = ("SELECT book.AuthorId, author.first_name AS FirstName," +
                     " author.last_name AS LastName, author.middle_name AS MiddleName FROM dbo.book" +
                     " INNER JOIN author ON book.AuthorId = author.author_id WHERE Year = @year" +
-                    " GROUP BY book.AuthorId, first_name, last_name, middle_name ORDER BY last_name "+ order);
+                    " GROUP BY book.AuthorId, first_name, last_name, middle_name ORDER BY last_name " + order);
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlParameter yearParam = new SqlParameter("@year", year);
                 command.Parameters.Add(yearParam);
                 SqlDataReader reader = command.ExecuteReader();
-                while(reader.Read())
+                while (reader.Read())
                 {
                     authors.Add(new Author()
                     {
@@ -85,7 +88,7 @@ namespace LibraryWorkbench.Data
                 connection.Open();
                 string query = ("SELECT book.AuthorId, author.first_name AS FirstName," +
                     " author.last_name AS LastName, author.middle_name AS MiddleName FROM dbo.book" +
-                    " INNER JOIN author ON book.AuthorId = author.author_id WHERE name LIKE N'%" +namePart+"%'");
+                    " INNER JOIN author ON book.AuthorId = author.author_id WHERE name LIKE N'%" + namePart + "%'");
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlParameter nameParam = new SqlParameter("@namePart", namePart);
                 command.Parameters.Add(nameParam);

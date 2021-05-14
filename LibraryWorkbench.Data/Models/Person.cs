@@ -7,13 +7,13 @@ namespace LibraryWorkbench.Data.Models
     /// <summary>
     /// 2.2.1, 2.2.2.Б
     /// </summary>
-    public abstract class PersonShort
+    public abstract class PersonShort : Properties
     {
         [Required]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        
+
         public string MiddleName { get; set; }
     }
     /// <summary>

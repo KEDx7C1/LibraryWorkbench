@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace LibraryWorkbench.Data.Models
 {
-    public class DimGenre
+    public class DimGenre : Properties
     {
         public int GenreId { get; set; }
         public string GenreName { get; set; }

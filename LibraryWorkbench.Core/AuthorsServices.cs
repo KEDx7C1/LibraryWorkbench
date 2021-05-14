@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LibraryWorkbench.Core
 {
@@ -31,7 +30,7 @@ namespace LibraryWorkbench.Core
                 };
                 return result;
             }
-            
+
             catch
             {
                 throw new ArgumentException();
@@ -58,14 +57,14 @@ namespace LibraryWorkbench.Core
         }
         private static void CreateAuthor(Author author, DataContext context)
         {
-            
+
             AuthorsRepository authors = new AuthorsRepository(context);
             if (!context.Authors.Any(x => x.FirstName.Equals(author.FirstName)
                 && x.LastName.Equals(author.LastName) && x.MiddleName.Equals(author.MiddleName)))
             {
                 authors.Create(author);
                 authors.Save();
-            } 
+            }
         }
         public static int DeleteAuthor(Author author, DataContext context)
         {

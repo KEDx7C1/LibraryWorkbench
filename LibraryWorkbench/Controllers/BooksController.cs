@@ -26,13 +26,13 @@ namespace LibraryWorkbench.Controllers
         [HttpGet]
         public IEnumerable<Book> Get()
         {
-            
+
             return _books.GetAll();
         }
         ///// <summary>
         ///// 2.0.4.B
         ///// </summary>
-        
+
         [HttpGet]
         [Route("byAuthor")]
         public IEnumerable<Book> GetBooksByAuthor(string firstName, string lastName, string middleName)
@@ -57,7 +57,7 @@ namespace LibraryWorkbench.Controllers
             {
                 return new OkObjectResult(BooksServices.GetBook(id, _context));
             }
-            catch 
+            catch
             {
                 return new BadRequestResult();
             }
@@ -74,14 +74,14 @@ namespace LibraryWorkbench.Controllers
         [Route("{id}")]
         public IActionResult DeleteBook(int id)
         {
-            
+
             return StatusCode(BooksServices.DeleteBook(id, _context));
         }
 
         [HttpPut]
-        public Book ChangeGanre (Book book)
+        public Book ChangeGanre(Book book)
         {
-            
+
             return BooksServices.ChangeGanre(book, _context);
         }
     }

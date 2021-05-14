@@ -1,8 +1,7 @@
 ﻿using LibraryWorkbench.Data.Models;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace LibraryWorkbench.Data
 {
@@ -28,10 +27,14 @@ namespace LibraryWorkbench.Data
         }
         public void Create(DimGenre genre)
         {
+            genre.CreationDateTime = DateTimeOffset.Now;
+            genre.Version = 1;
             _context.DimGenres.Add(genre);
         }
         public void Update(DimGenre genre)
         {
+            genre.UpdationDateTime = DateTimeOffset.Now;
+            genre.Version++;
             _context.Entry(genre).State = EntityState.Modified;
         }
         public void Delete(int id)

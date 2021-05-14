@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryWorkbench.Core.Models;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -26,10 +27,34 @@ namespace LibraryWorkbench.Controllers
         }
         [HttpGet]
         [Route("books")]
-        public IEnumerable<Book> GetBooksByAuthor(string firstName, string lastName, string middleName)
+        public IActionResult GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
-            return AuthorsServices.GetBooksByAuthor(firstName, lastName, middleName, _context);
+            try
+            {
+                return new ObjectResult(AuthorsServices.GetBooksByAuthor(firstName, lastName, middleName, _context));
+            }
+            catch
+            {
+                return new BadRequestResult();
+            }
         }
-        
+        [HttpPost]
+        public IActionResult CreateAuthor(AuthorWithBooks authorWithBooks)
+        {
+            var result = AuthorsServices.CreateAuthorWithBooks(authorWithBooks, _context);
+            if (result != null)
+                return new OkObjectResult(result);
+            else
+                return new BadRequestResult();
+        }
+        [HttpDelete]
+        public IActionResult DeleteAuthor([FromBody]Author author)
+        {
+            int operationStatus = AuthorsServices.DeleteAuthor(author, _context);
+            if (operationStatus == 405)
+                return StatusCode(operationStatus, "Author has books in library");
+            else
+                return StatusCode(operationStatus);
+        }
     }
 }

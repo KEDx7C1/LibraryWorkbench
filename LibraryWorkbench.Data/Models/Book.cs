@@ -26,5 +26,6 @@ namespace LibraryWorkbench.Data.Models
         public List<DimGenre> Genres { get; set; } = new List<DimGenre>();
         [JsonIgnore]
         public virtual List<Person> Persons { get; set; } = new List<Person>();
+        public int Year { get; set; }
     }
 }

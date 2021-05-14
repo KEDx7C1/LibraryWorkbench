@@ -44,8 +44,6 @@ namespace LibraryWorkbench.Data
             modelBuilder.Entity<Models.Book>()
                 .Property(p => p.Name).HasColumnName("name")
                 .HasMaxLength(500);
-            //modelBuilder.Entity<Models.Book>()
-            //    .Property(p => p.Author).HasColumnName("author_id");
 
             modelBuilder.Entity<Models.Person>()
                 .HasKey(p => p.PersonId);

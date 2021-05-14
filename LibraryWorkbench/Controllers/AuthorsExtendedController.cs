@@ -12,29 +12,23 @@ namespace LibraryWorkbench.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenresController : ControllerBase
+    public class AuthorsExtendedController : ControllerBase
     {
         private readonly DataContext _context;
-        public GenresController(DataContext context)
+        public AuthorsExtendedController(DataContext context)
         {
             _context = context;
         }
         [HttpGet]
-        public IEnumerable<DimGenre> GetGenres()
+        [Route("ByYear/{year}")]
+        public IEnumerable<Author> GetAuthorsByYear(int year, string order = "")
         {
-            return GenresServices.GetGenres(_context);
+            return AuthorsServices.GetAuthorsByYear(year, order, _context);
         }
-        [HttpGet]
-        [Route("stat")]
-        public IActionResult GetStatByGenre()
+        [Route("ByBookName/{namePart}")]
+        public IEnumerable<Author> GetAuthorsByBookNamepart(string namePart)
         {
-            return new OkObjectResult(GenresServices.GetGenresStat(_context));
+            return AuthorsServices.GetAuthorsByBookNamepart(namePart, _context);
         }
-        [HttpPost]
-        public void CreateGenre(DimGenre genre)
-        {
-            GenresServices.CreateGenre(genre, _context);
-        }
-
     }
 }

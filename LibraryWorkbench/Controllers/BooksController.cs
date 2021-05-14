@@ -55,7 +55,7 @@ namespace LibraryWorkbench.Controllers
         {
             try
             {
-                return new ObjectResult(BooksServices.GetBook(id, _context));
+                return new OkObjectResult(BooksServices.GetBook(id, _context));
             }
             catch 
             {

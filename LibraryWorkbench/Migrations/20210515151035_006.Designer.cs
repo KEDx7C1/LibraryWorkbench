@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210515151035_006")]
+    partial class _006
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,6 +90,10 @@ namespace LibraryWorkbench.Migrations
                     b.Property<DateTimeOffset>("CreationDateTime")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("creation_datetime");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int")
+                        .HasColumnName("genre_id");
 
                     b.Property<string>("Name")
                         .IsRequired()

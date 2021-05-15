@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace LibraryWorkbench.Data.Models
@@ -10,8 +11,11 @@ namespace LibraryWorkbench.Data.Models
     public abstract class BookShort : Properties
     {
         [Required]
+        [Column("name")]
         public string Name { get; set; }
         [Required]
+        [Column("author_id")]
+        public int AuthorId { get; set; }
         public Author Author { get; set; }
     }
 
@@ -20,11 +24,16 @@ namespace LibraryWorkbench.Data.Models
     /// </summary>
     public class Book : BookShort, IBook
     {
+        [Column("book_id")]
         public int BookId { get; set; }
         [Required]
         public List<DimGenre> Genres { get; set; } = new List<DimGenre>();
         [JsonIgnore]
         public virtual List<Person> Persons { get; set; } = new List<Person>();
+        [Column("year")]
         public int Year { get; set; }
+        [JsonIgnore]
+        public List<LibraryCard> LibraryCards { get; set; } = new List<LibraryCard>();
+        
     }
 }

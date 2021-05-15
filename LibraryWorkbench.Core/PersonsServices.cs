@@ -25,15 +25,20 @@ namespace LibraryWorkbench.Core
         public static int DeletePersonById(int id, DataContext context)
         {
             PersonsRepository persons = new PersonsRepository(context);
-            Person person = persons.Get(id);
-            if (person != null)
+            try
             {
                 persons.Delete(id);
                 persons.Save();
                 return StatusCodes.Status200OK;
             }
-            else
+            catch
+            {
                 return StatusCodes.Status404NotFound;
+            }
+                
+            //}
+            //else
+            //    return StatusCodes.Status404NotFound;
         }
 
         public static int DeletePersonsByFullName(PersonShort person, DataContext context)

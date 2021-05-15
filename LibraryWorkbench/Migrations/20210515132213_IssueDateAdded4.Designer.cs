@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210515132213_IssueDateAdded4")]
+    partial class IssueDateAdded4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,9 +83,8 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("book_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int")
-                        .HasColumnName("author_id");
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreationDateTime")
                         .HasColumnType("datetimeoffset")
@@ -145,12 +146,10 @@ namespace LibraryWorkbench.Migrations
             modelBuilder.Entity("LibraryWorkbench.Data.Models.LibraryCard", b =>
                 {
                     b.Property<int>("BookId")
-                        .HasColumnType("int")
-                        .HasColumnName("book_id");
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
@@ -227,9 +226,7 @@ namespace LibraryWorkbench.Migrations
                 {
                     b.HasOne("LibraryWorkbench.Data.Models.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });

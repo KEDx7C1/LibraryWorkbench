@@ -75,7 +75,7 @@ namespace LibraryWorkbench.Controllers
         }
 
         [HttpPut]
-        [Route("{personId}")]
+        [Route("{personId}/Book")]
         public Person GiveBook(int bookId, int personId)
         {
 
@@ -83,7 +83,7 @@ namespace LibraryWorkbench.Controllers
             return _persons.Get(personId);
         }
         [HttpDelete]
-        [Route("{personId}")]
+        [Route("{personId}/Book")]
         public Person ReturnBook(int bookId, int personId)
         {
             PersonsServices.ReturnBook(personId, bookId, _context);

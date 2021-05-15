@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210515150419_003")]
+    partial class _003
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,6 +91,10 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("creation_datetime");
 
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int")
+                        .HasColumnName("genre_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -121,6 +127,10 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("genre_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BookId")
+                        .HasColumnType("int")
+                        .HasColumnName("book_id");
+
                     b.Property<DateTimeOffset>("CreationDateTime")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("creation_datetime");
@@ -145,12 +155,10 @@ namespace LibraryWorkbench.Migrations
             modelBuilder.Entity("LibraryWorkbench.Data.Models.LibraryCard", b =>
                 {
                     b.Property<int>("BookId")
-                        .HasColumnType("int")
-                        .HasColumnName("book_id");
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()

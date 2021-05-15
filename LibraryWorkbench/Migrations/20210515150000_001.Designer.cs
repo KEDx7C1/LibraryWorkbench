@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210515150000_001")]
+    partial class _001
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,12 +147,10 @@ namespace LibraryWorkbench.Migrations
             modelBuilder.Entity("LibraryWorkbench.Data.Models.LibraryCard", b =>
                 {
                     b.Property<int>("BookId")
-                        .HasColumnType("int")
-                        .HasColumnName("book_id");
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()

@@ -82,17 +82,28 @@ namespace LibraryWorkbench.Core
                 return StatusCodes.Status200OK;
             }
         }
-        public static IEnumerable<Author> GetAuthorsByYear(int year, string order, DataContext context)
+        public static IQueryable<Author> GetAuthorsByYear(int year, string order, DataContext context)
         {
             if (order.ToLower() != "desc" && order.ToLower() != "asc")
                 order = "asc";
-            AuthorsRepository authors = new AuthorsRepository(context);
-            return authors.GetAuthorByYear(year, order);
+            IQueryable<Author> authors;
+            switch (order.ToLower())
+            {
+                case "asc":
+                    authors = context.Books.Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
+                    break;
+                case "desc":
+                    authors = context.Books.Where(x => x.Year == year).Select(x => x.Author).OrderByDescending(a => a.LastName).Distinct();
+                    break;
+                default:
+                    authors = context.Books.Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
+                    break;
+            }
+            return authors;
         }
-        public static IEnumerable<Author> GetAuthorsByBookNamepart(string namePart, DataContext context)
+        public static IQueryable<Author> GetAuthorsByBookNamepart(string namePart, DataContext context)
         {
-            AuthorsRepository authorsRepos = new AuthorsRepository(context);
-            IEnumerable<Author> authors = authorsRepos.GetAuthorsByBookNamepart(namePart);
+            IQueryable<Author> authors = context.Books.Where(x => x.Name.Contains(namePart)).Select(x => x.Author).Distinct();
             return authors;
         }
     }

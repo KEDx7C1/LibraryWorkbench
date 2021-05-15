@@ -14,61 +14,38 @@ namespace LibraryWorkbench.Data
         {
 
 
-            modelBuilder.Entity<Models.Author>()
-                .HasKey(p => p.AuthorId);
-            modelBuilder.Entity<Models.Author>()
-                .ToTable("author");
-            modelBuilder.Entity<Models.Author>()
-                .Property(p => p.AuthorId).HasColumnName("author_id");
-            modelBuilder.Entity<Models.Author>()
-                .Property(p => p.FirstName).HasColumnName("first_name")
-                .HasMaxLength(75);
-            modelBuilder.Entity<Models.Author>()
-                .Property(p => p.LastName).HasColumnName("last_name")
-                .HasMaxLength(75);
-            modelBuilder.Entity<Models.Author>()
-                .Property(p => p.MiddleName).HasColumnName("middle_name")
-                .HasMaxLength(80);
+            modelBuilder.Entity<Models.Author>(
+                j =>
+                {
+                    j.HasKey(p => p.AuthorId);
+                    j.ToTable("author");
+                }
+                );
 
-            modelBuilder.Entity<Models.Book>()
-                .HasKey(p => p.BookId);
-            modelBuilder.Entity<Models.Book>()
-                .ToTable("book");
-            modelBuilder.Entity<Models.Book>()
-                .Property(p => p.BookId).HasColumnName("book_id");
-            modelBuilder.Entity<Models.Book>()
-                .Property(p => p.Name).HasColumnName("name")
-                .HasMaxLength(500);
-            modelBuilder.Entity<Models.Book>()
-                .HasOne(p => p.Author);
+            modelBuilder.Entity<Models.Book>(
+                j =>
+                {
+                    j.HasKey(p => p.BookId);
+                    j.ToTable("book");
+                    j.HasOne(p => p.Author);
+                }
+                );
 
-            modelBuilder.Entity<Models.Person>()
-                .HasKey(p => p.PersonId);
-            modelBuilder.Entity<Models.Person>()
-                .ToTable("person");
-            modelBuilder.Entity<Models.Person>()
-                .Property(p => p.PersonId).HasColumnName("person_id");
-            modelBuilder.Entity<Models.Person>()
-                .Property(p => p.FirstName).HasColumnName("first_name")
-                .HasMaxLength(75);
-            modelBuilder.Entity<Models.Person>()
-                .Property(p => p.LastName).HasColumnName("last_name")
-                .HasMaxLength(75);
-            modelBuilder.Entity<Models.Person>()
-                .Property(p => p.MiddleName).HasColumnName("middle_name")
-                .HasMaxLength(80);
-            modelBuilder.Entity<Models.Person>()
-                .Property(p => p.Birthday).HasColumnName("birth_date");
+            modelBuilder.Entity<Models.Person>(
+                j =>
+                {
+                    j.HasKey(p => p.PersonId);
+                    j.ToTable("person");
+                }
+                );
 
-            modelBuilder.Entity<Models.DimGenre>()
-                .HasKey(p => p.GenreId);
-            modelBuilder.Entity<Models.DimGenre>()
-                .ToTable("dim_genre");
-            modelBuilder.Entity<Models.DimGenre>()
-                .Property(p => p.GenreId).HasColumnName("genre_id");
-            modelBuilder.Entity<Models.DimGenre>()
-                .Property(p => p.GenreName).HasColumnName("genre_name");
-
+            modelBuilder.Entity<Models.DimGenre>(
+                j =>
+                {
+                    j.HasKey(p => p.GenreId);
+                    j.ToTable("dim_genre");
+                }
+                );
 
             modelBuilder.Entity<Models.Book>()
                 .HasMany(g => g.Genres)
@@ -76,9 +53,25 @@ namespace LibraryWorkbench.Data
                 .UsingEntity(j => j.ToTable("book_genre_lnk"));
 
             modelBuilder.Entity<Models.Book>()
-                .HasMany(p => p.Persons)
-                .WithMany(b => b.Books)
-                .UsingEntity(j => j.ToTable("library_card"));
+                .HasMany(c => c.Persons)
+                .WithMany(s => s.Books)
+                .UsingEntity<Models.LibraryCard>
+                (
+                    j => j
+                    .HasOne(pt => pt.Person)
+                    .WithMany(t => t.LibraryCards)
+                    .HasForeignKey(pt => pt.PersonId),
+                    j => j
+                    .HasOne(pt => pt.Book)
+                    .WithMany(p => p.LibraryCards)
+                    .HasForeignKey(pt => pt.BookId),
+                    j =>
+                    {
+                        j.Property(pt => pt.IssueDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        j.HasKey(t => new { t.BookId, t.PersonId });
+                        j.ToTable("library_card");
+                    }
+                );
         }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }

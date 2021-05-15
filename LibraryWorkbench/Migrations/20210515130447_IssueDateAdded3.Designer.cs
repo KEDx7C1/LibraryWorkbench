@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210515130447_IssueDateAdded3")]
+    partial class IssueDateAdded3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,16 +50,19 @@ namespace LibraryWorkbench.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("last_name");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
                         .HasColumnName("middle_name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
@@ -81,9 +86,8 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("book_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int")
-                        .HasColumnName("author_id");
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreationDateTime")
                         .HasColumnType("datetimeoffset")
@@ -91,7 +95,8 @@ namespace LibraryWorkbench.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
                         .HasColumnName("name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
@@ -103,8 +108,7 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("version");
 
                     b.Property<int>("Year")
-                        .HasColumnType("int")
-                        .HasColumnName("year");
+                        .HasColumnType("int");
 
                     b.HasKey("BookId");
 
@@ -183,16 +187,19 @@ namespace LibraryWorkbench.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("last_name");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
                         .HasColumnName("middle_name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
@@ -227,9 +234,7 @@ namespace LibraryWorkbench.Migrations
                 {
                     b.HasOne("LibraryWorkbench.Data.Models.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });

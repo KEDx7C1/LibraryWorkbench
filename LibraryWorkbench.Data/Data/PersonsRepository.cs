@@ -24,12 +24,13 @@ namespace LibraryWorkbench.Data
         }
         public Person Get(int id)
         {
-            return (Person)_context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
+            return _context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
                 .Include(x => x.Books).ThenInclude(a => a.Author).Where(x => x.PersonId == id).First();
         }
         public void Create(Person person)
         {
             person.CreationDateTime = DateTimeOffset.Now;
+            person.UpdationDateTime = person.CreationDateTime;
             person.Version = 1;
             _context.Persons.Add(person);
         }
@@ -44,6 +45,8 @@ namespace LibraryWorkbench.Data
             Person person = _context.Persons.Find(id);
             if (person != null)
                 _context.Persons.Remove(person);
+            else
+                throw new ArgumentException();
         }
         public void Save()
         {

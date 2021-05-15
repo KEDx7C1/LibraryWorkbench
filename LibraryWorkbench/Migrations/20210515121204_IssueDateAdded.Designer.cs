@@ -4,14 +4,16 @@ using LibraryWorkbench.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210515121204_IssueDateAdded")]
+    partial class IssueDateAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,30 +45,30 @@ namespace LibraryWorkbench.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("creation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("last_name");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
                         .HasColumnName("middle_name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("updation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Version")
-                        .HasColumnType("int")
-                        .HasColumnName("version");
+                        .HasColumnType("int");
 
                     b.HasKey("AuthorId");
 
@@ -81,30 +83,26 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("book_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int")
-                        .HasColumnName("author_id");
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("creation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
                         .HasColumnName("name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("updation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Version")
-                        .HasColumnType("int")
-                        .HasColumnName("version");
+                        .HasColumnType("int");
 
                     b.Property<int>("Year")
-                        .HasColumnType("int")
-                        .HasColumnName("year");
+                        .HasColumnType("int");
 
                     b.HasKey("BookId");
 
@@ -122,20 +120,17 @@ namespace LibraryWorkbench.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("creation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("GenreName")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("genre_name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("updation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Version")
-                        .HasColumnType("int")
-                        .HasColumnName("version");
+                        .HasColumnType("int");
 
                     b.HasKey("GenreId");
 
@@ -145,17 +140,14 @@ namespace LibraryWorkbench.Migrations
             modelBuilder.Entity("LibraryWorkbench.Data.Models.LibraryCard", b =>
                 {
                     b.Property<int>("BookId")
-                        .HasColumnType("int")
-                        .HasColumnName("book_id");
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonId")
-                        .HasColumnType("int")
-                        .HasColumnName("person_id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("IssueDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasColumnName("issue_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("BookId", "PersonId");
@@ -178,30 +170,30 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnName("birth_date");
 
                     b.Property<DateTimeOffset>("CreationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("creation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)")
                         .HasColumnName("last_name");
 
                     b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
                         .HasColumnName("middle_name");
 
                     b.Property<DateTimeOffset>("UpdationDateTime")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("updation_datetime");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Version")
-                        .HasColumnType("int")
-                        .HasColumnName("version");
+                        .HasColumnType("int");
 
                     b.HasKey("PersonId");
 
@@ -227,9 +219,7 @@ namespace LibraryWorkbench.Migrations
                 {
                     b.HasOne("LibraryWorkbench.Data.Models.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });

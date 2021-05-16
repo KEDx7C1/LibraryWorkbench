@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
 namespace LibraryWorkbench.Data
 {
@@ -50,7 +52,17 @@ namespace LibraryWorkbench.Data
             modelBuilder.Entity<Models.Book>()
                 .HasMany(g => g.Genres)
                 .WithMany(b => b.Books)
-                .UsingEntity(j => j.ToTable("book_genre_lnk"));
+                .UsingEntity<Dictionary<string, object>>
+                ("book_genre_lnk",
+                g => g.HasOne<Models.DimGenre>().WithMany()
+                .HasForeignKey("genre_id"),
+                b => b.HasOne<Models.Book>().WithMany()
+                .HasForeignKey("book_id"),
+                j=>
+                {
+                    j.HasKey("genre_id", "book_id");
+                    j.ToTable("book_genre_lnk");
+                });
 
             modelBuilder.Entity<Models.Book>()
                 .HasMany(c => c.Persons)
@@ -72,6 +84,186 @@ namespace LibraryWorkbench.Data
                         j.ToTable("library_card");
                     }
                 );
+            #region "Initial Data"
+            modelBuilder.Entity<Models.Person>().HasData(
+                new Models.Person()
+                {
+                    PersonId = 1,
+                    FirstName = "Иван",
+                    LastName = "Иванов",
+                    MiddleName = "Иванович",
+                    Birthday = new DateTime(1988, 01, 05, 00, 00, 00, 00, 00),
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Models.Person()
+                {
+                    PersonId = 2,
+                    FirstName = "Петр",
+                    LastName = "Петров",
+                    MiddleName = "Петрович",
+                    Birthday = new DateTime(1982, 06, 10, 00, 00, 00, 00, 00),
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Models.Person()
+                {
+                    PersonId = 3,
+                    FirstName = "Николай",
+                    LastName = "Николаев",
+                    MiddleName = "Николаевич",
+                    Birthday = new DateTime(1998, 02, 07, 00, 00, 00, 00, 00),
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                });
+            modelBuilder.Entity<Models.Author>().HasData(
+                new Models.Author()
+                {
+                    AuthorId = 1,
+                    FirstName = "Лев",
+                    LastName = "Толстой",
+                    MiddleName = "Николаевич",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Models.Author()
+                {
+                    AuthorId = 2,
+                    FirstName = "Джон",
+                    LastName = "Толкиен",
+                    MiddleName = "",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Models.Author()
+                {
+                    AuthorId = 3,
+                    FirstName = "Станислав",
+                    LastName = "Лем",
+                    MiddleName = "",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                });
+            modelBuilder.Entity<Models.DimGenre>().HasData(
+                new Models.DimGenre()
+                {
+                    GenreId = 1,
+                    GenreName = "Роман",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Models.DimGenre()
+                {
+                    GenreId = 2,
+                    GenreName = "Трагендия",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Models.DimGenre()
+                {
+                    GenreId = 3,
+                    GenreName = "Фентези",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                }, 
+                new Models.DimGenre()
+                {
+                    GenreId = 4,
+                    GenreName = "Фантастика",
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                });
+
+            modelBuilder.Entity<Models.Book>().HasData(
+                new Models.Book()
+                {
+                    BookId = 1,
+                    AuthorId = 1,
+                    Name = "Война и мир",
+                    Year = 1835,
+                    Version = 1,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+            new Models.Book()
+            {
+                BookId = 2,
+                AuthorId =  1,
+                Name = "Анна Каренина",
+                Year = 1839,
+                Version = 1,
+                CreationDateTime = DateTimeOffset.Now,
+                UpdationDateTime = DateTimeOffset.Now
+            },
+            new Models.Book()
+            {
+                BookId = 3,
+                AuthorId = 2,
+                Name = "Властелин колец",
+                Year = 1955,
+                Version = 1,
+                CreationDateTime = DateTimeOffset.Now,
+                UpdationDateTime = DateTimeOffset.Now
+            },
+            new Models.Book()
+            {
+                BookId = 4,
+                AuthorId = 2,
+                Name = "Хоббит",
+                Year = 1955,
+                Version = 1,
+                CreationDateTime = DateTimeOffset.Now,
+                UpdationDateTime = DateTimeOffset.Now
+            },
+            new Models.Book()
+            {
+                BookId = 5,
+                AuthorId = 3,
+                Name = "Солярис",
+                Year = 1934,
+                Version = 1,
+                CreationDateTime = DateTimeOffset.Now,
+                UpdationDateTime = DateTimeOffset.Now
+            });
+
+            //modelBuilder.Entity<Models.DimGenre>().HasData(
+            //    new Models.DimGenre
+            //    {
+            //        GenreId = 1,
+            //        GenreName = "Роман",
+            //        Version = 1,
+            //        CreationDateTime = DateTimeOffset.Now,
+            //        UpdationDateTime = DateTimeOffset.Now
+            //    },
+            //    new Models.DimGenre
+            //    {
+            //        GenreId = 2,
+            //        GenreName = "Драма",
+            //        Version = 1,
+            //        CreationDateTime = DateTimeOffset.Now,
+            //        UpdationDateTime = DateTimeOffset.Now
+            //    },
+            //    new Models.DimGenre
+            //    {
+            //        GenreId = 3,
+            //        GenreName = "Фантастика",
+            //        Version = 1,
+            //        CreationDateTime = DateTimeOffset.Now,
+            //        UpdationDateTime = DateTimeOffset.Now
+            //    }
+            //    );
+
+            #endregion
         }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }

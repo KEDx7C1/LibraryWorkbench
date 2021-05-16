@@ -37,6 +37,7 @@ namespace LibraryWorkbench
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString,
                 b=>b.MigrationsAssembly("LibraryWorkbench")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

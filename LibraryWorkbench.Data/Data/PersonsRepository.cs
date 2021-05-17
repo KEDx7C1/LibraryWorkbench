@@ -7,7 +7,7 @@ using System.Linq;
 namespace LibraryWorkbench.Data
 {
     /// <summary>
-    /// 2.0
+    /// Hometask 2 6
     /// </summary>
     public class PersonsRepository : IRepository<Person>
     {

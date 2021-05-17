@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace LibraryWorkbench.Data
 {
     /// <summary>
-    /// 2.0
+    /// Hometask 2 6
     /// </summary>
     public class GenresRepository : IRepository<DimGenre>
     {
@@ -28,6 +28,7 @@ namespace LibraryWorkbench.Data
         public void Create(DimGenre genre)
         {
             genre.CreationDateTime = DateTimeOffset.Now;
+            genre.UpdationDateTime = DateTimeOffset.Now;
             genre.Version = 1;
             _context.DimGenres.Add(genre);
         }

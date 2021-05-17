@@ -14,6 +14,6 @@ namespace LibraryWorkbench.Data.Models
         public int BookId { get; set; }
         public Book Book { get; set; }
         [Column("issue_date")]
-        public DateTime IssueDate { get; set; }
+        public DateTimeOffset IssueDate { get; set; }
     }
 }

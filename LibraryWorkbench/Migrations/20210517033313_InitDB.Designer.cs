@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryWorkbench.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210516204734_005")]
-    partial class _005
+    [Migration("20210517033313_InitDB")]
+    partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,31 +63,31 @@ namespace LibraryWorkbench.Migrations
                         new
                         {
                             AuthorId = 1,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(2464), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(6258), new TimeSpan(0, 4, 0, 0, 0)),
                             FirstName = "Лев",
                             LastName = "Толстой",
                             MiddleName = "Николаевич",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(2479), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(6272), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             AuthorId = 2,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(2514), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(6303), new TimeSpan(0, 4, 0, 0, 0)),
                             FirstName = "Джон",
                             LastName = "Толкиен",
                             MiddleName = "",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(2516), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(6305), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             AuthorId = 3,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(2520), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(6308), new TimeSpan(0, 4, 0, 0, 0)),
                             FirstName = "Станислав",
                             LastName = "Лем",
                             MiddleName = "",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(2521), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(6309), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         });
                 });
@@ -136,9 +136,9 @@ namespace LibraryWorkbench.Migrations
                         {
                             BookId = 1,
                             AuthorId = 1,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8272), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1234), new TimeSpan(0, 4, 0, 0, 0)),
                             Name = "Война и мир",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8284), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1244), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1,
                             Year = 1835
                         },
@@ -146,9 +146,9 @@ namespace LibraryWorkbench.Migrations
                         {
                             BookId = 2,
                             AuthorId = 1,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8358), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1307), new TimeSpan(0, 4, 0, 0, 0)),
                             Name = "Анна Каренина",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8361), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1309), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1,
                             Year = 1839
                         },
@@ -156,9 +156,9 @@ namespace LibraryWorkbench.Migrations
                         {
                             BookId = 3,
                             AuthorId = 2,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8365), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1313), new TimeSpan(0, 4, 0, 0, 0)),
                             Name = "Властелин колец",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8366), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1314), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1,
                             Year = 1955
                         },
@@ -166,9 +166,9 @@ namespace LibraryWorkbench.Migrations
                         {
                             BookId = 4,
                             AuthorId = 2,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8369), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1317), new TimeSpan(0, 4, 0, 0, 0)),
                             Name = "Хоббит",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8371), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1319), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1,
                             Year = 1955
                         },
@@ -176,9 +176,9 @@ namespace LibraryWorkbench.Migrations
                         {
                             BookId = 5,
                             AuthorId = 3,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8374), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1322), new TimeSpan(0, 4, 0, 0, 0)),
                             Name = "Солярис",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(8376), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(1323), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1,
                             Year = 1934
                         });
@@ -216,33 +216,33 @@ namespace LibraryWorkbench.Migrations
                         new
                         {
                             GenreId = 1,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4442), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8046), new TimeSpan(0, 4, 0, 0, 0)),
                             GenreName = "Роман",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4453), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8055), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             GenreId = 2,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4490), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8089), new TimeSpan(0, 4, 0, 0, 0)),
                             GenreName = "Трагендия",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4492), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8091), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             GenreId = 3,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4495), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8093), new TimeSpan(0, 4, 0, 0, 0)),
                             GenreName = "Фентези",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4497), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8094), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             GenreId = 4,
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4500), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8097), new TimeSpan(0, 4, 0, 0, 0)),
                             GenreName = "Фантастика",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 296, DateTimeKind.Unspecified).AddTicks(4501), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 43, DateTimeKind.Unspecified).AddTicks(8098), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         });
                 });
@@ -257,9 +257,9 @@ namespace LibraryWorkbench.Migrations
                         .HasColumnType("int")
                         .HasColumnName("person_id");
 
-                    b.Property<DateTime>("IssueDate")
+                    b.Property<DateTimeOffset>("IssueDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnName("issue_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -268,6 +268,26 @@ namespace LibraryWorkbench.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("library_card");
+
+                    b.HasData(
+                        new
+                        {
+                            BookId = 1,
+                            PersonId = 1,
+                            IssueDate = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(2728), new TimeSpan(0, 4, 0, 0, 0))
+                        },
+                        new
+                        {
+                            BookId = 2,
+                            PersonId = 1,
+                            IssueDate = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(3245), new TimeSpan(0, 4, 0, 0, 0))
+                        },
+                        new
+                        {
+                            BookId = 5,
+                            PersonId = 2,
+                            IssueDate = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 44, DateTimeKind.Unspecified).AddTicks(3259), new TimeSpan(0, 4, 0, 0, 0))
+                        });
                 });
 
             modelBuilder.Entity("LibraryWorkbench.Data.Models.Person", b =>
@@ -317,33 +337,33 @@ namespace LibraryWorkbench.Migrations
                         {
                             PersonId = 1,
                             Birthday = new DateTime(1988, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 292, DateTimeKind.Unspecified).AddTicks(2764), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 39, DateTimeKind.Unspecified).AddTicks(1542), new TimeSpan(0, 4, 0, 0, 0)),
                             FirstName = "Иван",
                             LastName = "Иванов",
                             MiddleName = "Иванович",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 294, DateTimeKind.Unspecified).AddTicks(9204), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 42, DateTimeKind.Unspecified).AddTicks(4878), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             PersonId = 2,
                             Birthday = new DateTime(1982, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 294, DateTimeKind.Unspecified).AddTicks(9932), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 42, DateTimeKind.Unspecified).AddTicks(5527), new TimeSpan(0, 4, 0, 0, 0)),
                             FirstName = "Петр",
                             LastName = "Петров",
                             MiddleName = "Петрович",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 294, DateTimeKind.Unspecified).AddTicks(9950), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 42, DateTimeKind.Unspecified).AddTicks(5541), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         },
                         new
                         {
                             PersonId = 3,
                             Birthday = new DateTime(1998, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 294, DateTimeKind.Unspecified).AddTicks(9962), new TimeSpan(0, 4, 0, 0, 0)),
+                            CreationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 42, DateTimeKind.Unspecified).AddTicks(5553), new TimeSpan(0, 4, 0, 0, 0)),
                             FirstName = "Николай",
                             LastName = "Николаев",
                             MiddleName = "Николаевич",
-                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 0, 47, 34, 294, DateTimeKind.Unspecified).AddTicks(9965), new TimeSpan(0, 4, 0, 0, 0)),
+                            UpdationDateTime = new DateTimeOffset(new DateTime(2021, 5, 17, 7, 33, 13, 42, DateTimeKind.Unspecified).AddTicks(5555), new TimeSpan(0, 4, 0, 0, 0)),
                             Version = 1
                         });
                 });

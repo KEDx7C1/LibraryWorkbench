@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace LibraryWorkbench.Controllers
 {
     /// <summary>
-    /// 2.0.3
+    /// Hometask 2 7.1
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -22,9 +22,7 @@ namespace LibraryWorkbench.Controllers
             _context = context;
             _persons = new PersonsRepository(_context);
         }
-        /// <summary>
-        /// 2.0.4.A
-        /// </summary>
+        
         [HttpGet]
         public IActionResult GetAllPersons()
         {
@@ -42,7 +40,7 @@ namespace LibraryWorkbench.Controllers
         /// 2.0.4.C
         /// </summary>
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}/book")]
         public IActionResult GetPersonBooksById(int id)
         {
             try
@@ -55,7 +53,7 @@ namespace LibraryWorkbench.Controllers
             }
         }
         /// <summary>
-        /// 2.0.5, 2.2.2.Б
+        /// Hometask 2 7.1.1
         /// </summary>
         [HttpPost]
         public IActionResult CreatePerson(Person person)
@@ -66,6 +64,9 @@ namespace LibraryWorkbench.Controllers
             else
                 return new BadRequestObjectResult("Person already exist");
         }
+        /// <summary>
+        /// Hometask 2 7.1.2
+        /// </summary>
         [HttpPut]
         public Person UpdatePerson(Person person)
         {
@@ -73,7 +74,9 @@ namespace LibraryWorkbench.Controllers
             _persons.Save();
             return person;
         }
-
+        /// <summary>
+        /// Hometask 2 7.1.6
+        /// </summary>
         [HttpPut]
         [Route("{personId}/Book")]
         public Person GiveBook(int bookId, int personId)
@@ -82,6 +85,9 @@ namespace LibraryWorkbench.Controllers
             PersonsServices.GiveBook(personId, bookId, _context);
             return _persons.Get(personId);
         }
+        /// <summary>
+        /// Hometask 2 7.1.7
+        /// </summary>
         [HttpDelete]
         [Route("{personId}/Book")]
         public Person ReturnBook(int bookId, int personId)
@@ -90,13 +96,17 @@ namespace LibraryWorkbench.Controllers
             return _persons.Get(personId);
         }
         /// <summary>
-        /// 2.0.6
+        /// Hometask 2 7.1.3
         /// </summary>
         [HttpDelete]
+        [Route("{id}")]
         public IActionResult DeletePerson(int id)
         {
             return StatusCode(PersonsServices.DeletePersonById(id, _context));
         }
+        /// <summary>
+        /// Hometask 2 7.1.4
+        /// </summary>
         [HttpDelete]
         [Route("byFullName")]
         public IActionResult DeletePersonsByFullName(string firstName, string lastName, string middleName)

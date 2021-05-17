@@ -15,12 +15,18 @@ namespace LibraryWorkbench.Controllers
         {
             _context = context;
         }
+        /// <summary>
+        /// Hometask 2 8.2
+        /// </summary>
         [HttpGet]
         [Route("ByYear/{year}")]
         public IEnumerable<Author> GetAuthorsByYear(int year, string order = "")
         {
             return AuthorsServices.GetAuthorsByYear(year, order, _context);
         }
+        /// <summary>
+        /// Hometask 2 8.3
+        /// </summary>
         [Route("ByBookName/{namePart}")]
         public IEnumerable<Author> GetAuthorsByBookNamepart(string namePart)
         {

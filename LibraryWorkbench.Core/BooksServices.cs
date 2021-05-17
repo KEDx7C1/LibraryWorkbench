@@ -60,7 +60,7 @@ namespace LibraryWorkbench.Core
                 return StatusCodes.Status200OK;
             }
             else
-                return StatusCodes.Status400BadRequest;
+                return StatusCodes.Status405MethodNotAllowed;
         }
         public static Book ChangeGanre(Book book, DataContext context)
         {

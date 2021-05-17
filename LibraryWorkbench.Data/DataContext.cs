@@ -62,6 +62,7 @@ namespace LibraryWorkbench.Data
                 {
                     j.HasKey("genre_id", "book_id");
                     j.ToTable("book_genre_lnk");
+                    
                 });
 
             modelBuilder.Entity<Models.Book>()
@@ -85,6 +86,7 @@ namespace LibraryWorkbench.Data
                     }
                 );
             #region "Initial Data"
+
             modelBuilder.Entity<Models.Person>().HasData(
                 new Models.Person()
                 {
@@ -236,32 +238,11 @@ namespace LibraryWorkbench.Data
                 UpdationDateTime = DateTimeOffset.Now
             });
 
-            //modelBuilder.Entity<Models.DimGenre>().HasData(
-            //    new Models.DimGenre
-            //    {
-            //        GenreId = 1,
-            //        GenreName = "Роман",
-            //        Version = 1,
-            //        CreationDateTime = DateTimeOffset.Now,
-            //        UpdationDateTime = DateTimeOffset.Now
-            //    },
-            //    new Models.DimGenre
-            //    {
-            //        GenreId = 2,
-            //        GenreName = "Драма",
-            //        Version = 1,
-            //        CreationDateTime = DateTimeOffset.Now,
-            //        UpdationDateTime = DateTimeOffset.Now
-            //    },
-            //    new Models.DimGenre
-            //    {
-            //        GenreId = 3,
-            //        GenreName = "Фантастика",
-            //        Version = 1,
-            //        CreationDateTime = DateTimeOffset.Now,
-            //        UpdationDateTime = DateTimeOffset.Now
-            //    }
-            //    );
+            modelBuilder.Entity<Models.LibraryCard>().HasData(
+                new Models.LibraryCard() { BookId = 1, PersonId = 1, IssueDate = DateTimeOffset.Now },
+                new Models.LibraryCard() { BookId = 2, PersonId = 1, IssueDate = DateTimeOffset.Now },
+                new Models.LibraryCard() { BookId = 5, PersonId = 2, IssueDate = DateTimeOffset.Now }
+                );
 
             #endregion
         }

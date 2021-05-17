@@ -8,7 +8,7 @@ using System.Linq;
 namespace LibraryWorkbench.Data
 {
     /// <summary>
-    /// 2.0
+    /// Hometask 2 6
     /// </summary>
     public class AuthorsRepository : IRepository<Author>
     {
@@ -30,6 +30,7 @@ namespace LibraryWorkbench.Data
         public void Create(Author author)
         {
             author.CreationDateTime = DateTimeOffset.Now;
+            author.UpdationDateTime = author.CreationDateTime;
             author.Version = 1;
             _context.Authors.Add(author);
         }

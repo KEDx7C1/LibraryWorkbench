@@ -21,7 +21,7 @@ namespace LibraryWorkbench.Controllers
             _books = new BooksRepository(_context);
         }
         /// <summary>
-        /// 2.0.4.A
+        /// Hometask 1 2.0.4.A
         /// </summary>
         [HttpGet]
         public IEnumerable<Book> Get()
@@ -30,7 +30,7 @@ namespace LibraryWorkbench.Controllers
             return _books.GetAll();
         }
         ///// <summary>
-        ///// 2.0.4.B
+        ///// Hometask 2 7.2.4
         ///// </summary>
 
         [HttpGet]
@@ -41,10 +41,10 @@ namespace LibraryWorkbench.Controllers
             return BooksServices.GetBooksByAuthor(firstName, lastName, middleName, _context);
         }
         ///// <summary>
-        ///// 2.0.5, 2.2.2.A
+        ///// Hometask 2 7.2.5
         ///// </summary>
         [HttpGet]
-        [Route("byGenre")]
+        [Route("byGenre/{genre}")]
         public IEnumerable<Book> GetBooksByGenre(string genre)
         {
             return BooksServices.GetBooksByGenre(genre, _context);
@@ -62,26 +62,33 @@ namespace LibraryWorkbench.Controllers
                 return new BadRequestResult();
             }
         }
+        /// <summary>
+        /// Hometask 2 7.2.1
+        /// </summary>
         [HttpPost]
         public void CreateBook(Book book)
         {
             BooksServices.CreateBook(book, _context);
         }
         ///// <summary>
-        ///// 2.0.6
+        ///// Hometask 2 7.2.2
         ///// </summary>
         [HttpDelete]
         [Route("{id}")]
         public IActionResult DeleteBook(int id)
         {
-
-            return StatusCode(BooksServices.DeleteBook(id, _context));
+            int SCode = BooksServices.DeleteBook(id, _context);
+            if (SCode == 405)
+                return StatusCode(SCode, "Книга у пользователя");
+            else
+                return StatusCode(SCode);
         }
-
+        /// <summary>
+        /// Hometask 2 7.2.3
+        /// </summary>
         [HttpPut]
         public Book ChangeGanre(Book book)
         {
-
             return BooksServices.ChangeGanre(book, _context);
         }
     }

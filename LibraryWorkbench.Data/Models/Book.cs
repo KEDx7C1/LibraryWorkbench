@@ -15,6 +15,7 @@ namespace LibraryWorkbench.Data.Models
         public string Name { get; set; }
         [Required]
         [Column("author_id")]
+        [JsonIgnore]
         public int AuthorId { get; set; }
         public Author Author { get; set; }
     }
@@ -30,6 +31,9 @@ namespace LibraryWorkbench.Data.Models
         public List<DimGenre> Genres { get; set; } = new List<DimGenre>();
         [JsonIgnore]
         public virtual List<Person> Persons { get; set; } = new List<Person>();
+        /// <summary>
+        /// Hometask 2 8.1
+        /// </summary>
         [Column("year")]
         public int Year { get; set; }
         [JsonIgnore]

@@ -12,11 +12,9 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
-        private readonly DataContext _context;
         private readonly IGenresServices _genresServices;
-        public GenresController(DataContext context, IGenresServices genresService)
+        public GenresController(IGenresServices genresService)
         {
-            _context = context;
             _genresServices = genresService;
         }
         /// <summary>

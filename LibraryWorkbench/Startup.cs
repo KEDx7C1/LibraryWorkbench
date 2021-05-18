@@ -39,9 +39,11 @@ namespace LibraryWorkbench
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString,
                 b=>b.MigrationsAssembly("LibraryWorkbench")));
+
             services.AddScoped<IPersonsService, PersonsService>();
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<IGenresServices, GenresServices>();
+            services.AddScoped<IAuthorsService, AuthorsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

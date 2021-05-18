@@ -7,6 +7,7 @@ namespace LibraryWorkbench.Core.Interfaces
 {
     public interface IPersonsService
     {
+        IEnumerable<PersonDTO> GetAllPersons();
         PersonDTO CreatePerson(PersonDTO personDto);
         PersonDTO UpdatePerson(PersonDTO personDto);
         int DeletePersonById(int id);

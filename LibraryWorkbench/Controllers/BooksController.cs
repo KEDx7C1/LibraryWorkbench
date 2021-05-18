@@ -15,23 +15,19 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly DataContext _context;
-        private readonly BooksRepository _books;
         private readonly IBooksService _booksService;
-        public BooksController(DataContext context, IBooksService booksService)
+        public BooksController(IBooksService booksService)
         {
-            _context = context;
             _booksService = booksService;
-            _books = new BooksRepository(_context);
         }
         /// <summary>
         /// Hometask 1 2.0.4.A
         /// </summary>
         [HttpGet]
-        public IEnumerable<Book> Get()
+        public IEnumerable<BookDTO> GetAllBooks()
         {
 
-            return _books.GetAll();
+            return _booksService.GetAllBooks();
         }
         ///// <summary>
         ///// Hometask 2 7.2.4
@@ -70,9 +66,9 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.2.1
         /// </summary>
         [HttpPost]
-        public void CreateBook(BookDTO bookDto)
+        public BookDTO CreateBook(BookDTO bookDto)
         {
-            _booksService.CreateBook(bookDto);
+            return _booksService.CreateBook(bookDto);
         }
         ///// <summary>
         ///// Hometask 2 7.2.2

@@ -1,5 +1,8 @@
-﻿using LibraryWorkbench.Core.Models;
+﻿using AutoMapper;
+using LibraryWorkbench.Core.DTO;
+using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
+using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -9,26 +12,46 @@ using System.Linq;
 
 namespace LibraryWorkbench.Core
 {
-    public class AuthorsService
+    public class AuthorsService : IAuthorsService
     {
-        public static IEnumerable<Author> GetAuthors(DataContext context)
+        private readonly DataContext _context;
+        private readonly IAuthorsRepository _authors;
+        private readonly IBooksRepository _books;
+        private readonly IMapper _mapperAuthor;
+        private readonly IMapper _mapperBook;
+        private readonly IMapper _mapperBookWithoutAuthor;
+        public AuthorsService(DataContext context)
         {
-            return context.Authors;
+            _context = context;
+            _authors = new AuthorsRepository(_context);
+            _books = new BooksRepository(_context);
+            _mapperAuthor = new MapperConfiguration(c => c.CreateMap<Author, AuthorDTO>()).CreateMapper();
+            _mapperBook = new MapperConfiguration(c =>
+            {
+                c.CreateMap<Book, BookDTO>();
+                c.CreateMap<Author, AuthorDTO>();
+                c.CreateMap<DimGenre, DimGenreDTO>();
+            }).CreateMapper();
+            _mapperBookWithoutAuthor = new MapperConfiguration(c =>
+            {
+                c.CreateMap<Book, BookWithoutAuthorDTO>();
+                c.CreateMap<DimGenre, DimGenreDTO>();
+            }).CreateMapper();
         }
-
-        public static Object GetBooksByAuthor(string firstName, string lastName, string middleName, DataContext context)
+        public IEnumerable<AuthorDTO> GetAuthors()
+        {
+            return _mapperAuthor.Map<IEnumerable<AuthorDTO>>(_authors.GetAll());
+        }
+        public AuthorWithBooksDTO GetBooksByAuthor(AuthorDTO authorDto)
         {
             try
             {
-                Author author = context.Authors.Where(x => (x.FirstName.Equals(firstName) || firstName == null) &&
-                    (x.LastName.Equals(lastName) || lastName == null) &&
-                    (x.MiddleName.Equals(middleName) || middleName == null)).First();
-                Object result = new
+                AuthorWithBooksDTO authorWithBooksDTO = new AuthorWithBooksDTO()
                 {
-                    author,
-                    books = context.Books.Include(x => x.Genres).Where(x => x.Author == author)
+                    Author = authorDto,
+                    Books = _mapperBookWithoutAuthor.Map<List<BookWithoutAuthorDTO>>(_books.GetAll().Where(x=>x.AuthorId == authorDto.AuthorId))
                 };
-                return result;
+                return authorWithBooksDTO;
             }
 
             catch
@@ -36,18 +59,21 @@ namespace LibraryWorkbench.Core
                 throw new ArgumentException();
             }
         }
-        public static AuthorWithBooks CreateAuthorWithBooks(AuthorWithBooks authorWithBooks, DataContext context)
+        public AuthorWithBooksDTO CreateAuthorWithBooks(AuthorWithBooksDTO authorWithBooks)
         {
-            Author author = authorWithBooks.Author;
-            List<Book> books = authorWithBooks.Books;
+            AuthorDTO authorDto = authorWithBooks.Author;
+            IEnumerable<Book> books = _mapperBook.Map<IEnumerable<Book>>(authorWithBooks.Books);
             try
             {
-                CreateAuthor(author, context);
+                Author author = CreateAuthor(authorDto);
                 if (books != null)
                     foreach (var b in books)
                     {
-                        //BooksService.CreateBook(b, context);
+                        b.Author = author;
+                        _books.Create(b);
                     }
+                _books.Save();
+                authorWithBooks.Author = _mapperAuthor.Map<AuthorDTO>(author);
                 return authorWithBooks;
             }
             catch
@@ -55,34 +81,41 @@ namespace LibraryWorkbench.Core
                 return null;
             }
         }
-        private static void CreateAuthor(Author author, DataContext context)
+        public Author CreateAuthor(AuthorDTO authorDto)
         {
 
-            AuthorsRepository authors = new AuthorsRepository(context);
-            if (!context.Authors.Any(x => x.FirstName.Equals(author.FirstName)
-                && x.LastName.Equals(author.LastName) && x.MiddleName.Equals(author.MiddleName)))
+            if (!_authors.GetAll().Any(x => x.FirstName.Equals(authorDto.FirstName)
+                && x.LastName.Equals(authorDto.LastName) && x.MiddleName.Equals(authorDto.MiddleName)))
             {
-                authors.Create(author);
-                authors.Save();
+                Author author = new Author
+                {
+                    FirstName = authorDto.FirstName,
+                    LastName = authorDto.LastName,
+                    MiddleName = authorDto.MiddleName
+                };
+                _authors.Create(author);
+
+                _authors.Save();
+                return author;
             }
+            else
+                return null;
         }
-        public static int DeleteAuthor(Author author, DataContext context)
+        public int DeleteAuthor(AuthorDTO authorDto)
         {
-            Author authorToDelete = context.Authors.Where(x => x.FirstName.Equals(author.FirstName)
-                && x.LastName.Equals(author.LastName) && x.MiddleName.Equals(author.MiddleName)).FirstOrDefault();
-            if (authorToDelete == null)
+            Author author = _authors.Get(authorDto.AuthorId);
+            if (author == null)
                 return StatusCodes.Status404NotFound;
-            if (context.Books.Any(x => x.Author.Equals(authorToDelete)))
+            if (_books.GetAll().Any(x => x.Author.Equals(author)))
                 return StatusCodes.Status405MethodNotAllowed;
             else
             {
-                AuthorsRepository authors = new AuthorsRepository(context);
-                authors.Delete(authorToDelete.AuthorId);
-                authors.Save();
+                _authors.Delete(author.AuthorId);
+                _authors.Save();
                 return StatusCodes.Status200OK;
             }
         }
-        public static IQueryable<Author> GetAuthorsByYear(int year, string order, DataContext context)
+        public IQueryable<AuthorDTO> GetAuthorsByYear(int year, string order)
         {
             if (order.ToLower() != "desc" && order.ToLower() != "asc")
                 order = "asc";
@@ -90,21 +123,25 @@ namespace LibraryWorkbench.Core
             switch (order.ToLower())
             {
                 case "asc":
-                    authors = context.Books.Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
+                    authors = (IQueryable<Author>)_books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
                     break;
                 case "desc":
-                    authors = context.Books.Where(x => x.Year == year).Select(x => x.Author).OrderByDescending(a => a.LastName).Distinct();
+                    authors = (IQueryable<Author>)_books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderByDescending(a => a.LastName).Distinct();
                     break;
                 default:
-                    authors = context.Books.Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
+                    authors = (IQueryable<Author>)_books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
                     break;
             }
-            return authors;
+            return _mapperAuthor.Map<IQueryable<AuthorDTO>>(authors);
         }
-        public static IQueryable<Author> GetAuthorsByBookNamepart(string namePart, DataContext context)
+        public IQueryable<AuthorDTO> GetAuthorsByBookNamepart(string namePart)
         {
-            IQueryable<Author> authors = context.Books.Where(x => x.Name.Contains(namePart)).Select(x => x.Author).Distinct();
-            return authors;
+            IQueryable<Author> authors = (IQueryable<Author>)_books.GetAll().Where(x => x.Name.Contains(namePart)).Select(x => x.Author).Distinct();
+            return _mapperAuthor.Map<IQueryable<AuthorDTO>>(authors);
+        }
+        public void Dispose()
+        {
+            _authors.Dispose();
         }
     }
 }

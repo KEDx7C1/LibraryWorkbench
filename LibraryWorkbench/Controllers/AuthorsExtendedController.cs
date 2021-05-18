@@ -1,4 +1,6 @@
 ﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Core.DTO;
+using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,27 +12,28 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class AuthorsExtendedController : ControllerBase
     {
-        private readonly DataContext _context;
-        public AuthorsExtendedController(DataContext context)
+        private readonly IAuthorsService _authorsService;
+
+        public AuthorsExtendedController(IAuthorsService authorsService)
         {
-            _context = context;
+            _authorsService = authorsService;
         }
         /// <summary>
         /// Hometask 2 8.2
         /// </summary>
         [HttpGet]
         [Route("ByYear/{year}")]
-        public IEnumerable<Author> GetAuthorsByYear(int year, string order = "")
+        public IEnumerable<AuthorDTO> GetAuthorsByYear(int year, string order = "")
         {
-            return AuthorsService.GetAuthorsByYear(year, order, _context);
+            return _authorsService.GetAuthorsByYear(year, order);
         }
         /// <summary>
         /// Hometask 2 8.3
         /// </summary>
         [Route("ByBookName/{namePart}")]
-        public IEnumerable<Author> GetAuthorsByBookNamepart(string namePart)
+        public IEnumerable<AuthorDTO> GetAuthorsByBookNamepart(string namePart)
         {
-            return AuthorsService.GetAuthorsByBookNamepart(namePart, _context);
+            return _authorsService.GetAuthorsByBookNamepart(namePart);
         }
     }
 }

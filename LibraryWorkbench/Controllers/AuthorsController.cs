@@ -1,7 +1,8 @@
 ﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
-using LibraryWorkbench.Core.Models;
 using LibraryWorkbench.Data;
+using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,29 +13,29 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly DataContext _context;
-        public AuthorsController(DataContext context)
+        private readonly IAuthorsService _authorsService;
+        public AuthorsController(IAuthorsService authorsService)
         {
-            _context = context;
+            _authorsService = authorsService;
         }
         /// <summary>
         /// HomeTask 2 7.3.1
         /// </summary>
         [HttpGet]
-        public IEnumerable<Author> GetAuthors()
+        public IEnumerable<AuthorDTO> GetAuthors()
         {
-            return AuthorsService.GetAuthors(_context);
+            return _authorsService.GetAuthors();
         }
         /// <summary>
         /// Hometask 2 7.3.2
         /// </summary>
         [HttpGet]
         [Route("books")]
-        public IActionResult GetBooksByAuthor(string firstName, string lastName, string middleName)
+        public IActionResult GetBooksByAuthor([FromBody]AuthorDTO authorDto)
         {
             try
             {
-                return new ObjectResult(AuthorsService.GetBooksByAuthor(firstName, lastName, middleName, _context));
+                return new ObjectResult(_authorsService.GetBooksByAuthor(authorDto));
             }
             catch
             {
@@ -45,9 +46,9 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.3.3
         /// </summary>
         [HttpPost]
-        public IActionResult CreateAuthor(AuthorWithBooks authorWithBooks)
+        public IActionResult CreateAuthor(AuthorWithBooksDTO authorWithBooks)
         {
-            var result = AuthorsService.CreateAuthorWithBooks(authorWithBooks, _context);
+            var result = _authorsService.CreateAuthorWithBooks(authorWithBooks);
             if (result != null)
                 return new OkObjectResult(result);
             else
@@ -57,9 +58,9 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.3.4
         /// </summary>
         [HttpDelete]
-        public IActionResult DeleteAuthor([FromBody] Author author)
+        public IActionResult DeleteAuthor([FromBody] AuthorDTO author)
         {
-            int operationStatus = AuthorsService.DeleteAuthor(author, _context);
+            int operationStatus = _authorsService.DeleteAuthor(author);
             if (operationStatus == 405)
                 return StatusCode(operationStatus, "Author has books in library");
             else

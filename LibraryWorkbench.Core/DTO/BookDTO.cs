@@ -7,14 +7,19 @@ using System.Text;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class BookDTO
+    public class BookWithoutAuthorDTO
     {
         public int BookId { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
-        public AuthorDTO Author { get; set; } 
+        
         [Required]
         public List<DimGenreDTO> Genres { get; set; }
+        public int Year { get; set; }
+    }
+    public class BookDTO : BookWithoutAuthorDTO
+    {
+        [Required]
+        public AuthorDTO Author { get; set; }
     }
 }

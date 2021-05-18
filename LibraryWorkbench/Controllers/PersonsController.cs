@@ -16,14 +16,10 @@ namespace LibraryWorkbench.Controllers
     [ApiController]
     public class PersonsController : ControllerBase
     {
-        private readonly DataContext _context;
-        private readonly PersonsRepository _persons;
         private readonly IPersonsService _personsService;
 
-        public PersonsController(DataContext context, IPersonsService personsService)
+        public PersonsController(IPersonsService personsService)
         {
-            _context = context;
-            _persons = new PersonsRepository(_context);
             _personsService = personsService;
         }
         
@@ -32,7 +28,7 @@ namespace LibraryWorkbench.Controllers
         {
             try
             {
-                return new OkObjectResult(_persons.GetAll());
+                return new OkObjectResult(_personsService.GetAllPersons());
             }
             catch
             {
@@ -53,7 +49,7 @@ namespace LibraryWorkbench.Controllers
             }
             catch
             {
-                return new BadRequestResult();
+                return new NotFoundResult();
             }
         }
         /// <summary>

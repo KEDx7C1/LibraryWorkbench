@@ -40,9 +40,13 @@ namespace LibraryWorkbench.Core
                 c.CreateMap<DimGenre, DimGenreDTO>();
             }).CreateMapper();
         }
+        public IEnumerable<PersonDTO> GetAllPersons()
+        {
+            return _mapperPerson.Map<IEnumerable<PersonDTO>>(_persons.GetAll());
+        }
         public PersonDTO CreatePerson(PersonDTO personDto)
         {
-            if (!_context.Persons.Any(x => x.FirstName.Equals(personDto.FirstName) && x.LastName.Equals(personDto.LastName)
+            if (!_persons.GetAll().Any(x => x.FirstName.Equals(personDto.FirstName) && x.LastName.Equals(personDto.LastName)
             && x.MiddleName.Equals(personDto.MiddleName) && x.Birthday.Equals(personDto.Birthday)))
             {
                 PersonsRepository persons = new PersonsRepository(_context);
@@ -101,9 +105,17 @@ namespace LibraryWorkbench.Core
         }
         public PersonExtDTO GiveBook(int personId, int bookId)
         {
-            Book book = _books.Get(bookId);
-            Person person = _persons.Get(personId);
-
+            Book book;
+            Person person;
+            try
+            {
+                book = _books.Get(bookId);
+                person = _persons.Get(personId);
+            }
+            catch
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             person.Books.Add(book);
             _persons.Update(person);
             _persons.Save();
@@ -112,10 +124,17 @@ namespace LibraryWorkbench.Core
         }
         public PersonExtDTO ReturnBook(int personId, int bookId)
         {
-            Book book = _books.Get(bookId);
-
-            Person person = _persons.Get(personId);
-
+            Book book;
+            Person person;
+            try
+            {
+                book = _books.Get(bookId);
+                person = _persons.Get(personId);
+            }
+            catch
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             person.Books.Remove(book);
             _persons.Update(person);
             _persons.Save();

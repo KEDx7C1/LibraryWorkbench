@@ -14,13 +14,13 @@ namespace LibraryWorkbench.Core
     {
         private readonly DataContext _context;
         private readonly IBooksRepository _books;
+        private readonly IPersonsRepository _persons;
         private readonly IMapper _mapperBook;
-        private readonly IMapper _mapperGenre;
         public BooksService(DataContext context)
         {
             _context = context;
             _books = new BooksRepository(_context);
-            _mapperGenre = new MapperConfiguration(c => c.CreateMap<DimGenre, DimGenreDTO>()).CreateMapper();
+            _persons = new PersonsRepository(_context);
             _mapperBook = new MapperConfiguration(c =>
             {
                 c.CreateMap<Book, BookDTO>();
@@ -29,16 +29,27 @@ namespace LibraryWorkbench.Core
             }).CreateMapper();
             
         }
-        public void CreateBook(BookDTO bookDto)
+        public BookDTO CreateBook(BookDTO bookDto)
         {
-            Book book = _mapperBook.Map<Book>(bookDto);
+            Book book = new Book()
+            {
+                Name = bookDto.Name,
+                Year = bookDto.Year
+            };
             Author author = _context.Authors.Where(x => x.FirstName.Equals(bookDto.Author.FirstName)
-                && x.LastName.Equals(bookDto.Author.LastName))
+                && x.LastName.Equals(bookDto.Author.LastName) && (x.MiddleName.Equals(bookDto.Author.MiddleName)))
                 .FirstOrDefault();
             if (author != null)
                 book.Author = author;
+            else
+                book.Author = new Author()
+                {
+                    FirstName = bookDto.Author.FirstName,
+                    LastName = bookDto.Author.LastName,
+                    MiddleName = bookDto.Author.MiddleName
+                };
             List<DimGenre> genres = new List<DimGenre>();
-            foreach (var g in book.Genres)
+            foreach (var g in bookDto.Genres)
             {
                 var genre = _context.DimGenres.Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
                 if (genre != null)
@@ -46,15 +57,23 @@ namespace LibraryWorkbench.Core
                     genres.Add(genre);
                 }
                 else
-                    genres.Add(g);
+                    genres.Add(new DimGenre()
+                    {
+                        GenreName = g.GenreName
+                    });
             }
             book.Genres = genres;
             _books.Create(book);
             _books.Save();
+            return _mapperBook.Map<BookDTO>(book);
         }
         public BookDTO GetBook(int id)
         {
             return _mapperBook.Map<BookDTO>(_books.Get(id));
+        }
+        public IEnumerable<BookDTO> GetAllBooks()
+        {
+            return _mapperBook.Map<IEnumerable<BookDTO>>(_books.GetAll());
         }
         public int DeleteBook(int id)
         {
@@ -68,7 +87,7 @@ namespace LibraryWorkbench.Core
                 return StatusCodes.Status404NotFound;
             }
 
-            if (!_context.Persons.Any(x => x.Books.Contains(book)))
+            if (!_persons.GetAll().Any(x => x.Books.Contains(book)))
             {
                 _books.Delete(id);
                 _books.Save();

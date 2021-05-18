@@ -8,8 +8,9 @@ namespace LibraryWorkbench.Core.Interfaces
 {
     public interface IBooksService
     {
-        void CreateBook(BookDTO bookDto);
+        BookDTO CreateBook(BookDTO bookDto);
         BookDTO GetBook(int id);
+        IEnumerable<BookDTO> GetAllBooks();
         int DeleteBook(int id);
         BookDTO ChangeGanre(BookDTO bookDto);
         IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName);

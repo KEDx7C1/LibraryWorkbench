@@ -1,21 +1,35 @@
-﻿using LibraryWorkbench.Data;
+﻿using LibraryWorkbench.Core.DTO;
+using LibraryWorkbench.Core.Interfaces;
+using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using LibraryWorkbench.Data.Intefaces;
 
 namespace LibraryWorkbench.Core
 {
-    public class GenresServices
+    public class GenresServices : IGenresServices
     {
-        public static IEnumerable<DimGenre> GetGenres(DataContext context)
+        private readonly DataContext _context;
+        private readonly IGenresRepository _genres;
+        private readonly IMapper _mapperGenre;
+        public GenresServices(DataContext context)
         {
-            return context.DimGenres;
+            _context = context;
+            _genres = new GenresRepository(_context);
+            _mapperGenre = new MapperConfiguration(c => c.CreateMap<DimGenre, DimGenreDTO>()).CreateMapper();
+        }
+        public IEnumerable<DimGenreDTO> GetGenres()
+        {
+            return _mapperGenre.Map<IEnumerable<DimGenreDTO>>(_genres.GetAll());
         }
 
-        public static Object GetGenresStat(DataContext context)
+        public Object GetGenresStat()
         {
-            var result = context.Books.SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new
+            IBooksRepository books = new BooksRepository(_context);
+            var result = books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new
             {
                 genreName = n,
                 genreCount = c.Count()
@@ -23,12 +37,11 @@ namespace LibraryWorkbench.Core
             return result;
         }
 
-        public static void CreateGenre(DimGenre genre, DataContext context)
+        public void CreateGenre(DimGenreDTO genre)
         {
-            GenresRepository genres = new GenresRepository(context);
-            if (!context.DimGenres.Any(x => x.GenreName.Equals(genre.GenreName)))
-                genres.Create(genre);
-            genres.Save();
+            if (!_genres.GetAll().Any(x => x.GenreName.Equals(genre.GenreName)))
+                _genres.Create(new DimGenre() { GenreName = genre.GenreName});
+            _genres.Save();
         }
     }
 }

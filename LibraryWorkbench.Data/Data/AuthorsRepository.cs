@@ -1,4 +1,5 @@
-﻿using LibraryWorkbench.Data.Models;
+﻿using LibraryWorkbench.Data.Intefaces;
+using LibraryWorkbench.Data.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ namespace LibraryWorkbench.Data
     /// <summary>
     /// Hometask 2 6
     /// </summary>
-    public class AuthorsRepository : IRepository<Author>
+    public class AuthorsRepository : IAuthorsRepository
     {
         private readonly DataContext _context;
 

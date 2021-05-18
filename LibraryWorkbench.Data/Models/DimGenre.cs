@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,6 +9,7 @@ namespace LibraryWorkbench.Data.Models
     {
         [Column("genre_id")]
         public int GenreId { get; set; }
+        [Required]
         [Column("genre_name")]
         public string GenreName { get; set; }
 

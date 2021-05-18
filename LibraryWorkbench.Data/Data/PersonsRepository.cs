@@ -1,4 +1,5 @@
-﻿using LibraryWorkbench.Data.Models;
+﻿using LibraryWorkbench.Data.Intefaces;
+using LibraryWorkbench.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace LibraryWorkbench.Data
     /// <summary>
     /// Hometask 2 6
     /// </summary>
-    public class PersonsRepository : IRepository<Person>
+    public class PersonsRepository : IPersonsRepository
     {
         private readonly DataContext _context;
 
@@ -26,6 +27,10 @@ namespace LibraryWorkbench.Data
         {
             return _context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
                 .Include(x => x.Books).ThenInclude(a => a.Author).Where(x => x.PersonId == id).First();
+        }
+        public Person GetWithBooks(int id)
+        {
+            return _context.Persons.Include(b => b.Books).Where(x => x.PersonId == id).First();
         }
         public void Create(Person person)
         {

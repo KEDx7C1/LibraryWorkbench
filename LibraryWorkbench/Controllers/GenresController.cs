@@ -1,4 +1,6 @@
 ﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Core.DTO;
+using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +13,19 @@ namespace LibraryWorkbench.Controllers
     public class GenresController : ControllerBase
     {
         private readonly DataContext _context;
-        public GenresController(DataContext context)
+        private readonly IGenresServices _genresServices;
+        public GenresController(DataContext context, IGenresServices genresService)
         {
             _context = context;
+            _genresServices = genresService;
         }
         /// <summary>
         /// Hometask 2 7.4.1
         /// </summary>
         [HttpGet]
-        public IEnumerable<DimGenre> GetGenres()
+        public IEnumerable<DimGenreDTO> GetGenres()
         {
-            return GenresServices.GetGenres(_context);
+            return _genresServices.GetGenres();
         }
         /// <summary>
         /// Hometask 2 7.4.3
@@ -30,15 +34,16 @@ namespace LibraryWorkbench.Controllers
         [Route("stat")]
         public IActionResult GetStatByGenre()
         {
-            return new OkObjectResult(GenresServices.GetGenresStat(_context));
+            return new OkObjectResult(_genresServices.GetGenresStat());
         }
         /// <summary>
         /// Hometask 2 7.4.2
         /// </summary>
         [HttpPost]
-        public void CreateGenre(DimGenre genre)
+        public void CreateGenre(DimGenreDTO genre)
         {
-            GenresServices.CreateGenre(genre, _context);
+
+            _genresServices.CreateGenre(genre);
         }
 
     }

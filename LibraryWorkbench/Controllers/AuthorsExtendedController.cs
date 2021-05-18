@@ -22,7 +22,7 @@ namespace LibraryWorkbench.Controllers
         [Route("ByYear/{year}")]
         public IEnumerable<Author> GetAuthorsByYear(int year, string order = "")
         {
-            return AuthorsServices.GetAuthorsByYear(year, order, _context);
+            return AuthorsService.GetAuthorsByYear(year, order, _context);
         }
         /// <summary>
         /// Hometask 2 8.3
@@ -30,7 +30,7 @@ namespace LibraryWorkbench.Controllers
         [Route("ByBookName/{namePart}")]
         public IEnumerable<Author> GetAuthorsByBookNamepart(string namePart)
         {
-            return AuthorsServices.GetAuthorsByBookNamepart(namePart, _context);
+            return AuthorsService.GetAuthorsByBookNamepart(namePart, _context);
         }
     }
 }

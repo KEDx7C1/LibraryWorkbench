@@ -1,4 +1,6 @@
 ﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Core.DTO;
+using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +17,11 @@ namespace LibraryWorkbench.Controllers
     {
         private readonly DataContext _context;
         private readonly BooksRepository _books;
-        public BooksController(DataContext context)
+        private readonly IBooksService _booksService;
+        public BooksController(DataContext context, IBooksService booksService)
         {
             _context = context;
+            _booksService = booksService;
             _books = new BooksRepository(_context);
         }
         /// <summary>
@@ -35,19 +39,19 @@ namespace LibraryWorkbench.Controllers
 
         [HttpGet]
         [Route("byAuthor")]
-        public IEnumerable<Book> GetBooksByAuthor(string firstName, string lastName, string middleName)
+        public IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
 
-            return BooksServices.GetBooksByAuthor(firstName, lastName, middleName, _context);
+            return _booksService.GetBooksByAuthor(firstName, lastName, middleName);
         }
         ///// <summary>
         ///// Hometask 2 7.2.5
         ///// </summary>
         [HttpGet]
         [Route("byGenre/{genre}")]
-        public IEnumerable<Book> GetBooksByGenre(string genre)
+        public IEnumerable<BookDTO> GetBooksByGenre(string genre)
         {
-            return BooksServices.GetBooksByGenre(genre, _context);
+            return _booksService.GetBooksByGenre(genre);
         }
         [HttpGet]
         [Route("{id}")]
@@ -55,7 +59,7 @@ namespace LibraryWorkbench.Controllers
         {
             try
             {
-                return new OkObjectResult(BooksServices.GetBook(id, _context));
+                return new OkObjectResult(_booksService.GetBook(id));
             }
             catch
             {
@@ -66,9 +70,9 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.2.1
         /// </summary>
         [HttpPost]
-        public void CreateBook(Book book)
+        public void CreateBook(BookDTO bookDto)
         {
-            BooksServices.CreateBook(book, _context);
+            _booksService.CreateBook(bookDto);
         }
         ///// <summary>
         ///// Hometask 2 7.2.2
@@ -77,7 +81,7 @@ namespace LibraryWorkbench.Controllers
         [Route("{id}")]
         public IActionResult DeleteBook(int id)
         {
-            int SCode = BooksServices.DeleteBook(id, _context);
+            int SCode = _booksService.DeleteBook(id);
             if (SCode == 405)
                 return StatusCode(SCode, "Книга у пользователя");
             else
@@ -87,9 +91,9 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.2.3
         /// </summary>
         [HttpPut]
-        public Book ChangeGanre(Book book)
+        public BookDTO ChangeGanre(BookDTO bookDto)
         {
-            return BooksServices.ChangeGanre(book, _context);
+            return _booksService.ChangeGanre(bookDto);
         }
     }
 }

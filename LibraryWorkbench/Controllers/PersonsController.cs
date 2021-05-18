@@ -1,4 +1,6 @@
 ﻿using LibraryWorkbench.Core;
+using LibraryWorkbench.Core.DTO;
+using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +18,13 @@ namespace LibraryWorkbench.Controllers
     {
         private readonly DataContext _context;
         private readonly PersonsRepository _persons;
+        private readonly IPersonsService _personsService;
 
-        public PersonsController(DataContext context)
+        public PersonsController(DataContext context, IPersonsService personsService)
         {
             _context = context;
             _persons = new PersonsRepository(_context);
+            _personsService = personsService;
         }
         
         [HttpGet]
@@ -45,7 +49,7 @@ namespace LibraryWorkbench.Controllers
         {
             try
             {
-                return new OkObjectResult(_persons.Get(id).Books);
+                return new OkObjectResult(_personsService.GetPersonBooksById(id));
             }
             catch
             {
@@ -56,9 +60,9 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.1.1
         /// </summary>
         [HttpPost]
-        public IActionResult CreatePerson(Person person)
+        public IActionResult CreatePerson(PersonDTO personDto)
         {
-            Object result = PersonsServices.CreatePerson(person, _context);
+            PersonDTO result = _personsService.CreatePerson(personDto);
             if (result != null)
                 return new ObjectResult(result);
             else
@@ -68,32 +72,27 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.1.2
         /// </summary>
         [HttpPut]
-        public Person UpdatePerson(Person person)
+        public PersonDTO UpdatePerson(PersonDTO personDto)
         {
-            _persons.Update(person);
-            _persons.Save();
-            return person;
+            return _personsService.UpdatePerson(personDto);
         }
         /// <summary>
         /// Hometask 2 7.1.6
         /// </summary>
         [HttpPut]
         [Route("{personId}/Book")]
-        public Person GiveBook(int bookId, int personId)
+        public PersonDTO GiveBook(int bookId, int personId)
         {
-
-            PersonsServices.GiveBook(personId, bookId, _context);
-            return _persons.Get(personId);
+            return _personsService.GiveBook(personId, bookId);
         }
         /// <summary>
         /// Hometask 2 7.1.7
         /// </summary>
         [HttpDelete]
         [Route("{personId}/Book")]
-        public Person ReturnBook(int bookId, int personId)
+        public PersonDTO ReturnBook(int bookId, int personId)
         {
-            PersonsServices.ReturnBook(personId, bookId, _context);
-            return _persons.Get(personId);
+            return _personsService.ReturnBook(personId, bookId);
         }
         /// <summary>
         /// Hometask 2 7.1.3
@@ -102,17 +101,16 @@ namespace LibraryWorkbench.Controllers
         [Route("{id}")]
         public IActionResult DeletePerson(int id)
         {
-            return StatusCode(PersonsServices.DeletePersonById(id, _context));
+            return StatusCode(_personsService.DeletePersonById(id));
         }
         /// <summary>
         /// Hometask 2 7.1.4
         /// </summary>
         [HttpDelete]
         [Route("byFullName")]
-        public IActionResult DeletePersonsByFullName(string firstName, string lastName, string middleName)
+        public IActionResult DeletePersonsByFullName([FromBody]PersonDTO personDto)
         {
-            PersonShort person = new Person() { FirstName = firstName, LastName = lastName, MiddleName = middleName };
-            return StatusCode(PersonsServices.DeletePersonsByFullName(person, _context));
+            return StatusCode(_personsService.DeletePersonsByFullName(personDto));
         }
     }
 }

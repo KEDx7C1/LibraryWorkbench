@@ -8,7 +8,7 @@ namespace LibraryWorkbench.Data
     /// <summary>
     /// Hometask 2 6
     /// </summary>
-    public class GenresRepository : IRepository<DimGenre>
+    public class GenresRepository : IGenresRepository
     {
         private readonly DataContext _context;
 

@@ -1,4 +1,6 @@
 using LibraryWorkbench.Converters;
+using LibraryWorkbench.Core;
+using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +39,9 @@ namespace LibraryWorkbench
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString,
                 b=>b.MigrationsAssembly("LibraryWorkbench")));
-            
+            services.AddScoped<IPersonsService, PersonsService>();
+            services.AddScoped<IBooksService, BooksService>();
+            services.AddScoped<IGenresServices, GenresServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

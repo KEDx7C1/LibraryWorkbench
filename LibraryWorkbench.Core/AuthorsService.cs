@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace LibraryWorkbench.Core
 {
-    public class AuthorsServices
+    public class AuthorsService
     {
         public static IEnumerable<Author> GetAuthors(DataContext context)
         {
@@ -46,7 +46,7 @@ namespace LibraryWorkbench.Core
                 if (books != null)
                     foreach (var b in books)
                     {
-                        BooksServices.CreateBook(b, context);
+                        //BooksService.CreateBook(b, context);
                     }
                 return authorWithBooks;
             }

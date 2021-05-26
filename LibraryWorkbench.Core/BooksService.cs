@@ -12,15 +12,17 @@ namespace LibraryWorkbench.Core
 {
     public class BooksService : IBooksService
     {
-        private readonly DataContext _context;
         private readonly IBooksRepository _books;
         private readonly IPersonsRepository _persons;
+        private readonly IGenresRepository _genres;
+        private readonly IAuthorsRepository _authors;
         private readonly IMapper _mapperBook;
-        public BooksService(DataContext context)
+        public BooksService(IBooksRepository booksRepository, IPersonsRepository personsRepository, IGenresRepository genresRepository, IAuthorsRepository authorsRepository)
         {
-            _context = context;
-            _books = new BooksRepository(_context);
-            _persons = new PersonsRepository(_context);
+            _books = booksRepository;
+            _persons = personsRepository;
+            _genres = genresRepository;
+            _authors = authorsRepository;
             _mapperBook = new MapperConfiguration(c =>
             {
                 c.CreateMap<Book, BookDTO>();
@@ -36,7 +38,7 @@ namespace LibraryWorkbench.Core
                 Name = bookDto.Name,
                 Year = bookDto.Year
             };
-            Author author = _context.Authors.Where(x => x.FirstName.Equals(bookDto.Author.FirstName)
+            Author author = _authors.GetAll().Where(x => x.FirstName.Equals(bookDto.Author.FirstName)
                 && x.LastName.Equals(bookDto.Author.LastName) && (x.MiddleName.Equals(bookDto.Author.MiddleName)))
                 .FirstOrDefault();
             if (author != null)
@@ -51,7 +53,7 @@ namespace LibraryWorkbench.Core
             List<DimGenre> genres = new List<DimGenre>();
             foreach (var g in bookDto.Genres)
             {
-                var genre = _context.DimGenres.Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
+                var genre = _genres.GetAll().Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
                 if (genre != null)
                 {
                     genres.Add(genre);
@@ -98,8 +100,7 @@ namespace LibraryWorkbench.Core
         }
         public BookDTO ChangeGanre(BookDTO bookDto)
         {
-            GenresRepository genresRepos = new GenresRepository(_context);
-            IEnumerable<DimGenre> allGenres = genresRepos.GetAll();
+            IEnumerable<DimGenre> allGenres = _genres.GetAll();
             Book book = _books.Get(bookDto.BookId);
             List<DimGenre> genres = new List<DimGenre>();
             DimGenre tmp = new DimGenre();

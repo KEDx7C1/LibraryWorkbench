@@ -14,17 +14,15 @@ namespace LibraryWorkbench.Core
 {
     public class PersonsService : IPersonsService
     {
-        private readonly DataContext _context;
         private readonly IPersonsRepository _persons;
         private readonly IBooksRepository _books;
         private readonly IMapper _mapperPerson;
         private readonly IMapper _mapperBook;
         private readonly IMapper _mapperPersonExt;
-        public PersonsService(DataContext context)
+        public PersonsService(IPersonsRepository personsRepository, IBooksRepository booksRepository)
         {
-            _context = context;
-            _persons = new PersonsRepository(_context);
-            _books = new BooksRepository(_context);
+            _persons = personsRepository;
+            _books = booksRepository;
             _mapperPerson = new MapperConfiguration(c => c.CreateMap<Person, PersonDTO>()).CreateMapper();
             _mapperBook = new MapperConfiguration(c =>
             {
@@ -49,7 +47,6 @@ namespace LibraryWorkbench.Core
             if (!_persons.GetAll().Any(x => x.FirstName.Equals(personDto.FirstName) && x.LastName.Equals(personDto.LastName)
             && x.MiddleName.Equals(personDto.MiddleName) && x.Birthday.Equals(personDto.Birthday)))
             {
-                PersonsRepository persons = new PersonsRepository(_context);
                 Person person = new Person
                 {
                     FirstName = personDto.FirstName,
@@ -57,10 +54,10 @@ namespace LibraryWorkbench.Core
                     MiddleName = personDto.MiddleName,
                     Birthday = personDto.Birthday
                 };
-                persons.Create(person);
-                persons.Save();
+                _persons.Create(person);
+                _persons.Save();
                
-                return _mapperPerson.Map<PersonDTO>(persons.Get(person.PersonId));
+                return _mapperPerson.Map<PersonDTO>(_persons.Get(person.PersonId));
             }
             else
                 return null;

@@ -12,13 +12,13 @@ namespace LibraryWorkbench.Core
 {
     public class GenresServices : IGenresServices
     {
-        private readonly DataContext _context;
         private readonly IGenresRepository _genres;
+        private readonly IBooksRepository _books;
         private readonly IMapper _mapperGenre;
-        public GenresServices(DataContext context)
+        public GenresServices(IGenresRepository genresRepository, IBooksRepository booksRepository)
         {
-            _context = context;
-            _genres = new GenresRepository(_context);
+            _genres = genresRepository;
+            _books = booksRepository;
             _mapperGenre = new MapperConfiguration(c => c.CreateMap<DimGenre, DimGenreDTO>()).CreateMapper();
         }
         public IEnumerable<DimGenreDTO> GetGenres()
@@ -28,8 +28,7 @@ namespace LibraryWorkbench.Core
 
         public Object GetGenresStat()
         {
-            IBooksRepository books = new BooksRepository(_context);
-            var result = books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new
+            var result = _books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new
             {
                 genreName = n,
                 genreCount = c.Count()

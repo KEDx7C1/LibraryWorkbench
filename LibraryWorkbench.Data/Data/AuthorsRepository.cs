@@ -26,7 +26,10 @@ namespace LibraryWorkbench.Data
         }
         public Author Get(int id)
         {
-            return _context.Authors.Find(id);
+            Author author = _context.Authors.Where(x => x.AuthorId == id).FirstOrDefault();
+            if (author == null)
+                throw new Exception($"Author with Id {id} not found");
+            return author;
         }
         public void Create(Author author)
         {
@@ -43,16 +46,16 @@ namespace LibraryWorkbench.Data
         }
         public void Delete(int id)
         {
-            Author author = _context.Authors.Find(id);
-            if (author != null)
-                _context.Authors.Remove(author);
+            Author author = _context.Authors.Where(x=>x.AuthorId == id).FirstOrDefault();
+            if (author == null)
+                throw new Exception($"Author with Id {id} not found");
+            _context.Authors.Remove(author);
         }
         public void Save()
         {
             _context.SaveChanges();
         }
         private bool disposed = false;
-
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -64,7 +67,6 @@ namespace LibraryWorkbench.Data
             }
             this.disposed = true;
         }
-
         public void Dispose()
         {
             Dispose(true);

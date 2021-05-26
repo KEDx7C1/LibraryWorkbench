@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LibraryWorkbench.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
         public DbSet<Models.Person> Persons { get; set; }
         public DbSet<Models.DimGenre> DimGenres { get; set; }

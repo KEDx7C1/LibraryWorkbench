@@ -2,6 +2,7 @@ using LibraryWorkbench.Converters;
 using LibraryWorkbench.Core;
 using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
+using LibraryWorkbench.Data.Intefaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -40,10 +41,23 @@ namespace LibraryWorkbench
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString,
                 b=>b.MigrationsAssembly("LibraryWorkbench")));
 
-            services.AddScoped<IPersonsService, PersonsService>();
-            services.AddScoped<IBooksService, BooksService>();
-            services.AddScoped<IGenresServices, GenresServices>();
-            services.AddScoped<IAuthorsService, AuthorsService>();
+            services.AddScoped<PersonsService>();
+            services.AddScoped<IPersonsService, PersonsService>(sp=>sp.GetService<PersonsService>());
+            services.AddScoped<BooksService>();
+            services.AddScoped<IBooksService, BooksService>(sp => sp.GetService <BooksService>());
+            services.AddScoped<GenresServices>();
+            services.AddScoped<IGenresServices, GenresServices>(sp => sp.GetService<GenresServices>());
+            services.AddScoped<AuthorsService>();
+            services.AddScoped<IAuthorsService, AuthorsService>(sp => sp.GetService<AuthorsService>());
+
+            services.AddScoped<IAuthorsRepository, AuthorsRepository>();
+            services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddScoped<IGenresRepository, GenresRepository>();
+            services.AddScoped<IPersonsRepository, PersonsRepository>();
+
+            services.AddScoped<DataContext>();
+            services.AddScoped<IDataContext, DataContext>(sp => sp.GetService<DataContext>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

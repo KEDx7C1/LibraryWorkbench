@@ -13,12 +13,10 @@ namespace LibraryWorkbench.Data
     public class PersonsRepository : IPersonsRepository
     {
         private readonly DataContext _context;
-
         public PersonsRepository(DataContext context)
         {
             _context = context;
         }
-
         public IEnumerable<Person> GetAll()
         {
             return _context.Persons.Include(b => b.Books);
@@ -59,7 +57,6 @@ namespace LibraryWorkbench.Data
         }
 
         private bool disposed = false;
-
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -71,7 +68,6 @@ namespace LibraryWorkbench.Data
             }
             this.disposed = true;
         }
-
         public void Dispose()
         {
             Dispose(true);

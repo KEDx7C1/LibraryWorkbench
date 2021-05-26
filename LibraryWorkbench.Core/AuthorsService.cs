@@ -14,17 +14,15 @@ namespace LibraryWorkbench.Core
 {
     public class AuthorsService : IAuthorsService
     {
-        private readonly DataContext _context;
         private readonly IAuthorsRepository _authors;
         private readonly IBooksRepository _books;
         private readonly IMapper _mapperAuthor;
         private readonly IMapper _mapperBook;
         private readonly IMapper _mapperBookWithoutAuthor;
-        public AuthorsService(DataContext context)
+        public AuthorsService(IDataContext context, IAuthorsRepository authorsRepository, IBooksRepository booksRepository)
         {
-            _context = context;
-            _authors = new AuthorsRepository(_context);
-            _books = new BooksRepository(_context);
+            _authors = authorsRepository;
+            _books = booksRepository;
             _mapperAuthor = new MapperConfiguration(c => c.CreateMap<Author, AuthorDTO>()).CreateMapper();
             _mapperBook = new MapperConfiguration(c =>
             {

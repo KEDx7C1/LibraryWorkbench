@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LibraryWorkbench.Data
 {
@@ -23,7 +24,12 @@ namespace LibraryWorkbench.Data
         }
         public DimGenre Get(int id)
         {
-            return _context.DimGenres.Find(id);
+            var genre = _context.DimGenres.Where(x=>x.GenreId == id).FirstOrDefault();
+            if (genre == null)
+            {
+                throw new Exception($"Genre with Id {id} not found");
+            }
+            return genre;
         }
         public void Create(DimGenre genre)
         {
@@ -34,22 +40,24 @@ namespace LibraryWorkbench.Data
         }
         public void Update(DimGenre genre)
         {
+
             genre.UpdationDateTime = DateTimeOffset.Now;
             genre.Version++;
             _context.Entry(genre).State = EntityState.Modified;
         }
         public void Delete(int id)
         {
-            DimGenre genre = _context.DimGenres.Find(id);
-            if (genre != null)
-                _context.DimGenres.Remove(genre);
+            DimGenre genre = _context.DimGenres.Where(x=>x.GenreId == id).FirstOrDefault();
+            if (genre == null)
+                throw new Exception($"Genre with Id {id} not found");
+            _context.DimGenres.Remove(genre);
+
         }
         public void Save()
         {
             _context.SaveChanges();
         }
         private bool disposed = false;
-
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -61,7 +69,6 @@ namespace LibraryWorkbench.Data
             }
             this.disposed = true;
         }
-
         public void Dispose()
         {
             Dispose(true);

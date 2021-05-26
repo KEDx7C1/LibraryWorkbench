@@ -24,7 +24,11 @@ namespace LibraryWorkbench.Data
         }
         public Book Get(int id)
         {
-            return _context.Books.Include(b => b.Author).Include(a => a.Genres).Where(x => x.BookId == id).First();
+            Book book = _context.Books.Include(b => b.Author).Include(a => a.Genres)
+                .Where(x => x.BookId == id).FirstOrDefault();
+            if (book == null)
+                throw new Exception($"Book with Id {id} not found");
+            return book;
         }
         public void Create(Book book)
         {
@@ -41,9 +45,10 @@ namespace LibraryWorkbench.Data
         }
         public void Delete(int id)
         {
-            Book book = _context.Books.Find(id);
-            if (book != null)
-                _context.Books.Remove(book);
+            Book book = _context.Books.Where(x=>x.BookId == id).FirstOrDefault();
+            if (book == null)
+                throw new Exception($"Book with Id {id} not found");
+            _context.Books.Remove(book);
         }
         public void Save()
         {

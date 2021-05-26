@@ -4,5 +4,7 @@
 /LibraryWorkbench.Core/obj
 /LibraryWorkbench.Data/bin
 /LibraryWorkbench.Data/obj
+/LibraryWorkbenchTests/bin
+/LibraryWorkbenchTests/obj
 /.vs/
 

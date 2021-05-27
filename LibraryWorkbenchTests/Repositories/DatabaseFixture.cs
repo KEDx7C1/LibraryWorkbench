@@ -55,6 +55,26 @@ namespace LibraryWorkbenchTests.Repositories
             var book1 = new Book() { Name = "Book1", Genres = new List<DimGenre>() { genre1, genre2 }, Author =  author1};
             var book2 = new Book() { Name = "Book2", Genres = new List<DimGenre>() { genre2 }, Author = author2 };
             context.Books.AddRange(book1, book2);
+
+            var person1 = new Person()
+            {
+                FirstName = "Person1_FirstName",
+                LastName = "Person1_LastName",
+                MiddleName = "Person1_MiddleName"
+            };
+            var person2 = new Person()
+            {
+                FirstName = "Person2_FirstName",
+                LastName = "Person2_LastName",
+                MiddleName = "Person2_MiddleName"
+            };
+            var person3 = new Person()
+            {
+                FirstName = "Person3_FirstName",
+                LastName = "Person3_LastName",
+                MiddleName = "Person3_MiddleName"
+            };
+            context.Persons.AddRange(person1, person2, person3);
         }
         public DataContext Context => context;
         public SqliteConnection Connection => connection;

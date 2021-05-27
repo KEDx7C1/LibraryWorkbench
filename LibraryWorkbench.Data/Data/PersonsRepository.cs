@@ -23,12 +23,18 @@ namespace LibraryWorkbench.Data
         }
         public Person Get(int id)
         {
-            return _context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
-                .Include(x => x.Books).ThenInclude(a => a.Author).Where(x => x.PersonId == id).First();
+            Person person = _context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
+                .Include(x => x.Books).ThenInclude(a => a.Author).FirstOrDefault(x => x.PersonId == id);
+            if (person == null)
+                throw new Exception($"Person with Id {id} not found");
+            return person;
         }
         public Person GetWithBooks(int id)
         {
-            return _context.Persons.Include(b => b.Books).Where(x => x.PersonId == id).First();
+            Person person = _context.Persons.Include(b => b.Books).FirstOrDefault(x => x.PersonId == id);
+            if (person == null)
+                throw new Exception($"Person with Id {id} not found");
+            return person;
         }
         public void Create(Person person)
         {
@@ -45,11 +51,11 @@ namespace LibraryWorkbench.Data
         }
         public void Delete(int id)
         {
-            Person person = _context.Persons.Find(id);
-            if (person != null)
-                _context.Persons.Remove(person);
-            else
-                throw new ArgumentException();
+            Person person = _context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
+                .Include(x => x.Books).ThenInclude(a => a.Author).FirstOrDefault(x => x.PersonId == id);
+            if (person == null)
+                throw new Exception($"Person with Id {id} not found");
+            _context.Persons.Remove(person);
         }
         public void Save()
         {

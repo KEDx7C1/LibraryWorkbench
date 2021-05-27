@@ -1,6 +1,7 @@
 ﻿using LibraryWorkbench.Data.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace LibraryWorkbench.Core.DTO
 {
@@ -8,6 +9,6 @@ namespace LibraryWorkbench.Core.DTO
     {
         [Required]
         public AuthorDTO Author { get; set; }
-        public List<BookWithoutAuthorDTO> Books { get; set; }
+        public IEnumerable<BookWithoutAuthorDTO> Books { get; set; }
     }
 }

@@ -113,7 +113,7 @@ namespace LibraryWorkbench.Core
                     genres.Add(tmp);
             }
             
-            book.Genres.RemoveAll(g => !bookDto.Genres.Exists(gg => gg.GenreName.ToLower().Equals(g.GenreName.ToLower())));
+            book.Genres.RemoveAll(g => !bookDto.Genres.ToList().Exists(gg => gg.GenreName.ToLower().Equals(g.GenreName.ToLower())));
             book.Genres.AddRange(genres.Where(g => !book.Genres.Any(x=>x.GenreName.ToLower().Equals(g.GenreName.ToLower()))));
 
             _books.Update(book);

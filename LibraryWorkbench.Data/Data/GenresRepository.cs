@@ -18,13 +18,14 @@ namespace LibraryWorkbench.Data
             _context = context;
         }
 
-        public IEnumerable<DimGenre> GetAll()
+        public IQueryable<DimGenre> GetAll()
         {
-            return _context.DimGenres;
+            IQueryable<DimGenre> genres = _context.DimGenres;
+            return genres;
         }
         public DimGenre Get(int id)
         {
-            var genre = _context.DimGenres.Where(x=>x.GenreId == id).FirstOrDefault();
+            var genre = _context.DimGenres.FirstOrDefault(x => x.GenreId == id);
             if (genre == null)
             {
                 throw new Exception($"Genre with Id {id} not found");
@@ -47,7 +48,7 @@ namespace LibraryWorkbench.Data
         }
         public void Delete(int id)
         {
-            DimGenre genre = _context.DimGenres.Where(x=>x.GenreId == id).FirstOrDefault();
+            DimGenre genre = _context.DimGenres.FirstOrDefault(x => x.GenreId == id);
             if (genre == null)
                 throw new Exception($"Genre with Id {id} not found");
             _context.DimGenres.Remove(genre);

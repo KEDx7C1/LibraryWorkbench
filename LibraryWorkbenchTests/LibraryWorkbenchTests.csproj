@@ -24,7 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LibraryWorkbench.Core\LibraryWorkbench.Core.csproj" />
     <ProjectReference Include="..\LibraryWorkbench.Data\LibraryWorkbench.Data.csproj" />
+    <ProjectReference Include="..\LibraryWorkbench\LibraryWorkbench.csproj" />
   </ItemGroup>
 
 </Project>

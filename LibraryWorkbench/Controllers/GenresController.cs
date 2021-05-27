@@ -18,7 +18,7 @@ namespace LibraryWorkbench.Controllers
             _genresServices = genresService;
         }
         /// <summary>
-        /// Hometask 2 7.4.1
+        /// Hometask 2 7.4.1 Get all genres
         /// </summary>
         [HttpGet]
         public IEnumerable<DimGenreDTO> GetGenres()
@@ -26,16 +26,16 @@ namespace LibraryWorkbench.Controllers
             return _genresServices.GetGenres();
         }
         /// <summary>
-        /// Hometask 2 7.4.3
+        /// Hometask 2 7.4.3 Get book's genres statistic
         /// </summary>
-        [HttpGet]
-        [Route("stat")]
+        [HttpGet("stat")]
+        //[Route("stat")]
         public IActionResult GetStatByGenre()
         {
             return new OkObjectResult(_genresServices.GetGenresStat());
         }
         /// <summary>
-        /// Hometask 2 7.4.2
+        /// Hometask 2 7.4.2 Create new genre
         /// </summary>
         [HttpPost]
         public void CreateGenre(DimGenreDTO genre)

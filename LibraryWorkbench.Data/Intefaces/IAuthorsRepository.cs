@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace LibraryWorkbench.Data.Intefaces
 {
     public interface IAuthorsRepository : IDisposable
     {
-        public IEnumerable<Author> GetAll();
+        public IQueryable<Author> GetAll();
         public Author Get(int id);
         public void Create(Author author);
         public void Update(Author author);

@@ -16,31 +16,16 @@ namespace LibraryWorkbench.Core
     {
         private readonly IPersonsRepository _persons;
         private readonly IBooksRepository _books;
-        private readonly IMapper _mapperPerson;
-        private readonly IMapper _mapperBook;
-        private readonly IMapper _mapperPersonExt;
-        public PersonsService(IPersonsRepository personsRepository, IBooksRepository booksRepository)
+        private readonly IMapper _mapper;
+        public PersonsService(IPersonsRepository personsRepository, IBooksRepository booksRepository, IMapper mapper)
         {
             _persons = personsRepository;
             _books = booksRepository;
-            _mapperPerson = new MapperConfiguration(c => c.CreateMap<Person, PersonDTO>()).CreateMapper();
-            _mapperBook = new MapperConfiguration(c =>
-            {
-                c.CreateMap<Book, BookDTO>();
-                c.CreateMap<Author, AuthorDTO>();
-                c.CreateMap<DimGenre, DimGenreDTO>();
-            }).CreateMapper();
-            _mapperPersonExt = new MapperConfiguration(c =>
-            {
-                c.CreateMap<Person, PersonExtDTO>();
-                c.CreateMap<Book, BookDTO>();
-                c.CreateMap<Author, AuthorDTO>();
-                c.CreateMap<DimGenre, DimGenreDTO>();
-            }).CreateMapper();
+            _mapper = mapper;
         }
         public IEnumerable<PersonDTO> GetAllPersons()
         {
-            return _mapperPerson.Map<IEnumerable<PersonDTO>>(_persons.GetAll());
+            return _mapper.Map<IEnumerable<PersonDTO>>(_persons.GetAll());
         }
         public PersonDTO CreatePerson(PersonDTO personDto)
         {
@@ -57,7 +42,7 @@ namespace LibraryWorkbench.Core
                 _persons.Create(person);
                 _persons.Save();
                
-                return _mapperPerson.Map<PersonDTO>(_persons.Get(person.PersonId));
+                return _mapper.Map<PersonDTO>(_persons.Get(person.PersonId));
             }
             else
                 return null;
@@ -71,7 +56,7 @@ namespace LibraryWorkbench.Core
             person.Birthday = personDto.Birthday;
             _persons.Update(person);
             _persons.Save();
-            return _mapperPerson.Map<PersonDTO>(person);
+            return _mapper.Map<PersonDTO>(person);
         }
         public int DeletePersonById(int id)
         {
@@ -102,45 +87,29 @@ namespace LibraryWorkbench.Core
         }
         public PersonExtDTO GiveBook(int personId, int bookId)
         {
-            Book book;
-            Person person;
-            try
-            {
-                book = _books.Get(bookId);
-                person = _persons.Get(personId);
-            }
-            catch
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            Book book = _books.Get(bookId);
+            Person person = _persons.Get(personId);
+            
             person.Books.Add(book);
             _persons.Update(person);
             _persons.Save();
             
-            return _mapperPersonExt.Map<PersonExtDTO>(_persons.GetWithBooks(person.PersonId));
+            return _mapper.Map<PersonExtDTO>(_persons.GetWithBooks(person.PersonId));
         }
         public PersonExtDTO ReturnBook(int personId, int bookId)
         {
-            Book book;
-            Person person;
-            try
-            {
-                book = _books.Get(bookId);
-                person = _persons.Get(personId);
-            }
-            catch
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            Book book = _books.Get(bookId);
+            Person person = _persons.Get(personId);
+
             person.Books.Remove(book);
             _persons.Update(person);
             _persons.Save();
 
-            return _mapperPersonExt.Map<PersonExtDTO>(_persons.GetWithBooks(person.PersonId));
+            return _mapper.Map<PersonExtDTO>(_persons.GetWithBooks(person.PersonId));
         }
         public IEnumerable<BookDTO> GetPersonBooksById (int personId)
         {
-            var bookDtos = _mapperBook.Map<IEnumerable<BookDTO>>(_persons.Get(personId).Books);
+            var bookDtos = _mapper.Map<IEnumerable<BookDTO>>(_persons.Get(personId).Books);
             return bookDtos;
         }
         public void Dispose()

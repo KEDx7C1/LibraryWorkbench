@@ -14,32 +14,34 @@ namespace LibraryWorkbench.Core
     {
         private readonly IGenresRepository _genres;
         private readonly IBooksRepository _books;
-        private readonly IMapper _mapperGenre;
-        public GenresServices(IGenresRepository genresRepository, IBooksRepository booksRepository)
+        private readonly IMapper _mapper;
+        public GenresServices(IGenresRepository genresRepository, IBooksRepository booksRepository, IMapper mapper)
         {
             _genres = genresRepository;
             _books = booksRepository;
-            _mapperGenre = new MapperConfiguration(c => c.CreateMap<DimGenre, DimGenreDTO>()).CreateMapper();
+            _mapper = mapper;
         }
         public IEnumerable<DimGenreDTO> GetGenres()
         {
-            return _mapperGenre.Map<IEnumerable<DimGenreDTO>>(_genres.GetAll());
+            return _mapper.ProjectTo<DimGenreDTO>(_genres.GetAll());
         }
 
-        public Object GetGenresStat()
+        public IEnumerable<GenresStatisticDTO> GetGenresStat()
         {
-            var result = _books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new
+            IEnumerable<GenresStatisticDTO> genreStatistic = _books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new GenresStatisticDTO()
             {
-                genreName = n,
-                genreCount = c.Count()
+                GenreName = n,
+                GenreCount = c.Count()
             });
-            return result;
+            return genreStatistic;
         }
 
         public void CreateGenre(DimGenreDTO genre)
         {
             if (!_genres.GetAll().Any(x => x.GenreName.Equals(genre.GenreName)))
-                _genres.Create(new DimGenre() { GenreName = genre.GenreName});
+                _genres.Create(new DimGenre() { GenreName = genre.GenreName });
+            else
+                throw new Exception($"Genre with name {genre.GenreName} already exist");
             _genres.Save();
         }
     }

@@ -22,7 +22,10 @@ namespace LibraryWorkbench.Controllers
         {
             _personsService = personsService;
         }
-        
+        /// <summary>
+        /// Get all persons
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAllPersons()
         {
@@ -37,10 +40,10 @@ namespace LibraryWorkbench.Controllers
             
         }
         /// <summary>
-        /// 2.0.4.C
+        /// Get person's book (Hometask 2.0.4.C)
         /// </summary>
-        [HttpGet]
-        [Route("{id}/book")]
+        /// <param name="id">PersonId</param>
+        [HttpGet("{id}/book")]
         public IActionResult GetPersonBooksById(int id)
         {
             try
@@ -53,8 +56,9 @@ namespace LibraryWorkbench.Controllers
             }
         }
         /// <summary>
-        /// Hometask 2 7.1.1
+        /// Create new peson (Hometask 2 7.1.1)
         /// </summary>
+        /// <param name="personDto">PersonDTO</param>
         [HttpPost]
         public IActionResult CreatePerson(PersonDTO personDto)
         {
@@ -65,7 +69,7 @@ namespace LibraryWorkbench.Controllers
                 return new BadRequestObjectResult("Person already exist");
         }
         /// <summary>
-        /// Hometask 2 7.1.2
+        /// Update existing person (Hometask 2 7.1.2)
         /// </summary>
         [HttpPut]
         public PersonDTO UpdatePerson(PersonDTO personDto)
@@ -73,37 +77,39 @@ namespace LibraryWorkbench.Controllers
             return _personsService.UpdatePerson(personDto);
         }
         /// <summary>
-        /// Hometask 2 7.1.6
+        /// Give book to person (Hometask 2 7.1.6)
         /// </summary>
-        [HttpPut]
-        [Route("{personId}/Book")]
+        /// <param name="bookId">BookId</param>
+        /// <param name="personId">PersonId</param>
+        [HttpPut("{personId}/Book")]
         public PersonDTO GiveBook(int bookId, int personId)
         {
             return _personsService.GiveBook(personId, bookId);
         }
         /// <summary>
-        /// Hometask 2 7.1.7
+        /// Return person book (Hometask 2 7.1.7)
         /// </summary>
-        [HttpDelete]
-        [Route("{personId}/Book")]
+        /// <param name="personId">PersonId</param>
+        /// <param name="bookId">BookId</param>
+        [HttpDelete("{personId}/Book")]
         public PersonDTO ReturnBook(int bookId, int personId)
         {
             return _personsService.ReturnBook(personId, bookId);
         }
         /// <summary>
-        /// Hometask 2 7.1.3
+        /// Delete person by Id (Hometask 2 7.1.3)
         /// </summary>
-        [HttpDelete]
-        [Route("{id}")]
+        /// <param name="id">PersonId</param>
+        [HttpDelete("{id}")]
         public IActionResult DeletePerson(int id)
         {
             return StatusCode(_personsService.DeletePersonById(id));
         }
         /// <summary>
-        /// Hometask 2 7.1.4
+        /// Delete persons by fullname (Hometask 2 7.1.4)
         /// </summary>
-        [HttpDelete]
-        [Route("byFullName")]
+        /// <param name="personDto">PersonDto</param>
+        [HttpDelete("byFullName")]
         public IActionResult DeletePersonsByFullName([FromBody]PersonDTO personDto)
         {
             return StatusCode(_personsService.DeletePersonsByFullName(personDto));

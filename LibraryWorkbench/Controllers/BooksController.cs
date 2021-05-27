@@ -16,12 +16,15 @@ namespace LibraryWorkbench.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBooksService _booksService;
+        /// <summary>
+        /// Books API
+        /// </summary>
         public BooksController(IBooksService booksService)
         {
             _booksService = booksService;
         }
         /// <summary>
-        /// Hometask 1 2.0.4.A
+        /// Get all books (Hometask 1 2.0.4.A)
         /// </summary>
         [HttpGet]
         public IEnumerable<BookDTO> GetAllBooks()
@@ -29,28 +32,34 @@ namespace LibraryWorkbench.Controllers
 
             return _booksService.GetAllBooks();
         }
-        ///// <summary>
-        ///// Hometask 2 7.2.4
-        ///// </summary>
+        /// <summary>
+        /// Get books by author fullname (Hometask 2 7.2.4)
+        /// </summary>
+        ///<param name="firstName">Authors firstname</param>
+        ///<param name="lastName">Authors lastname</param>
+        ///<param name="middleName">Authors middlename</param>
 
-        [HttpGet]
-        [Route("byAuthor")]
+        [HttpGet("byAuthor")]
         public IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
 
             return _booksService.GetBooksByAuthor(firstName, lastName, middleName);
         }
-        ///// <summary>
-        ///// Hometask 2 7.2.5
-        ///// </summary>
-        [HttpGet]
-        [Route("byGenre/{genre}")]
+        /// <summary>
+        /// Get books by genre (Hometask 2 7.2.5)
+        /// </summary>
+        /// <param name="genre">GenreName</param>
+        [HttpGet("byGenre/{genre}")]
         public IEnumerable<BookDTO> GetBooksByGenre(string genre)
         {
             return _booksService.GetBooksByGenre(genre);
         }
-        [HttpGet]
-        [Route("{id}")]
+        /// <summary>
+        /// Get book by id
+        /// </summary>
+        /// <param name="id">BookId</param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
         public IActionResult GetBookById(int id)
         {
             try
@@ -63,18 +72,19 @@ namespace LibraryWorkbench.Controllers
             }
         }
         /// <summary>
-        /// Hometask 2 7.2.1
+        /// Create new book (Hometask 2 7.2.1)
         /// </summary>
+        /// <param name="bookDto">BookDTO</param>
         [HttpPost]
         public BookDTO CreateBook(BookDTO bookDto)
         {
             return _booksService.CreateBook(bookDto);
         }
-        ///// <summary>
-        ///// Hometask 2 7.2.2
-        ///// </summary>
-        [HttpDelete]
-        [Route("{id}")]
+        /// <summary>
+        /// Delete book by id (Hometask 2 7.2.2)
+        /// </summary>
+        /// <param name="id">BookId</param>
+        [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
             int SCode = _booksService.DeleteBook(id);
@@ -84,8 +94,9 @@ namespace LibraryWorkbench.Controllers
                 return StatusCode(SCode);
         }
         /// <summary>
-        /// Hometask 2 7.2.3
+        /// Change genre for existing book (Hometask 2 7.2.3)
         /// </summary>
+        /// <param name="bookDto">BookDTO</param>
         [HttpPut]
         public BookDTO ChangeGanre(BookDTO bookDto)
         {

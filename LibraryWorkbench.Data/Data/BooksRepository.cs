@@ -18,14 +18,13 @@ namespace LibraryWorkbench.Data
         {
             _context = context;
         }
-        public IEnumerable<Book> GetAll()
+        public IQueryable<Book> GetAll()
         {
             return _context.Books.Include(x=>x.Author).Include(x=>x.Genres);
         }
         public Book Get(int id)
         {
-            Book book = _context.Books.Include(b => b.Author).Include(a => a.Genres)
-                .Where(x => x.BookId == id).FirstOrDefault();
+            Book book = _context.Books.Include(b => b.Author).Include(a => a.Genres).FirstOrDefault(x => x.BookId == id);
             if (book == null)
                 throw new Exception($"Book with Id {id} not found");
             return book;
@@ -45,7 +44,7 @@ namespace LibraryWorkbench.Data
         }
         public void Delete(int id)
         {
-            Book book = _context.Books.Where(x=>x.BookId == id).FirstOrDefault();
+            Book book = _context.Books.FirstOrDefault(x => x.BookId == id);
             if (book == null)
                 throw new Exception($"Book with Id {id} not found");
             _context.Books.Remove(book);

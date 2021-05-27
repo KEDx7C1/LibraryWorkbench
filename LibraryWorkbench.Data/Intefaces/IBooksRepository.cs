@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace LibraryWorkbench.Data.Intefaces
 {
     public interface IBooksRepository : IDisposable
     {
-        IEnumerable<Book> GetAll();
+        IQueryable<Book> GetAll();
         Book Get(int id);
         void Create(Book book);
         void Update(Book book);

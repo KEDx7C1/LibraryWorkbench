@@ -20,13 +20,13 @@ namespace LibraryWorkbench.Data
             _context = context;
         }
 
-        public IEnumerable<Author> GetAll()
+        public IQueryable<Author> GetAll()
         {
             return _context.Authors;
         }
         public Author Get(int id)
         {
-            Author author = _context.Authors.Where(x => x.AuthorId == id).FirstOrDefault();
+            Author author = _context.Authors.FirstOrDefault(x => x.AuthorId == id);
             if (author == null)
                 throw new Exception($"Author with Id {id} not found");
             return author;
@@ -46,7 +46,7 @@ namespace LibraryWorkbench.Data
         }
         public void Delete(int id)
         {
-            Author author = _context.Authors.Where(x=>x.AuthorId == id).FirstOrDefault();
+            Author author = _context.Authors.FirstOrDefault(x => x.AuthorId == id);
             if (author == null)
                 throw new Exception($"Author with Id {id} not found");
             _context.Authors.Remove(author);

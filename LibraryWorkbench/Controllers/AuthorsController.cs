@@ -29,13 +29,12 @@ namespace LibraryWorkbench.Controllers
         /// <summary>
         /// Hometask 2 7.3.2
         /// </summary>
-        [HttpGet]
-        [Route("books")]
-        public IActionResult GetBooksByAuthor([FromBody]AuthorDTO authorDto)
+        [HttpGet("{id}/books")]
+        public IActionResult GetBooksByAuthor(int id)
         {
             try
             {
-                return new ObjectResult(_authorsService.GetBooksByAuthor(authorDto));
+                return new ObjectResult(_authorsService.GetBooksByAuthor(id));
             }
             catch
             {

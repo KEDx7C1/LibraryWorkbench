@@ -2,6 +2,7 @@ using AutoMapper;
 using LibraryWorkbench.Converters;
 using LibraryWorkbench.Core;
 using LibraryWorkbench.Core.Interfaces;
+using LibraryWorkbench.Core.Services;
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Intefaces;
 using Microsoft.AspNetCore.Builder;

@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LibraryWorkbench.Core
+namespace LibraryWorkbench.Core.Services
 {
     public class AuthorsService : IAuthorsService
     {

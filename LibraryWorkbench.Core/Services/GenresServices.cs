@@ -8,7 +8,7 @@ using System.Linq;
 using AutoMapper;
 using LibraryWorkbench.Data.Intefaces;
 
-namespace LibraryWorkbench.Core
+namespace LibraryWorkbench.Core.Services
 {
     public class GenresServices : IGenresServices
     {

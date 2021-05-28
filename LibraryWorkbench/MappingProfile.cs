@@ -12,14 +12,23 @@ namespace LibraryWorkbench
         public MappingProfile()
         {
             CreateMap<Person, PersonDTO>()
+                .ForMember(x => x.PersonId, s => s.MapFrom(x => x.PersonId))
+                .ForMember(x => x.FirstName, s => s.MapFrom(x => x.FirstName))
+                .ForMember(x => x.LastName, s => s.MapFrom(x => x.LastName))
+                .ForMember(x => x.MiddleName, s => s.MapFrom(x => x.MiddleName))
+                .ForMember(x => x.Birthday, s => s.MapFrom(x => x.Birthday));
+            CreateMap<PersonDTO, Person>()
+                .ForMember(x => x.PersonId, s => s.MapFrom(x => x.PersonId))
                 .ForMember(x => x.FirstName, s => s.MapFrom(x => x.FirstName))
                 .ForMember(x => x.LastName, s => s.MapFrom(x => x.LastName))
                 .ForMember(x => x.MiddleName, s => s.MapFrom(x => x.MiddleName))
                 .ForMember(x => x.Birthday, s => s.MapFrom(x => x.Birthday));
             CreateMap<DimGenre, DimGenreDTO>()
+                .ForMember(x => x.GenreId, s => s.MapFrom(x => x.GenreId))
                 .ForMember(x => x.GenreName, s => s.MapFrom(x => x.GenreName));
             CreateMap<DimGenreDTO, DimGenre>();
             CreateMap<Author, AuthorDTO>();
+            CreateMap<AuthorDTO, Author>();
             CreateMap<Book, BookDTO>();
             CreateMap<Person, PersonExtDTO>();
             CreateMap<Author, AuthorWithBooksDTO>();

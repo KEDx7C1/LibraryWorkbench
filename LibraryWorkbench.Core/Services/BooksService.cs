@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LibraryWorkbench.Core
+namespace LibraryWorkbench.Core.Services
 {
     public class BooksService : IBooksService
     {
@@ -16,44 +16,30 @@ namespace LibraryWorkbench.Core
         private readonly IPersonsRepository _persons;
         private readonly IGenresRepository _genres;
         private readonly IAuthorsRepository _authors;
-        private readonly IMapper _mapperBook;
-        public BooksService(IBooksRepository booksRepository, IPersonsRepository personsRepository, IGenresRepository genresRepository, IAuthorsRepository authorsRepository)
+        private readonly IMapper _mapper;
+        public BooksService(IBooksRepository booksRepository, IPersonsRepository personsRepository,
+            IGenresRepository genresRepository, IAuthorsRepository authorsRepository, IMapper mapper)
         {
             _books = booksRepository;
             _persons = personsRepository;
             _genres = genresRepository;
             _authors = authorsRepository;
-            _mapperBook = new MapperConfiguration(c =>
-            {
-                c.CreateMap<Book, BookDTO>();
-                c.CreateMap<Author, AuthorDTO>();
-                c.CreateMap<DimGenre, DimGenreDTO>();
-            }).CreateMapper();
-            
+            _mapper = mapper;
         }
         public BookDTO CreateBook(BookDTO bookDto)
         {
-            Book book = new Book()
-            {
-                Name = bookDto.Name,
-                Year = bookDto.Year
-            };
+            Book book = _mapper.Map<Book>(bookDto);
             Author author = _authors.GetAll().Where(x => x.FirstName.Equals(bookDto.Author.FirstName)
                 && x.LastName.Equals(bookDto.Author.LastName) && (x.MiddleName.Equals(bookDto.Author.MiddleName)))
                 .FirstOrDefault();
             if (author != null)
                 book.Author = author;
             else
-                book.Author = new Author()
-                {
-                    FirstName = bookDto.Author.FirstName,
-                    LastName = bookDto.Author.LastName,
-                    MiddleName = bookDto.Author.MiddleName
-                };
+                book.Author = _mapper.Map<Author>(bookDto.Author);
             List<DimGenre> genres = new List<DimGenre>();
             foreach (var g in bookDto.Genres)
             {
-                var genre = _genres.GetAll().Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
+                DimGenre genre = _genres.GetAll().Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
                 if (genre != null)
                 {
                     genres.Add(genre);
@@ -67,15 +53,15 @@ namespace LibraryWorkbench.Core
             book.Genres = genres;
             _books.Create(book);
             _books.Save();
-            return _mapperBook.Map<BookDTO>(book);
+            return _mapper.Map<BookDTO>(book);
         }
         public BookDTO GetBook(int id)
         {
-            return _mapperBook.Map<BookDTO>(_books.Get(id));
+            return _mapper.Map<BookDTO>(_books.Get(id));
         }
         public IEnumerable<BookDTO> GetAllBooks()
         {
-            return _mapperBook.Map<IEnumerable<BookDTO>>(_books.GetAll());
+            return _mapper.Map<IEnumerable<BookDTO>>(_books.GetAll());
         }
         public int DeleteBook(int id)
         {
@@ -118,7 +104,7 @@ namespace LibraryWorkbench.Core
 
             _books.Update(book);
             _books.Save();
-            return _mapperBook.Map<BookDTO>(_books.Get(book.BookId));
+            return _mapper.Map<BookDTO>(_books.Get(book.BookId));
         }
         public IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
@@ -127,11 +113,11 @@ namespace LibraryWorkbench.Core
             IEnumerable <Book> authorBooks = books.Where(x => (x.Author.FirstName.Equals(firstName) || firstName == null) &&
                 (x.Author.LastName.Equals(lastName) || lastName == null) &&
                 (x.Author.MiddleName.Equals(middleName) || middleName == null));
-            return _mapperBook.Map<IEnumerable<BookDTO>>(authorBooks);
+            return _mapper.ProjectTo<BookDTO>(authorBooks.AsQueryable());
         }
         public IEnumerable<BookDTO> GetBooksByGenre(string genre)
         {
-            IEnumerable <BookDTO> books = _mapperBook.Map<IEnumerable<BookDTO>>(_books.GetAll());
+            IEnumerable <BookDTO> books = _mapper.ProjectTo<BookDTO>(_books.GetAll());
             return books.Where(x => x.Genres.Any(y => y.GenreName.Equals(genre)));
         }
         public void Dispose()

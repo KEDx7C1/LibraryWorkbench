@@ -15,8 +15,4 @@ namespace LibraryWorkbench.Core.DTO
         public string LastName { get; set; }
         public string MiddleName { get; set; }
     }
-    public class PersonExtDTO : PersonDTO
-    {
-        public List<BookDTO> Books { get; set; }
-    }
 }

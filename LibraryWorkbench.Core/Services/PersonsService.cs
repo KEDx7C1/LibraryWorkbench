@@ -10,7 +10,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using LibraryWorkbench.Data.Intefaces;
 
-namespace LibraryWorkbench.Core
+namespace LibraryWorkbench.Core.Services
 {
     public class PersonsService : IPersonsService
     {
@@ -45,7 +45,7 @@ namespace LibraryWorkbench.Core
                 return _mapper.Map<PersonDTO>(_persons.Get(person.PersonId));
             }
             else
-                return null;
+                throw new Exception($"Person {personDto.FirstName} {personDto.LastName} {personDto.MiddleName} birth {personDto.Birthday} already exist");
         }
         public PersonDTO UpdatePerson (PersonDTO personDto)
         {

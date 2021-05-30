@@ -12,7 +12,7 @@ namespace LibraryWorkbenchTests.Repositories
     [Collection("DatabaseCollection")]
     public class BooksRepositoryTests
     {
-        DatabaseFixture database;
+        readonly DatabaseFixture database;
         public BooksRepositoryTests(DatabaseFixture fixture)
         {
             database = fixture;

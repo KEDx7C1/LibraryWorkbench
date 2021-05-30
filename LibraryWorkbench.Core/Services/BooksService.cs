@@ -6,6 +6,7 @@ using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LibraryWorkbench.Core.Services
@@ -65,15 +66,7 @@ namespace LibraryWorkbench.Core.Services
         }
         public int DeleteBook(int id)
         {
-            Book book;
-            try
-            {
-                book = _books.Get(id);
-            }
-            catch
-            {
-                return StatusCodes.Status404NotFound;
-            }
+            Book book = _books.Get(id);
 
             if (!_persons.GetAll().Any(x => x.Books.Contains(book)))
             {
@@ -89,18 +82,20 @@ namespace LibraryWorkbench.Core.Services
             IEnumerable<DimGenre> allGenres = _genres.GetAll();
             Book book = _books.Get(bookDto.BookId);
             List<DimGenre> genres = new List<DimGenre>();
-            DimGenre tmp = new DimGenre();
+            DimGenre genre = new DimGenre();
             foreach (var g in bookDto.Genres)
             {
-                tmp = allGenres.Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
-                if (tmp == null)
+                genre = allGenres.Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
+                if (genre == null)
                     genres.Add(new DimGenre() { GenreName = g.GenreName });
                 else
-                    genres.Add(tmp);
+                    genres.Add(genre);
             }
             
-            book.Genres.RemoveAll(g => !bookDto.Genres.ToList().Exists(gg => gg.GenreName.ToLower().Equals(g.GenreName.ToLower())));
-            book.Genres.AddRange(genres.Where(g => !book.Genres.Any(x=>x.GenreName.ToLower().Equals(g.GenreName.ToLower()))));
+            book.Genres.RemoveAll(g => !bookDto.Genres.ToList()
+                .Exists(gg => gg.GenreName.ToLower().Equals(g.GenreName.ToLower())));
+            book.Genres.AddRange(genres.Where(g => !book.Genres
+                .Any(x=>x.GenreName.ToLower().Equals(g.GenreName.ToLower()))));
 
             _books.Update(book);
             _books.Save();
@@ -108,17 +103,19 @@ namespace LibraryWorkbench.Core.Services
         }
         public IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
+            //IEnumerable<BookDTO> authorBooks = _mapper.ProjectTo<BookDTO>(_books.GetAll()
+            //    .Where(x => (x.Author.FirstName == firstName || firstName == null) &&
+            //    (x.Author.LastName == lastName || lastName == null) &&
+            //    (x.Author.MiddleName == middleName || middleName == null);
+            IEnumerable<BookDTO> authorBooks = _mapper.ProjectTo<BookDTO>(_books.GetAll());
 
-            IEnumerable<Book> books = _books.GetAll();
-            IEnumerable <Book> authorBooks = books.Where(x => (x.Author.FirstName.Equals(firstName) || firstName == null) &&
-                (x.Author.LastName.Equals(lastName) || lastName == null) &&
-                (x.Author.MiddleName.Equals(middleName) || middleName == null));
-            return _mapper.ProjectTo<BookDTO>(authorBooks.AsQueryable());
+
+            return authorBooks;
         }
         public IEnumerable<BookDTO> GetBooksByGenre(string genre)
         {
-            IEnumerable <BookDTO> books = _mapper.ProjectTo<BookDTO>(_books.GetAll());
-            return books.Where(x => x.Genres.Any(y => y.GenreName.Equals(genre)));
+            IEnumerable <BookDTO> books = _mapper.ProjectTo<BookDTO>(_books.GetAll().Where(x => x.Genres.Any(y => y.GenreName.Equals(genre))));
+            return books;
         }
         public void Dispose()
         {

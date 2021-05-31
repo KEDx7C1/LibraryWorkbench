@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class AuthorDTO
+    public class AuthorDto
     {
         public int AuthorId { get; set; }
         [Required]

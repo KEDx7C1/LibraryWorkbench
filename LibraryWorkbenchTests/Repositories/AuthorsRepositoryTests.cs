@@ -30,7 +30,6 @@ namespace LibraryWorkbenchTests.Repositories
             };
             //Act
             repository.Create(author);
-            repository.Save();
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
@@ -92,7 +91,6 @@ namespace LibraryWorkbenchTests.Repositories
             //Act
             author.FirstName = firstName;
             repository.Update(author);
-            repository.Save();
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
@@ -111,7 +109,6 @@ namespace LibraryWorkbenchTests.Repositories
             string sql = "SELECT COUNT(*) FROM author WHERE author_id=@id;";
             //Act
             repository.Delete(authorId);
-            repository.Save();
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {

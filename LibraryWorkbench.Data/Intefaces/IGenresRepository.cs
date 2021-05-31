@@ -6,13 +6,12 @@ using System.Text;
 
 namespace LibraryWorkbench.Data
 {
-    public interface IGenresRepository : IDisposable
+    public interface IGenresRepository
     {
         IQueryable<DimGenre> GetAll();
         DimGenre Get(int id);
-        void Create(DimGenre genre);
-        void Update(DimGenre genre);
+        DimGenre Create(DimGenre genre);
+        DimGenre Update(DimGenre genre);
         void Delete(int id);
-        void Save();
     }
 }

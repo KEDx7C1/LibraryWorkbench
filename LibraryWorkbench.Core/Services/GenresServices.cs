@@ -21,14 +21,14 @@ namespace LibraryWorkbench.Core.Services
             _books = booksRepository;
             _mapper = mapper;
         }
-        public IEnumerable<DimGenreDTO> GetGenres()
+        public IEnumerable<DimGenreDto> GetGenres()
         {
-            return _mapper.ProjectTo<DimGenreDTO>(_genres.GetAll());
+            return _mapper.ProjectTo<DimGenreDto>(_genres.GetAll());
         }
 
-        public IEnumerable<GenresStatisticDTO> GetGenresStat()
+        public IEnumerable<GenresStatisticDto> GetGenresStat()
         {
-            IEnumerable<GenresStatisticDTO> genreStatistic = _books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new GenresStatisticDTO()
+            IEnumerable<GenresStatisticDto> genreStatistic = _books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new GenresStatisticDto()
             {
                 GenreName = n,
                 GenreCount = c.Count()
@@ -36,13 +36,12 @@ namespace LibraryWorkbench.Core.Services
             return genreStatistic;
         }
 
-        public void CreateGenre(DimGenreDTO genre)
+        public void CreateGenre(DimGenreDto genre)
         {
             if (!_genres.GetAll().Any(x => x.GenreName.Equals(genre.GenreName)))
                 _genres.Create(new DimGenre() { GenreName = genre.GenreName });
             else
                 throw new Exception($"Genre with name {genre.GenreName} already exist");
-            _genres.Save();
         }
     }
 }

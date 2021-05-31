@@ -1,18 +1,17 @@
 ﻿using LibraryWorkbench.Data.Models;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LibraryWorkbench.Data.Intefaces
 {
-    public interface IPersonsRepository : IDisposable
+    public interface IPersonsRepository
     {
-        IEnumerable<Person> GetAll();
+        IQueryable<Person> GetAll();
         Person Get(int id);
         Person GetWithBooks(int id);
-        void Create(Person person);
-        void Update(Person person);
+        Person Create(Person person);
+        Person Update(Person person);
         void Delete(int id);
-        void Save();
     }
 }

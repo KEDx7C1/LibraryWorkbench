@@ -49,7 +49,7 @@ namespace LibraryWorkbenchTests.Services
         {
             //Arrange
             const int expectedCount = 2;
-            DimGenreDTO dimGenreDTO = new DimGenreDTO() { GenreId = 2, GenreName = "Genre2" };
+            DimGenreDto dimGenreDTO = new DimGenreDto() { GenreId = 2, GenreName = "Genre2" };
             List<DimGenre> genres = new List<DimGenre>() { new DimGenre() { GenreId = 1, GenreName = "Genre1" } };
             var mockGenresRepository = new Mock<IGenresRepository>();
             mockGenresRepository.Setup(a => a.GetAll())
@@ -71,7 +71,7 @@ namespace LibraryWorkbenchTests.Services
         public void CreateGenre_ShouldThrow_Exception()
         {  
             //Arrange
-            DimGenreDTO dimGenreDTO = new DimGenreDTO() { GenreId = 2, GenreName = "Genre1" };
+            DimGenreDto dimGenreDTO = new DimGenreDto() { GenreId = 2, GenreName = "Genre1" };
             DimGenre dimGenre = new DimGenre() { GenreName = dimGenreDTO.GenreName };
             List<DimGenre> genres = new List<DimGenre>() { new DimGenre() { GenreId = 1, GenreName = "Genre1" } };
             var mockGenresRepository = new Mock<IGenresRepository>();

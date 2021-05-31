@@ -25,7 +25,6 @@ namespace LibraryWorkbenchTests.Repositories
             DimGenre genre = new DimGenre() { GenreName = "Роман" };
             //Act
             repository.Create(genre);
-            repository.Save();
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
@@ -87,7 +86,6 @@ namespace LibraryWorkbenchTests.Repositories
             //Act
             genre.GenreName = genreName;
             repository.Update(genre);
-            repository.Save();
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
@@ -106,7 +104,6 @@ namespace LibraryWorkbenchTests.Repositories
             string sql = "SELECT COUNT(*) FROM dim_genre WHERE genre_id=@id;";
             //Act
             repository.Delete(genreId);
-            repository.Save();
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {

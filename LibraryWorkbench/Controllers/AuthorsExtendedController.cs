@@ -19,20 +19,18 @@ namespace LibraryWorkbench.Controllers
             _authorsService = authorsService;
         }
         /// <summary>
-        /// Hometask 2 8.2
+        /// Get books by year (Hometask 2 8.2)
         /// </summary>
         [HttpGet("ByYear/{year}")]
-        //[Route("ByYear/{year}")]
-        public IEnumerable<AuthorDTO> GetAuthorsByYear(int year, string order = "")
+        public IEnumerable<AuthorDto> GetAuthorsByYear(int year, string order = "")
         {
             return _authorsService.GetAuthorsByYear(year, order);
         }
         /// <summary>
-        /// Hometask 2 8.3
+        /// Get book by name (Hometask 2 8.3)
         /// </summary>
         [HttpGet("ByBookName/{namePart}")]
-        //[Route("ByBookName/{namePart}")]
-        public IEnumerable<AuthorDTO> GetAuthorsByBookNamepart(string namePart)
+        public IEnumerable<AuthorDto> GetAuthorsByBookNamepart(string namePart)
         {
             return _authorsService.GetAuthorsByBookNamepart(namePart);
         }

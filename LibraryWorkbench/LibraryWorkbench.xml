@@ -14,24 +14,24 @@
             Hometask 2 7.3.2
             </summary>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.AuthorsController.CreateAuthor(LibraryWorkbench.Core.DTO.AuthorWithBooksDTO)">
+        <member name="M:LibraryWorkbench.Controllers.AuthorsController.CreateAuthor(LibraryWorkbench.Core.DTO.AuthorWithBooksDto)">
             <summary>
             Hometask 2 7.3.3
             </summary>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.AuthorsController.DeleteAuthor(LibraryWorkbench.Core.DTO.AuthorDTO)">
+        <member name="M:LibraryWorkbench.Controllers.AuthorsController.DeleteAuthor(System.Int32)">
             <summary>
             Hometask 2 7.3.4
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsExtendedController.GetAuthorsByYear(System.Int32,System.String)">
             <summary>
-            Hometask 2 8.2
+            Get books by year (Hometask 2 8.2)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsExtendedController.GetAuthorsByBookNamepart(System.String)">
             <summary>
-            Hometask 2 8.3
+            Get book by name (Hometask 2 8.3)
             </summary>
         </member>
         <member name="T:LibraryWorkbench.Controllers.BooksController">
@@ -70,7 +70,7 @@
             <param name="id">BookId</param>
             <returns></returns>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.BooksController.CreateBook(LibraryWorkbench.Core.DTO.BookDTO)">
+        <member name="M:LibraryWorkbench.Controllers.BooksController.CreateBook(LibraryWorkbench.Core.DTO.BookDto)">
             <summary>
             Create new book (Hometask 2 7.2.1)
             </summary>
@@ -82,7 +82,7 @@
             </summary>
             <param name="id">BookId</param>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.BooksController.ChangeGanre(LibraryWorkbench.Core.DTO.BookDTO)">
+        <member name="M:LibraryWorkbench.Controllers.BooksController.ChangeGanre(LibraryWorkbench.Core.DTO.BookDto)">
             <summary>
             Change genre for existing book (Hometask 2 7.2.3)
             </summary>
@@ -98,7 +98,7 @@
             Hometask 2 7.4.3 Get book's genres statistic
             </summary>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.GenresController.CreateGenre(LibraryWorkbench.Core.DTO.DimGenreDTO)">
+        <member name="M:LibraryWorkbench.Controllers.GenresController.CreateGenre(LibraryWorkbench.Core.DTO.DimGenreDto)">
             <summary>
             Hometask 2 7.4.2 Create new genre
             </summary>
@@ -120,13 +120,13 @@
             </summary>
             <param name="id">PersonId</param>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.PersonsController.CreatePerson(LibraryWorkbench.Core.DTO.PersonDTO)">
+        <member name="M:LibraryWorkbench.Controllers.PersonsController.CreatePerson(LibraryWorkbench.Core.DTO.PersonDto)">
             <summary>
             Create new peson (Hometask 2 7.1.1)
             </summary>
             <param name="personDto">PersonDTO</param>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.PersonsController.UpdatePerson(LibraryWorkbench.Core.DTO.PersonDTO)">
+        <member name="M:LibraryWorkbench.Controllers.PersonsController.UpdatePerson(LibraryWorkbench.Core.DTO.PersonDto)">
             <summary>
             Update existing person (Hometask 2 7.1.2)
             </summary>
@@ -151,7 +151,7 @@
             </summary>
             <param name="id">PersonId</param>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.PersonsController.DeletePersonsByFullName(LibraryWorkbench.Core.DTO.PersonDTO)">
+        <member name="M:LibraryWorkbench.Controllers.PersonsController.DeletePersonsByFullName(LibraryWorkbench.Core.DTO.PersonDto)">
             <summary>
             Delete persons by fullname (Hometask 2 7.1.4)
             </summary>

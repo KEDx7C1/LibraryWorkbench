@@ -23,11 +23,11 @@ namespace LibraryWorkbench.Core.Services
             _books = booksRepository;
             _mapper = mapper;
         }
-        public IEnumerable<PersonDTO> GetAllPersons()
+        public IEnumerable<PersonDto> GetAllPersons()
         {
-            return _mapper.Map<IEnumerable<PersonDTO>>(_persons.GetAll());
+            return _mapper.Map<IEnumerable<PersonDto>>(_persons.GetAll());
         }
-        public PersonDTO CreatePerson(PersonDTO personDto)
+        public PersonDto CreatePerson(PersonDto personDto)
         {
             if (!_persons.GetAll().Any(x => x.FirstName.Equals(personDto.FirstName) && x.LastName.Equals(personDto.LastName)
             && x.MiddleName.Equals(personDto.MiddleName) && x.Birthday.Equals(personDto.Birthday)))
@@ -40,14 +40,12 @@ namespace LibraryWorkbench.Core.Services
                     Birthday = personDto.Birthday
                 };
                 _persons.Create(person);
-                _persons.Save();
-               
-                return _mapper.Map<PersonDTO>(_persons.Get(person.PersonId));
+                return _mapper.Map<PersonDto>(_persons.Get(person.PersonId));
             }
             else
                 throw new Exception($"Person {personDto.FirstName} {personDto.LastName} {personDto.MiddleName} birth {personDto.Birthday} already exist");
         }
-        public PersonDTO UpdatePerson (PersonDTO personDto)
+        public PersonDto UpdatePerson (PersonDto personDto)
         {
             Person person = _persons.Get(personDto.PersonId);
             person.FirstName = personDto.FirstName;
@@ -55,15 +53,13 @@ namespace LibraryWorkbench.Core.Services
             person.MiddleName = personDto.MiddleName;
             person.Birthday = personDto.Birthday;
             _persons.Update(person);
-            _persons.Save();
-            return _mapper.Map<PersonDTO>(person);
+            return _mapper.Map<PersonDto>(person);
         }
         public int DeletePersonById(int id)
         {
             try
             {
                 _persons.Delete(id);
-                _persons.Save();
                 return StatusCodes.Status200OK;
             }
             catch
@@ -71,7 +67,7 @@ namespace LibraryWorkbench.Core.Services
                 return StatusCodes.Status404NotFound;
             }
         }
-        public int DeletePersonsByFullName(PersonDTO personDto)
+        public int DeletePersonsByFullName(PersonDto personDto)
         {
             List<Person> personsToDelete = _persons.GetAll().Where(x => x.FirstName == personDto.FirstName
             && x.LastName == personDto.LastName && x.MiddleName == personDto.MiddleName).ToList();
@@ -79,42 +75,35 @@ namespace LibraryWorkbench.Core.Services
             {
                 foreach (var p in personsToDelete)
                     _persons.Delete(p.PersonId);
-                _persons.Save();
                 return StatusCodes.Status200OK;
             }
             else
                 return StatusCodes.Status404NotFound;
         }
-        public PersonExtDTO GiveBook(int personId, int bookId)
+        public PersonExtDto GiveBook(int personId, int bookId)
         {
             Book book = _books.Get(bookId);
             Person person = _persons.Get(personId);
             
             person.Books.Add(book);
             _persons.Update(person);
-            _persons.Save();
             
-            return _mapper.Map<PersonExtDTO>(_persons.GetWithBooks(person.PersonId));
+            return _mapper.Map<PersonExtDto>(_persons.GetWithBooks(person.PersonId));
         }
-        public PersonExtDTO ReturnBook(int personId, int bookId)
+        public PersonExtDto ReturnBook(int personId, int bookId)
         {
             Book book = _books.Get(bookId);
             Person person = _persons.Get(personId);
 
             person.Books.Remove(book);
             _persons.Update(person);
-            _persons.Save();
 
-            return _mapper.Map<PersonExtDTO>(_persons.GetWithBooks(person.PersonId));
+            return _mapper.Map<PersonExtDto>(_persons.GetWithBooks(person.PersonId));
         }
-        public IEnumerable<BookDTO> GetPersonBooksById (int personId)
+        public IEnumerable<BookDto> GetPersonBooksById (int personId)
         {
-            var bookDtos = _mapper.Map<IEnumerable<BookDTO>>(_persons.Get(personId).Books);
+            var bookDtos = _mapper.Map<IEnumerable<BookDto>>(_persons.Get(personId).Books);
             return bookDtos;
-        }
-        public void Dispose()
-        {
-            _persons.Dispose();
         }
     }
 }

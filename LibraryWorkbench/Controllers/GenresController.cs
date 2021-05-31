@@ -1,8 +1,5 @@
-﻿using LibraryWorkbench.Core;
-using LibraryWorkbench.Core.DTO;
+﻿using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
-using LibraryWorkbench.Data;
-using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -21,7 +18,7 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.4.1 Get all genres
         /// </summary>
         [HttpGet]
-        public IEnumerable<DimGenreDTO> GetGenres()
+        public IEnumerable<DimGenreDto> GetGenres()
         {
             return _genresServices.GetGenres();
         }
@@ -38,7 +35,7 @@ namespace LibraryWorkbench.Controllers
         /// Hometask 2 7.4.2 Create new genre
         /// </summary>
         [HttpPost]
-        public void CreateGenre(DimGenreDTO genre)
+        public void CreateGenre(DimGenreDto genre)
         {
 
             _genresServices.CreateGenre(genre);

@@ -31,18 +31,22 @@ namespace LibraryWorkbench.Data
                 throw new Exception($"Author with Id {id} not found");
             return author;
         }
-        public void Create(Author author)
+        public Author Create(Author author)
         {
             author.CreationDateTime = DateTimeOffset.Now;
             author.UpdationDateTime = author.CreationDateTime;
             author.Version = 1;
             _context.Authors.Add(author);
+            _context.SaveChanges();
+            return author;
         }
-        public void Update(Author author)
+        public Author Update(Author author)
         {
             author.UpdationDateTime = DateTimeOffset.Now;
             author.Version++;
             _context.Entry(author).State = EntityState.Modified;
+            _context.SaveChanges();
+            return author;
         }
         public void Delete(int id)
         {
@@ -50,27 +54,7 @@ namespace LibraryWorkbench.Data
             if (author == null)
                 throw new Exception($"Author with Id {id} not found");
             _context.Authors.Remove(author);
-        }
-        public void Save()
-        {
             _context.SaveChanges();
-        }
-        private bool disposed = false;
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

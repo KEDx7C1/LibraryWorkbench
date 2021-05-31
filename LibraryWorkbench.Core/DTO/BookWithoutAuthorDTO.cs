@@ -6,14 +6,13 @@ using System.Text;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class BookWithoutAuthorDTO
+    public class BookWithoutAuthorDto
     {
         public int BookId { get; set; }
         [Required]
         public string Name { get; set; }
-
         [Required]
-        public IEnumerable<DimGenreDTO> Genres { get; set; }
+        public IEnumerable<DimGenreDto> Genres { get; set; }
         public int Year { get; set; }
     }
 }

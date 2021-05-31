@@ -17,7 +17,7 @@ namespace LibraryWorkbench.Data
         {
             _context = context;
         }
-        public IEnumerable<Person> GetAll()
+        public IQueryable<Person> GetAll()
         {
             return _context.Persons.Include(b => b.Books);
         }
@@ -36,18 +36,22 @@ namespace LibraryWorkbench.Data
                 throw new Exception($"Person with Id {id} not found");
             return person;
         }
-        public void Create(Person person)
+        public Person Create(Person person)
         {
             person.CreationDateTime = DateTimeOffset.Now;
             person.UpdationDateTime = person.CreationDateTime;
             person.Version = 1;
             _context.Persons.Add(person);
+            _context.SaveChanges();
+            return person;
         }
-        public void Update(Person person)
+        public Person Update(Person person)
         {
             person.UpdationDateTime = DateTimeOffset.Now;
             person.Version++;
             _context.Entry(person).State = EntityState.Modified;
+            _context.SaveChanges();
+            return person;
         }
         public void Delete(int id)
         {
@@ -56,28 +60,7 @@ namespace LibraryWorkbench.Data
             if (person == null)
                 throw new Exception($"Person with Id {id} not found");
             _context.Persons.Remove(person);
-        }
-        public void Save()
-        {
             _context.SaveChanges();
-        }
-
-        private bool disposed = false;
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

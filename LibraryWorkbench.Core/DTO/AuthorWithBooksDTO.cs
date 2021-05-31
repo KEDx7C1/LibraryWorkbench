@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class AuthorWithBooksDTO
+    public class AuthorWithBooksDto
     {
         [Required]
-        public AuthorDTO Author { get; set; }
-        public IEnumerable<BookWithoutAuthorDTO> Books { get; set; }
+        public AuthorDto Author { get; set; }
+        public IEnumerable<BookWithoutAuthorDto> Books { get; set; }
     }
 }

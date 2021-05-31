@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace LibraryWorkbench.Core.Interfaces
 {
-    public interface IAuthorsService : IDisposable
+    public interface IAuthorsService
     {
-        IEnumerable<AuthorDTO> GetAuthors();
-        AuthorWithBooksDTO GetBooksByAuthor(int id);
-        AuthorWithBooksDTO CreateAuthorWithBooks(AuthorWithBooksDTO authorWithBooks);
-        Author CreateAuthor(AuthorDTO authorDto);
-        int DeleteAuthor(AuthorDTO authorDto);
-        IEnumerable<AuthorDTO> GetAuthorsByYear(int year, string order);
-        IEnumerable<AuthorDTO> GetAuthorsByBookNamepart(string namePart);
+        IEnumerable<AuthorDto> GetAuthors();
+        AuthorWithBooksDto GetBooksByAuthor(int id);
+        AuthorWithBooksDto CreateAuthorWithBooks(AuthorWithBooksDto authorWithBooks);
+        AuthorDto CreateAuthor(AuthorDto authorDto);
+        void DeleteAuthor(int authorId);
+        IEnumerable<AuthorDto> GetAuthorsByYear(int year, string order);
+        IEnumerable<AuthorDto> GetAuthorsByBookNamepart(string namePart);
     }
 }

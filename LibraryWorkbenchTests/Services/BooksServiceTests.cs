@@ -18,12 +18,12 @@ namespace LibraryWorkbenchTests.Services
         private static IMapper _mapper;
         private static List<Book> _books;
         private static List<Person> _persons;
-        private static AuthorDTO _authorDto;
-        private static DimGenreDTO _genre1Dto;
-        private static DimGenreDTO _genre2Dto;
-        private static BookDTO _bookDto1;
-        private static BookDTO _bookDto2;
-        private static BookDTO _bookDto3;
+        private static AuthorDto _authorDto;
+        private static DimGenreDto _genre1Dto;
+        private static DimGenreDto _genre2Dto;
+        private static BookDto _bookDto1;
+        private static BookDto _bookDto2;
+        private static BookDto _bookDto3;
         private static Mock<IGenresRepository> _mockGenresRepository;
         private static Mock<IPersonsRepository>  _mockPersonsRepository;
         private static Mock<IBooksRepository> _mockBooksRepository;
@@ -40,7 +40,7 @@ namespace LibraryWorkbenchTests.Services
                 _mapper = mapper;
             }
             if (_authorDto == null)
-                _authorDto = new AuthorDTO()
+                _authorDto = new AuthorDto()
                 {
                     AuthorId = 1,
                     FirstName = "FirstName1",
@@ -48,43 +48,43 @@ namespace LibraryWorkbenchTests.Services
                     MiddleName = "MiddleName1"
                 };
             if (_genre1Dto == null)
-                _genre1Dto = new DimGenreDTO()
+                _genre1Dto = new DimGenreDto()
                 {
                     GenreId = 1,
                     GenreName = "Genre1"
                 };
             if (_genre2Dto == null)
-                _genre2Dto = new DimGenreDTO()
+                _genre2Dto = new DimGenreDto()
                 {
                     GenreId = 2,
                     GenreName = "Genre2"
                 };
             if (_bookDto1 == null)
-                _bookDto1 = new BookDTO()
+                _bookDto1 = new BookDto()
                 {
                     BookId = 1,
                     Author = _authorDto,
                     Name = "BookName1",
                     Year = 1900,
-                    Genres = new List<DimGenreDTO>() { _genre1Dto, _genre2Dto }
+                    Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
                 };
             if (_bookDto2 == null)
-                _bookDto2 = new BookDTO()
+                _bookDto2 = new BookDto()
                 {
                     BookId = 2,
                     Author = _authorDto,
                     Name = "BookName2",
                     Year = 1900,
-                    Genres = new List<DimGenreDTO>() { _genre1Dto, _genre2Dto }
+                    Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
                 };
             if (_bookDto3 == null)
-                _bookDto3 = new BookDTO()
+                _bookDto3 = new BookDto()
                 {
                     BookId = 3,
                     Author = _authorDto,
                     Name = "BookName3",
                     Year = 1900,
-                    Genres = new List<DimGenreDTO>() { _genre1Dto, _genre2Dto }
+                    Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
                 };
             if (_books == null)
                 _books = new List<Book>()
@@ -123,7 +123,7 @@ namespace LibraryWorkbenchTests.Services
             var result = booksServices.CreateBook(_bookDto3);
             //Assert
             Assert.Equal(expectedCount, _books.Count());
-            Assert.IsType<BookDTO>(result);
+            Assert.IsType<BookDto>(result);
         }
         [Fact]
         public void GetBook_ShouldReturn_BookDTO()
@@ -136,7 +136,7 @@ namespace LibraryWorkbenchTests.Services
             //Act
             var result = booksServices.GetBook(It.IsAny<int>());
             //Assert
-            Assert.IsType<BookDTO>(result);
+            Assert.IsType<BookDto>(result);
             Assert.Equal(_bookDto1.Name, result.Name);
         }
         [Fact]
@@ -187,7 +187,7 @@ namespace LibraryWorkbenchTests.Services
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
             var result = booksServices.ChangeGanre(_bookDto1);
-            Assert.IsType<BookDTO>(result);
+            Assert.IsType<BookDto>(result);
         }
         [Fact]
         public void GetBooksByAuthor_ShouldReturn_ListOfBookDTO()
@@ -197,15 +197,14 @@ namespace LibraryWorkbenchTests.Services
             string lastName = _authorDto.LastName;
             string middleName = _authorDto.MiddleName;
 
-            _mockBooksRepository.Setup(a => a.GetAll()).Returns(_books.AsQueryable());
+            _mockBooksRepository.Setup(a => a.GetAll()).Returns(_books.AsQueryable);
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
 
-            var result = booksServices.GetBooksByAuthor(_authorDto.FirstName, _authorDto.LastName, _authorDto.MiddleName);
-            //int Count = result.Count();
-            //Assert.Equal(expecterCount, Count);
-            Assert.Null(result);
+            var result = booksServices.GetBooksByAuthor(firstName, lastName, middleName);
+
+            Assert.Null(result.FirstOrDefault());
         }
         [Fact]
         public void GetBooksByGenre_ShouldReturn_ListOfBookDTO()

@@ -6,13 +6,12 @@ using System.Linq;
 
 namespace LibraryWorkbench.Data.Intefaces
 {
-    public interface IBooksRepository : IDisposable
+    public interface IBooksRepository
     {
         IQueryable<Book> GetAll();
         Book Get(int id);
-        void Create(Book book);
-        void Update(Book book);
+        Book Create(Book book);
+        Book Update(Book book);
         void Delete(int id);
-        void Save();
     }
 }

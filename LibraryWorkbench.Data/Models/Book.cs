@@ -8,7 +8,22 @@ namespace LibraryWorkbench.Data.Models
     /// <summary>
     /// 2.2.1, 2.2.2.A
     /// </summary>
-    public abstract class BookShort : Properties
+    //public abstract class BookShort : Properties
+    //{
+    //    [Required]
+    //    [Column("name")]
+    //    public string Name { get; set; }
+    //    [Required]
+    //    [Column("author_id")]
+    //    [JsonIgnore]
+    //    public int AuthorId { get; set; }
+    //    public Author Author { get; set; }
+    //}
+
+    /// <summary>
+    /// 2.0.2, 2.2.1
+    /// </summary>
+    public class Book : Properties, IBook
     {
         [Required]
         [Column("name")]
@@ -18,13 +33,6 @@ namespace LibraryWorkbench.Data.Models
         [JsonIgnore]
         public int AuthorId { get; set; }
         public Author Author { get; set; }
-    }
-
-    /// <summary>
-    /// 2.0.2, 2.2.1
-    /// </summary>
-    public class Book : BookShort, IBook
-    {
         [Column("book_id")]
         public int BookId { get; set; }
         [Required]

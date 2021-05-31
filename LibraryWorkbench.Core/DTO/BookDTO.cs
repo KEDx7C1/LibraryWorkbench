@@ -8,9 +8,9 @@ using System.Linq;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class BookDTO : BookWithoutAuthorDTO
+    public class BookDto : BookWithoutAuthorDto
     {
         [Required]
-        public AuthorDTO Author { get; set; }
+        public AuthorDto Author { get; set; }
     }
 }

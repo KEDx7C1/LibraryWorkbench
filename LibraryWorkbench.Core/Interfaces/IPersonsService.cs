@@ -7,14 +7,13 @@ namespace LibraryWorkbench.Core.Interfaces
 {
     public interface IPersonsService
     {
-        IEnumerable<PersonDTO> GetAllPersons();
-        PersonDTO CreatePerson(PersonDTO personDto);
-        PersonDTO UpdatePerson(PersonDTO personDto);
+        IEnumerable<PersonDto> GetAllPersons();
+        PersonDto CreatePerson(PersonDto personDto);
+        PersonDto UpdatePerson(PersonDto personDto);
         int DeletePersonById(int id);
-        int DeletePersonsByFullName(PersonDTO personDto);
-        PersonExtDTO GiveBook(int personId, int bookId);
-        PersonExtDTO ReturnBook(int personId, int bookId);
-        IEnumerable<BookDTO> GetPersonBooksById(int personId);
-        void Dispose();
+        int DeletePersonsByFullName(PersonDto personDto);
+        PersonExtDto GiveBook(int personId, int bookId);
+        PersonExtDto ReturnBook(int personId, int bookId);
+        IEnumerable<BookDto> GetPersonBooksById(int personId);
     }
 }

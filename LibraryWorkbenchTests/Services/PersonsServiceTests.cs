@@ -67,7 +67,7 @@ namespace LibraryWorkbenchTests.Services
         public void CreatePerson_ShouldReturn_PersonDTO()
         {
             //Arrage
-            var personDto = new PersonDTO()
+            var personDto = new PersonDto()
             {
                 PersonId = 3,
                 FirstName = "FirstName3",
@@ -90,14 +90,14 @@ namespace LibraryWorkbenchTests.Services
             var result = personsService.CreatePerson(personDto);
 
             //Assert
-            Assert.IsType<PersonDTO>(result);
+            Assert.IsType<PersonDto>(result);
             Assert.Equal(personDto.PersonId, _persons.Count());
         }
         [Fact]
         public void CreatePerson_ShouldThrow_Exception()
         {
             //Arrage
-            var personDto = new PersonDTO()
+            var personDto = new PersonDto()
             {
                 PersonId = 3,
                 FirstName = "FirstName1",
@@ -124,7 +124,7 @@ namespace LibraryWorkbenchTests.Services
         public void UpdatePerson_ShouldReturn_PersonDTO()
         {
             //Arrage
-            var personDto = new PersonDTO()
+            var personDto = new PersonDto()
             {
                 PersonId = 1,
                 FirstName = "NewFirstName1",
@@ -146,7 +146,7 @@ namespace LibraryWorkbenchTests.Services
             var result = personsService.UpdatePerson(personDto);
 
             //Assert
-            Assert.IsType<PersonDTO>(result);
+            Assert.IsType<PersonDto>(result);
             Assert.Equal(personDto.FirstName, _persons.Where(x => x.PersonId == personDto.PersonId).Select(x => x.FirstName).FirstOrDefault());
         }
         [Fact]
@@ -167,7 +167,7 @@ namespace LibraryWorkbenchTests.Services
         public void PersonWasDeletedByFullName()
         {
             int ok = 200;
-            PersonDTO personDto = new PersonDTO()
+            PersonDto personDto = new PersonDto()
             {
                 PersonId = 10,
                 FirstName = "FirstName10",
@@ -211,7 +211,7 @@ namespace LibraryWorkbenchTests.Services
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
 
             var result = personsService.GiveBook(It.IsAny<int>(), It.IsAny<int>());
-            Assert.IsType<PersonExtDTO>(result);
+            Assert.IsType<PersonExtDto>(result);
             Assert.NotNull(result.Books);
         }
         [Fact]
@@ -238,7 +238,7 @@ namespace LibraryWorkbenchTests.Services
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
 
             var result = personsService.ReturnBook(It.IsAny<int>(), It.IsAny<int>());
-            Assert.IsType<PersonExtDTO>(result);
+            Assert.IsType<PersonExtDto>(result);
             Assert.Empty(result.Books);
         }
         [Fact]
@@ -273,7 +273,7 @@ namespace LibraryWorkbenchTests.Services
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
 
             var result = personsService.GetPersonBooksById(_persons.First().PersonId);
-            Assert.IsType<List<BookDTO>>(result);
+            Assert.IsType<List<BookDto>>(result);
             Assert.Equal(expectedCount, result.Count());
         }
     }

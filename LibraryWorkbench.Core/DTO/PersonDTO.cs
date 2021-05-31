@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class PersonDTO
+    public class PersonDto
     {
         public int PersonId { get; set; }
         public DateTime Birthday { get; set; }

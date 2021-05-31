@@ -22,7 +22,7 @@ namespace LibraryWorkbench.Controllers
         /// HomeTask 2 7.3.1
         /// </summary>
         [HttpGet]
-        public IEnumerable<AuthorDTO> GetAuthors()
+        public IEnumerable<AuthorDto> GetAuthors()
         {
             return _authorsService.GetAuthors();
         }
@@ -32,38 +32,25 @@ namespace LibraryWorkbench.Controllers
         [HttpGet("{id}/books")]
         public IActionResult GetBooksByAuthor(int id)
         {
-            try
-            {
-                return new ObjectResult(_authorsService.GetBooksByAuthor(id));
-            }
-            catch
-            {
-                return new BadRequestResult();
-            }
+            return new OkObjectResult(_authorsService.GetBooksByAuthor(id));
         }
         /// <summary>
         /// Hometask 2 7.3.3
         /// </summary>
         [HttpPost]
-        public IActionResult CreateAuthor(AuthorWithBooksDTO authorWithBooks)
+        public IActionResult CreateAuthor(AuthorWithBooksDto authorWithBooks)
         {
             var result = _authorsService.CreateAuthorWithBooks(authorWithBooks);
-            if (result != null)
-                return new OkObjectResult(result);
-            else
-                return new BadRequestResult();
+            return new OkObjectResult(result);
         }
         /// <summary>
         /// Hometask 2 7.3.4
         /// </summary>
-        [HttpDelete]
-        public IActionResult DeleteAuthor([FromBody] AuthorDTO author)
+        [HttpDelete("{authorId}")]
+        public IActionResult DeleteAuthor(int authorId)
         {
-            int operationStatus = _authorsService.DeleteAuthor(author);
-            if (operationStatus == 405)
-                return StatusCode(operationStatus, "Author has books in library");
-            else
-                return StatusCode(operationStatus);
+            _authorsService.DeleteAuthor(authorId);
+            return new OkResult();
         }
     }
 }

@@ -8,12 +8,12 @@ namespace LibraryWorkbench.Core.Interfaces
 {
     public interface IBooksService
     {
-        BookDTO CreateBook(BookDTO bookDto);
-        BookDTO GetBook(int id);
-        IEnumerable<BookDTO> GetAllBooks();
+        BookDto CreateBook(BookDto bookDto);
+        BookDto GetBook(int id);
+        IEnumerable<BookDto> GetAllBooks();
         int DeleteBook(int id);
-        BookDTO ChangeGanre(BookDTO bookDto);
-        IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName);
-        IEnumerable<BookDTO> GetBooksByGenre(string genre);
+        BookDto ChangeGanre(BookDto bookDto);
+        IEnumerable<BookDto> GetBooksByAuthor(string firstName, string lastName, string middleName);
+        IEnumerable<BookDto> GetBooksByGenre(string genre);
     }
 }

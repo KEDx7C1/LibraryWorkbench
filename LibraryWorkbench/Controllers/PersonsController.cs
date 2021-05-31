@@ -29,15 +29,7 @@ namespace LibraryWorkbench.Controllers
         [HttpGet]
         public IActionResult GetAllPersons()
         {
-            try
-            {
-                return new OkObjectResult(_personsService.GetAllPersons());
-            }
-            catch
-            {
-                return new NotFoundResult();
-            }
-            
+            return new OkObjectResult(_personsService.GetAllPersons());
         }
         /// <summary>
         /// Get person's book (Hometask 2.0.4.C)
@@ -60,11 +52,11 @@ namespace LibraryWorkbench.Controllers
         /// </summary>
         /// <param name="personDto">PersonDTO</param>
         [HttpPost]
-        public IActionResult CreatePerson(PersonDTO personDto)
+        public IActionResult CreatePerson(PersonDto personDto)
         {
-            PersonDTO result = _personsService.CreatePerson(personDto);
+            PersonDto result = _personsService.CreatePerson(personDto);
             if (result != null)
-                return new ObjectResult(result);
+                return new OkObjectResult(result);
             else
                 return new BadRequestObjectResult("Person already exist");
         }
@@ -72,7 +64,7 @@ namespace LibraryWorkbench.Controllers
         /// Update existing person (Hometask 2 7.1.2)
         /// </summary>
         [HttpPut]
-        public PersonDTO UpdatePerson(PersonDTO personDto)
+        public PersonDto UpdatePerson(PersonDto personDto)
         {
             return _personsService.UpdatePerson(personDto);
         }
@@ -82,7 +74,7 @@ namespace LibraryWorkbench.Controllers
         /// <param name="bookId">BookId</param>
         /// <param name="personId">PersonId</param>
         [HttpPut("{personId}/Book")]
-        public PersonDTO GiveBook(int bookId, int personId)
+        public PersonDto GiveBook(int bookId, int personId)
         {
             return _personsService.GiveBook(personId, bookId);
         }
@@ -92,7 +84,7 @@ namespace LibraryWorkbench.Controllers
         /// <param name="personId">PersonId</param>
         /// <param name="bookId">BookId</param>
         [HttpDelete("{personId}/Book")]
-        public PersonDTO ReturnBook(int bookId, int personId)
+        public PersonDto ReturnBook(int bookId, int personId)
         {
             return _personsService.ReturnBook(personId, bookId);
         }
@@ -110,7 +102,7 @@ namespace LibraryWorkbench.Controllers
         /// </summary>
         /// <param name="personDto">PersonDto</param>
         [HttpDelete("byFullName")]
-        public IActionResult DeletePersonsByFullName([FromBody]PersonDTO personDto)
+        public IActionResult DeletePersonsByFullName([FromBody]PersonDto personDto)
         {
             return StatusCode(_personsService.DeletePersonsByFullName(personDto));
         }

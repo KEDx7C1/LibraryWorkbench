@@ -29,18 +29,22 @@ namespace LibraryWorkbench.Data
                 throw new Exception($"Book with Id {id} not found");
             return book;
         }
-        public void Create(Book book)
+        public Book Create(Book book)
         {
             book.CreationDateTime = DateTimeOffset.Now;
             book.UpdationDateTime = book.CreationDateTime;
             book.Version = 1;
             _context.Books.Add(book);
+            _context.SaveChanges();
+            return book;
         }
-        public void Update(Book book)
+        public Book Update(Book book)
         {
             book.UpdationDateTime = DateTimeOffset.Now;
             book.Version++;
             _context.Entry(book).State = EntityState.Modified;
+            _context.SaveChanges();
+            return book;
         }
         public void Delete(int id)
         {
@@ -48,27 +52,7 @@ namespace LibraryWorkbench.Data
             if (book == null)
                 throw new Exception($"Book with Id {id} not found");
             _context.Books.Remove(book);
-        }
-        public void Save()
-        {
             _context.SaveChanges();
-        }
-        private bool disposed = false;
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

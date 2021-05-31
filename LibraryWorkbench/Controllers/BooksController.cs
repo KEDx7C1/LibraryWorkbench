@@ -27,7 +27,7 @@ namespace LibraryWorkbench.Controllers
         /// Get all books (Hometask 1 2.0.4.A)
         /// </summary>
         [HttpGet]
-        public IEnumerable<BookDTO> GetAllBooks()
+        public IEnumerable<BookDto> GetAllBooks()
         {
 
             return _booksService.GetAllBooks();
@@ -40,7 +40,7 @@ namespace LibraryWorkbench.Controllers
         ///<param name="middleName">Authors middlename</param>
 
         [HttpGet("byAuthor")]
-        public IEnumerable<BookDTO> GetBooksByAuthor(string firstName, string lastName, string middleName)
+        public IEnumerable<BookDto> GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
 
             return _booksService.GetBooksByAuthor(firstName, lastName, middleName);
@@ -50,7 +50,7 @@ namespace LibraryWorkbench.Controllers
         /// </summary>
         /// <param name="genre">GenreName</param>
         [HttpGet("byGenre/{genre}")]
-        public IEnumerable<BookDTO> GetBooksByGenre(string genre)
+        public IEnumerable<BookDto> GetBooksByGenre(string genre)
         {
             return _booksService.GetBooksByGenre(genre);
         }
@@ -62,21 +62,14 @@ namespace LibraryWorkbench.Controllers
         [HttpGet("{id}")]
         public IActionResult GetBookById(int id)
         {
-            try
-            {
-                return new OkObjectResult(_booksService.GetBook(id));
-            }
-            catch
-            {
-                return new BadRequestResult();
-            }
+            return new OkObjectResult(_booksService.GetBook(id));
         }
         /// <summary>
         /// Create new book (Hometask 2 7.2.1)
         /// </summary>
         /// <param name="bookDto">BookDTO</param>
         [HttpPost]
-        public BookDTO CreateBook(BookDTO bookDto)
+        public BookDto CreateBook(BookDto bookDto)
         {
             return _booksService.CreateBook(bookDto);
         }
@@ -89,16 +82,16 @@ namespace LibraryWorkbench.Controllers
         {
             int SCode = _booksService.DeleteBook(id);
             if (SCode == 405)
-                return StatusCode(SCode, "Книга у пользователя");
+                return new BadRequestObjectResult("Книга у пользователя");
             else
-                return StatusCode(SCode);
+                return new OkResult();
         }
         /// <summary>
         /// Change genre for existing book (Hometask 2 7.2.3)
         /// </summary>
         /// <param name="bookDto">BookDTO</param>
         [HttpPut]
-        public BookDTO ChangeGanre(BookDTO bookDto)
+        public BookDto ChangeGanre(BookDto bookDto)
         {
             return _booksService.ChangeGanre(bookDto);
         }

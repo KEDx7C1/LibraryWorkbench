@@ -4,8 +4,8 @@ using System.Text;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class PersonExtDTO : PersonDTO
+    public class PersonExtDto : PersonDto
     {
-        public List<BookDTO> Books { get; set; }
+        public List<BookDto> Books { get; set; }
     }
 }

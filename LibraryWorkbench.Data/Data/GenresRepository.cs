@@ -32,19 +32,23 @@ namespace LibraryWorkbench.Data
             }
             return genre;
         }
-        public void Create(DimGenre genre)
+        public DimGenre Create(DimGenre genre)
         {
             genre.CreationDateTime = DateTimeOffset.Now;
             genre.UpdationDateTime = DateTimeOffset.Now;
             genre.Version = 1;
             _context.DimGenres.Add(genre);
+            _context.SaveChanges();
+            return genre;
         }
-        public void Update(DimGenre genre)
+        public DimGenre Update(DimGenre genre)
         {
 
             genre.UpdationDateTime = DateTimeOffset.Now;
             genre.Version++;
             _context.Entry(genre).State = EntityState.Modified;
+            _context.SaveChanges();
+            return genre;
         }
         public void Delete(int id)
         {
@@ -52,28 +56,8 @@ namespace LibraryWorkbench.Data
             if (genre == null)
                 throw new Exception($"Genre with Id {id} not found");
             _context.DimGenres.Remove(genre);
-
-        }
-        public void Save()
-        {
             _context.SaveChanges();
-        }
-        private bool disposed = false;
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+
         }
     }
 }

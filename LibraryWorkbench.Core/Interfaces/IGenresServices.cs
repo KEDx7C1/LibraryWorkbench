@@ -9,8 +9,8 @@ namespace LibraryWorkbench.Core.Interfaces
 {
     public interface IGenresServices
     {
-        IEnumerable<DimGenreDTO> GetGenres();
-        IEnumerable<GenresStatisticDTO> GetGenresStat();
-        void CreateGenre(DimGenreDTO genre);
+        IEnumerable<DimGenreDto> GetGenres();
+        IEnumerable<GenresStatisticDto> GetGenresStat();
+        void CreateGenre(DimGenreDto genre);
     }
 }

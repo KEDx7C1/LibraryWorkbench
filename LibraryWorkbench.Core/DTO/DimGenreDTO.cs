@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LibraryWorkbench.Core.DTO
 {
-    public class DimGenreDTO
+    public class DimGenreDto
     {
         public int GenreId { get; set; }
         [Required]

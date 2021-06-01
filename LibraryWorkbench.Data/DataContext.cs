@@ -95,7 +95,6 @@ namespace LibraryWorkbench.Data
                     LastName = "Иванов",
                     MiddleName = "Иванович",
                     Birthday = new DateTime(1988, 01, 05, 00, 00, 00, 00, 00),
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -106,7 +105,6 @@ namespace LibraryWorkbench.Data
                     LastName = "Петров",
                     MiddleName = "Петрович",
                     Birthday = new DateTime(1982, 06, 10, 00, 00, 00, 00, 00),
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -117,7 +115,6 @@ namespace LibraryWorkbench.Data
                     LastName = "Николаев",
                     MiddleName = "Николаевич",
                     Birthday = new DateTime(1998, 02, 07, 00, 00, 00, 00, 00),
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 });
@@ -128,7 +125,6 @@ namespace LibraryWorkbench.Data
                     FirstName = "Лев",
                     LastName = "Толстой",
                     MiddleName = "Николаевич",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -138,7 +134,6 @@ namespace LibraryWorkbench.Data
                     FirstName = "Джон",
                     LastName = "Толкиен",
                     MiddleName = "",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -148,7 +143,6 @@ namespace LibraryWorkbench.Data
                     FirstName = "Станислав",
                     LastName = "Лем",
                     MiddleName = "",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 });
@@ -157,7 +151,6 @@ namespace LibraryWorkbench.Data
                 {
                     GenreId = 1,
                     GenreName = "Роман",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -165,7 +158,6 @@ namespace LibraryWorkbench.Data
                 {
                     GenreId = 2,
                     GenreName = "Трагендия",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -173,7 +165,6 @@ namespace LibraryWorkbench.Data
                 {
                     GenreId = 3,
                     GenreName = "Фентези",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 }, 
@@ -181,7 +172,6 @@ namespace LibraryWorkbench.Data
                 {
                     GenreId = 4,
                     GenreName = "Фантастика",
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 });
@@ -193,7 +183,6 @@ namespace LibraryWorkbench.Data
                     AuthorId = 1,
                     Name = "Война и мир",
                     Year = 1835,
-                    Version = 1,
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
@@ -203,7 +192,6 @@ namespace LibraryWorkbench.Data
                 AuthorId =  1,
                 Name = "Анна Каренина",
                 Year = 1839,
-                Version = 1,
                 CreationDateTime = DateTimeOffset.Now,
                 UpdationDateTime = DateTimeOffset.Now
             },
@@ -213,7 +201,6 @@ namespace LibraryWorkbench.Data
                 AuthorId = 2,
                 Name = "Властелин колец",
                 Year = 1955,
-                Version = 1,
                 CreationDateTime = DateTimeOffset.Now,
                 UpdationDateTime = DateTimeOffset.Now
             },
@@ -223,7 +210,6 @@ namespace LibraryWorkbench.Data
                 AuthorId = 2,
                 Name = "Хоббит",
                 Year = 1955,
-                Version = 1,
                 CreationDateTime = DateTimeOffset.Now,
                 UpdationDateTime = DateTimeOffset.Now
             },
@@ -233,7 +219,6 @@ namespace LibraryWorkbench.Data
                 AuthorId = 3,
                 Name = "Солярис",
                 Year = 1934,
-                Version = 1,
                 CreationDateTime = DateTimeOffset.Now,
                 UpdationDateTime = DateTimeOffset.Now
             });

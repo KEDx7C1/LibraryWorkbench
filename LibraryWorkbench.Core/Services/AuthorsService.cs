@@ -25,38 +25,40 @@ namespace LibraryWorkbench.Core.Services
             _mapper = mapper;
             _bookService = bookService;
         }
-        public IEnumerable<AuthorDto> GetAuthors()
+        public IQueryable<AuthorDto> GetAllAuthors()
         {
             return _mapper.ProjectTo<AuthorDto>(_authors.GetAll());
         }
         public AuthorWithBooksDto GetBooksByAuthor(int authorId)
         {
-            AuthorWithBooksDto authorWithBooksDTO = new AuthorWithBooksDto();
-            authorWithBooksDTO.Author = _mapper.Map<AuthorDto>(_authors.Get(authorId));
-            authorWithBooksDTO.Books = _mapper.ProjectTo<BookWithoutAuthorDto>(_books.GetAll().Where(x => x.AuthorId == authorId));
+            AuthorWithBooksDto authorWithBooksDTO = new AuthorWithBooksDto
+            {
+                Author = _mapper.Map<AuthorDto>(_authors.Get(authorId)),
+                Books = _mapper.ProjectTo<BookWithoutAuthorDto>(_books.GetAll().Where(x => x.AuthorId == authorId))
+            };
             return authorWithBooksDTO;
             
         }
         public AuthorWithBooksDto CreateAuthorWithBooks(AuthorWithBooksDto authorWithBooks)
         {
-            AuthorDto authorDto = authorWithBooks.Author;
-            IEnumerable<Book> books = _mapper.ProjectTo<Book>(authorWithBooks.Books.AsQueryable());
-
-            Author author = _mapper.Map<Author>(CreateAuthor(authorDto));
-            if (books != null)
+            Author author = _mapper.Map<Author>(CreateAuthor(authorWithBooks.Author));
+            if (authorWithBooks.Books != null)
+            {
+                IQueryable<Book> books = _mapper.ProjectTo<Book>(authorWithBooks.Books.AsQueryable());
                 foreach (var b in books)
                 {
                     b.Author = author;
                     _bookService.CreateBook(_mapper.Map<BookDto>(b));
                 }
+            }
             authorWithBooks.Author = _mapper.Map<AuthorDto>(author);
-            authorWithBooks.Books = _bookService.GetBooksByAuthor(authorDto.FirstName, authorDto.LastName, authorDto.MiddleName);
+            authorWithBooks.Books = _bookService.GetBooksByAuthor(author.FirstName, author.LastName, author.MiddleName);
             return authorWithBooks;
         }
         public AuthorDto CreateAuthor(AuthorDto authorDto)
         {
-            if (!_authors.GetAll().Any(x => x.FirstName.Equals(authorDto.FirstName)
-                && x.LastName.Equals(authorDto.LastName) && x.MiddleName.Equals(authorDto.MiddleName)))
+            if (!_authors.GetAll().Any(x => x.FirstName == authorDto.FirstName
+                && x.LastName == authorDto.LastName && x.MiddleName == authorDto.MiddleName))
             {
                 Author author = new Author
                 {
@@ -82,29 +84,20 @@ namespace LibraryWorkbench.Core.Services
                 _authors.Delete(author.AuthorId);
             }
         }
-        public IEnumerable<AuthorDto> GetAuthorsByYear(int year, string order)
+        public IQueryable<AuthorDto> GetAuthorsByYear(int year, bool isOrderByDesc)
         {
-            if (order.ToLower() != "desc" && order.ToLower() != "asc")
-                order = "asc";
-            IEnumerable<Author> authors;
-            switch (order.ToLower())
-            {
-                case "asc":
-                    authors = _books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
-                    break;
-                case "desc":
-                    authors = _books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderByDescending(a => a.LastName).Distinct();
-                    break;
-                default:
-                    authors = _books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
-                    break;
-            }
-            return _mapper.ProjectTo<AuthorDto>(authors.AsQueryable());
+            IQueryable<Author> authors;
+            if (isOrderByDesc)
+                authors = _books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderByDescending(a => a.LastName).Distinct();
+            else
+                authors = _books.GetAll().Where(x => x.Year == year).Select(x => x.Author).OrderBy(a => a.LastName).Distinct();
+
+            return _mapper.ProjectTo<AuthorDto>(authors);
         }
-        public IEnumerable<AuthorDto> GetAuthorsByBookNamepart(string namePart)
+        public IQueryable<AuthorDto> GetAuthorsByBookNamepart(string namePart)
         {
-            IEnumerable<Author> authors = _books.GetAll().Where(x => x.Name.Contains(namePart)).Select(x => x.Author).Distinct();
-            return _mapper.ProjectTo<AuthorDto>(authors.AsQueryable());
+            IQueryable<Author> authors = _books.GetAll().Where(x => x.Name.Contains(namePart)).Select(x => x.Author).Distinct();
+            return _mapper.ProjectTo<AuthorDto>(authors);
         }
     }
 }

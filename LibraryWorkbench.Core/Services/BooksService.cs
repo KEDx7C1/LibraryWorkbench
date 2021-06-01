@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System;
 
 namespace LibraryWorkbench.Core.Services
 {
@@ -30,9 +31,9 @@ namespace LibraryWorkbench.Core.Services
         public BookDto CreateBook(BookDto bookDto)
         {
             Book book = _mapper.Map<Book>(bookDto);
-            Author author = _authors.GetAll().Where(x => x.FirstName.Equals(bookDto.Author.FirstName)
-                && x.LastName.Equals(bookDto.Author.LastName) && (x.MiddleName.Equals(bookDto.Author.MiddleName)))
-                .FirstOrDefault();
+            Author author = _authors.GetAll()
+                .FirstOrDefault(x => x.FirstName.Equals(bookDto.Author.FirstName)
+                && x.LastName.Equals(bookDto.Author.LastName) && (x.MiddleName.Equals(bookDto.Author.MiddleName)));
             if (author != null)
                 book.Author = author;
             else
@@ -40,7 +41,7 @@ namespace LibraryWorkbench.Core.Services
             List<DimGenre> genres = new List<DimGenre>();
             foreach (var g in bookDto.Genres)
             {
-                DimGenre genre = _genres.GetAll().Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
+                DimGenre genre = _genres.GetAll().FirstOrDefault(x => x.GenreName.Equals(g.GenreName));
                 if (genre != null)
                 {
                     genres.Add(genre);
@@ -59,31 +60,29 @@ namespace LibraryWorkbench.Core.Services
         {
             return _mapper.Map<BookDto>(_books.Get(id));
         }
-        public IEnumerable<BookDto> GetAllBooks()
+        public IQueryable<BookDto> GetAllBooks()
         {
-            return _mapper.Map<IEnumerable<BookDto>>(_books.GetAll());
+            return _mapper.ProjectTo<BookDto>(_books.GetAll());
         }
-        public int DeleteBook(int id)
+        public void DeleteBook(int id)
         {
             Book book = _books.Get(id);
 
             if (!_persons.GetAll().Any(x => x.Books.Contains(book)))
             {
                 _books.Delete(id);
-                return StatusCodes.Status200OK;
             }
-            else
-                return StatusCodes.Status405MethodNotAllowed;
+            else throw new Exception($"Some person has books with id{id}");
         }
         public BookDto ChangeGanre(BookDto bookDto)
         {
-            IEnumerable<DimGenre> allGenres = _genres.GetAll();
+            IQueryable<DimGenre> allGenres = _genres.GetAll();
             Book book = _books.Get(bookDto.BookId);
             List<DimGenre> genres = new List<DimGenre>();
             DimGenre genre = new DimGenre();
             foreach (var g in bookDto.Genres)
             {
-                genre = allGenres.Where(x => x.GenreName.Equals(g.GenreName)).FirstOrDefault();
+                genre = allGenres.FirstOrDefault(x => x.GenreName.Equals(g.GenreName));
                 if (genre == null)
                     genres.Add(new DimGenre() { GenreName = g.GenreName });
                 else
@@ -96,20 +95,21 @@ namespace LibraryWorkbench.Core.Services
                 .Any(x=>x.GenreName.ToLower().Equals(g.GenreName.ToLower()))));
 
             _books.Update(book);
-            return _mapper.Map<BookDto>(_books.Get(book.BookId));
+            return _mapper.Map<BookDto>(book);
         }
-        public IEnumerable<BookDto> GetBooksByAuthor(string firstName, string lastName, string middleName)
+        public IQueryable<BookDto> GetBooksByAuthor(string firstName, string lastName, string middleName)
         {
-            IEnumerable<BookDto> authorBooks = _mapper.ProjectTo<BookDto>(_books.GetAll().AsQueryable()
+            IQueryable<BookDto> authorBooks = _mapper.ProjectTo<BookDto>(_books.GetAll().AsQueryable()
                 .Where(x => (x.Author.FirstName == firstName || firstName == null) &&
                 (x.Author.LastName == lastName || lastName == null) &&
                 (x.Author.MiddleName == middleName || middleName == null)));
 
             return authorBooks;
         }
-        public IEnumerable<BookDto> GetBooksByGenre(string genre)
+        public IQueryable<BookDto> GetBooksByGenre(string genre)
         {
-            IEnumerable <BookDto> books = _mapper.ProjectTo<BookDto>(_books.GetAll().AsQueryable().Where(x => x.Genres.Any(y => y.GenreName.Equals(genre))));
+            IQueryable <BookDto> books = _mapper.ProjectTo<BookDto>(_books.GetAll()
+                .AsQueryable().Where(x => x.Genres.Any(y => y.GenreName.Equals(genre))));
             return books;
         }
     }

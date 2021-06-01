@@ -21,7 +21,7 @@ namespace LibraryWorkbenchTests.Controllers
         public void GetGenres_ShouldReturn_ListOfDimGenresDTO()
         {
             //Arrenge
-            _mockPersonsService.Setup(a => a.GetAllPersons()).Returns(new List<PersonDto>());
+            _mockPersonsService.Setup(a => a.GetAllPersons()).Returns(new List<PersonDto>().AsQueryable());
             PersonsController personsController = new PersonsController(_mockPersonsService.Object);
             //Act
             var result = personsController.GetAllPersons();
@@ -32,7 +32,7 @@ namespace LibraryWorkbenchTests.Controllers
         public void GetPersonBooksById_ShouldReturn_OkObjectResult()
         {
             //Arrenge
-            _mockPersonsService.Setup(a => a.GetPersonBooksById(It.IsAny<int>())).Returns(new List<BookDto>());
+            _mockPersonsService.Setup(a => a.GetPersonBooksById(It.IsAny<int>())).Returns(new List<BookDto>().AsQueryable());
             PersonsController personsController = new PersonsController(_mockPersonsService.Object);
             //Act
             var result = personsController.GetPersonBooksById(It.IsAny<int>());
@@ -40,15 +40,14 @@ namespace LibraryWorkbenchTests.Controllers
             Assert.IsType<OkObjectResult>(result);
         }
         [Fact]
-        public void GetPersonBooksById_ShouldReturn_NotFoundResult()
+        public void GetPersonBooksById_ShouldThrow_Exception()
         {
             //Arrenge
             _mockPersonsService.Setup(a => a.GetPersonBooksById(It.IsAny<int>())).Throws(new Exception());
             PersonsController personsController = new PersonsController(_mockPersonsService.Object);
             //Act
-            var result = personsController.GetPersonBooksById(It.IsAny<int>());
             //Assert
-            Assert.IsType<NotFoundResult>(result);
+            Assert.Throws<Exception>(() => personsController.GetPersonBooksById(It.IsAny<int>()));
         }
         [Fact]
         public void CreatePerson_ShouldReturn_OkObjectResult()
@@ -95,28 +94,26 @@ namespace LibraryWorkbenchTests.Controllers
             Assert.IsType<PersonExtDto>(result);
         }
         [Fact]
-        public void DeletePerson_ShouldReturn_StatusCodeResult()
+        public void DeletePerson_ShouldReturn_OkResult()
         {
-            int okResult = 200;
             //Arrenge
-            _mockPersonsService.Setup(a => a.DeletePersonById(It.IsAny<int>())).Returns(okResult);
+            _mockPersonsService.Setup(a => a.DeletePersonById(It.IsAny<int>()));
             PersonsController personsController = new PersonsController(_mockPersonsService.Object);
             //Act
             var result = personsController.DeletePerson(It.IsAny<int>());
             //Assert
-            Assert.IsType<StatusCodeResult>(result);
+            Assert.IsType<OkResult>(result);
         }
         [Fact]
-        public void DeletePersonsByFullName_ShouldReturn_StatusCodeResult()
+        public void DeletePersonsByFullName_ShouldReturn_OkResult()
         {
-            int okResult = 200;
             //Arrenge
-            _mockPersonsService.Setup(a => a.DeletePersonsByFullName(It.IsAny<PersonDto>())).Returns(okResult);
+            _mockPersonsService.Setup(a => a.DeletePersonsByFullName(It.IsAny<PersonDto>()));
             PersonsController personsController = new PersonsController(_mockPersonsService.Object);
             //Act
             var result = personsController.DeletePersonsByFullName(It.IsAny<PersonDto>());
             //Assert
-            Assert.IsType<StatusCodeResult>(result);
+            Assert.IsType<OkResult>(result);
         }
     }
 }

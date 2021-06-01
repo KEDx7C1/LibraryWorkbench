@@ -35,7 +35,6 @@ namespace LibraryWorkbench.Data
         {
             author.CreationDateTime = DateTimeOffset.Now;
             author.UpdationDateTime = author.CreationDateTime;
-            author.Version = 1;
             _context.Authors.Add(author);
             _context.SaveChanges();
             return author;
@@ -43,7 +42,6 @@ namespace LibraryWorkbench.Data
         public Author Update(Author author)
         {
             author.UpdationDateTime = DateTimeOffset.Now;
-            author.Version++;
             _context.Entry(author).State = EntityState.Modified;
             _context.SaveChanges();
             return author;

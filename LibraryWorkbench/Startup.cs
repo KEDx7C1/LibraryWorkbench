@@ -38,8 +38,6 @@ namespace LibraryWorkbench
             }).AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
-            }).AddJsonOptions(options =>
-            {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
 
@@ -60,9 +58,6 @@ namespace LibraryWorkbench
             services.AddScoped<IBooksRepository, BooksRepository>();
             services.AddScoped<IGenresRepository, GenresRepository>();
             services.AddScoped<IPersonsRepository, PersonsRepository>();
-
-            services.AddScoped<DataContext>();
-            services.AddScoped<IDataContext, DataContext>(sp => sp.GetService<DataContext>());
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

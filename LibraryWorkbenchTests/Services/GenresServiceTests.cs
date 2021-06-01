@@ -16,18 +16,15 @@ namespace LibraryWorkbenchTests.Services
 {
     public class GenresServiceTests
     {
-        private static IMapper _mapper;
+        private readonly IMapper _mapper;
         public GenresServiceTests()
         {
-            if (_mapper == null)
+            var mappingConfig = new MapperConfiguration(mc =>
             {
-                var mappingConfig = new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new MappingProfile());
-                });
-                IMapper mapper = mappingConfig.CreateMapper();
-                _mapper = mapper;
-            }
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            _mapper = mapper;
         }
         [Fact]
         public void GetGenres_ShouldReturn_TwoGenres()
@@ -40,12 +37,12 @@ namespace LibraryWorkbenchTests.Services
             var mockBooksRepository = new Mock<IBooksRepository>();
             GenresServices genresServices = new GenresServices(mockGenresRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
-            var result = genresServices.GetGenres();
+            var actual = genresServices.GetAllGenres();
             //Assert
-            Assert.Equal(expectedCount, result.Count());
+            Assert.Equal(expectedCount, actual.Count());
         }
         [Fact]
-        public void PersonWasCreated()
+        public void CreateGenre_DimGenreDto()
         {
             //Arrange
             const int expectedCount = 2;

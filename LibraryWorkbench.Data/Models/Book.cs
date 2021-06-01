@@ -23,7 +23,7 @@ namespace LibraryWorkbench.Data.Models
     /// <summary>
     /// 2.0.2, 2.2.1
     /// </summary>
-    public class Book : Properties, IBook
+    public class Book : BasicEntity, IBook
     {
         [Required]
         [Column("name")]

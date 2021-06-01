@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace LibraryWorkbench.Controllers
 {
     /// <summary>
-    /// Hometask 2 7.1
+    /// Person API (Hometask 2 7.1)
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +25,6 @@ namespace LibraryWorkbench.Controllers
         /// <summary>
         /// Get all persons
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAllPersons()
         {
@@ -38,14 +37,7 @@ namespace LibraryWorkbench.Controllers
         [HttpGet("{id}/book")]
         public IActionResult GetPersonBooksById(int id)
         {
-            try
-            {
-                return new OkObjectResult(_personsService.GetPersonBooksById(id));
-            }
-            catch
-            {
-                return new NotFoundResult();
-            }
+            return new OkObjectResult(_personsService.GetPersonBooksById(id));
         }
         /// <summary>
         /// Create new peson (Hometask 2 7.1.1)
@@ -95,7 +87,8 @@ namespace LibraryWorkbench.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeletePerson(int id)
         {
-            return StatusCode(_personsService.DeletePersonById(id));
+            _personsService.DeletePersonById(id);
+            return new OkResult();
         }
         /// <summary>
         /// Delete persons by fullname (Hometask 2 7.1.4)
@@ -104,7 +97,8 @@ namespace LibraryWorkbench.Controllers
         [HttpDelete("byFullName")]
         public IActionResult DeletePersonsByFullName([FromBody]PersonDto personDto)
         {
-            return StatusCode(_personsService.DeletePersonsByFullName(personDto));
+            _personsService.DeletePersonsByFullName(personDto);
+            return new OkResult();
         }
     }
 }

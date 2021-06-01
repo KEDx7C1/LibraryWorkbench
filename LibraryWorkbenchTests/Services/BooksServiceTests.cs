@@ -15,99 +15,84 @@ namespace LibraryWorkbenchTests.Services
 {
     public class BooksServiceTests
     {
-        private static IMapper _mapper;
-        private static List<Book> _books;
-        private static List<Person> _persons;
-        private static AuthorDto _authorDto;
-        private static DimGenreDto _genre1Dto;
-        private static DimGenreDto _genre2Dto;
-        private static BookDto _bookDto1;
-        private static BookDto _bookDto2;
-        private static BookDto _bookDto3;
-        private static Mock<IGenresRepository> _mockGenresRepository;
-        private static Mock<IPersonsRepository>  _mockPersonsRepository;
-        private static Mock<IBooksRepository> _mockBooksRepository;
-        private static Mock<IAuthorsRepository> _mockAuthorsRepository;
+        private readonly IMapper _mapper;
+        private readonly List<Book> _books;
+        private readonly List<Person> _persons;
+        private readonly AuthorDto _authorDto;
+        private readonly DimGenreDto _genre1Dto;
+        private readonly DimGenreDto _genre2Dto;
+        private readonly BookDto _bookDto1;
+        private readonly BookDto _bookDto2;
+        private readonly BookDto _bookDto3;
+        private readonly Mock<IGenresRepository> _mockGenresRepository;
+        private readonly Mock<IPersonsRepository>  _mockPersonsRepository;
+        private readonly Mock<IBooksRepository> _mockBooksRepository;
+        private readonly Mock<IAuthorsRepository> _mockAuthorsRepository;
         public BooksServiceTests()
         {
-            if (_mapper == null)
+            var mappingConfig = new MapperConfiguration(mc =>
             {
-                var mappingConfig = new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new MappingProfile());
-                });
-                IMapper mapper = mappingConfig.CreateMapper();
-                _mapper = mapper;
-            }
-            if (_authorDto == null)
-                _authorDto = new AuthorDto()
-                {
-                    AuthorId = 1,
-                    FirstName = "FirstName1",
-                    LastName = "LastName1",
-                    MiddleName = "MiddleName1"
-                };
-            if (_genre1Dto == null)
-                _genre1Dto = new DimGenreDto()
-                {
-                    GenreId = 1,
-                    GenreName = "Genre1"
-                };
-            if (_genre2Dto == null)
-                _genre2Dto = new DimGenreDto()
-                {
-                    GenreId = 2,
-                    GenreName = "Genre2"
-                };
-            if (_bookDto1 == null)
-                _bookDto1 = new BookDto()
-                {
-                    BookId = 1,
-                    Author = _authorDto,
-                    Name = "BookName1",
-                    Year = 1900,
-                    Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
-                };
-            if (_bookDto2 == null)
-                _bookDto2 = new BookDto()
-                {
-                    BookId = 2,
-                    Author = _authorDto,
-                    Name = "BookName2",
-                    Year = 1900,
-                    Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
-                };
-            if (_bookDto3 == null)
-                _bookDto3 = new BookDto()
-                {
-                    BookId = 3,
-                    Author = _authorDto,
-                    Name = "BookName3",
-                    Year = 1900,
-                    Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
-                };
-            if (_books == null)
-                _books = new List<Book>()
-                {
-                _mapper.Map<Book>(_bookDto1),
-                _mapper.Map<Book>(_bookDto2)
-                };
-            if (_persons == null)
-                _persons = new List<Person> {new Person()
-                {
-                    PersonId = 1,
-                    FirstName = "FirstName1",
-                    LastName = "LastName1",
-                    MiddleName = "MiddleName1"
-                } };
-            if (_mockGenresRepository == null)
-                _mockGenresRepository = new Mock<IGenresRepository>();
-            if (_mockPersonsRepository == null)
-                _mockPersonsRepository = new Mock<IPersonsRepository>();
-            if (_mockBooksRepository == null)
-                _mockBooksRepository = new Mock<IBooksRepository>();
-            if (_mockAuthorsRepository == null)
-                _mockAuthorsRepository = new Mock<IAuthorsRepository>();
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            _mapper = mapper;
+            _authorDto = new AuthorDto()
+            {
+                AuthorId = 1,
+                FirstName = "FirstName1",
+                LastName = "LastName1",
+                MiddleName = "MiddleName1"
+            };
+            _genre1Dto = new DimGenreDto()
+            {
+                GenreId = 1,
+                GenreName = "Genre1"
+            };
+            _genre2Dto = new DimGenreDto()
+            {
+                GenreId = 2,
+                GenreName = "Genre2"
+            };
+            _bookDto1 = new BookDto()
+            {
+                BookId = 1,
+                Author = _authorDto,
+                Name = "BookName1",
+                Year = 1900,
+                Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
+            };
+            _bookDto2 = new BookDto()
+            {
+                BookId = 2,
+                Author = _authorDto,
+                Name = "BookName2",
+                Year = 1900,
+                Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
+            };
+            _bookDto3 = new BookDto()
+            {
+                BookId = 3,
+                Author = _authorDto,
+                Name = "BookName3",
+                Year = 1900,
+                Genres = new List<DimGenreDto>() { _genre1Dto, _genre2Dto }
+            };
+            _books = new List<Book>()
+            {
+            _mapper.Map<Book>(_bookDto1),
+            _mapper.Map<Book>(_bookDto2)
+            };
+            _persons = new List<Person> {new Person()
+            {
+                PersonId = 1,
+                FirstName = "FirstName1",
+                LastName = "LastName1",
+                MiddleName = "MiddleName1"
+            } };
+            _mockGenresRepository = new Mock<IGenresRepository>();
+            _mockPersonsRepository = new Mock<IPersonsRepository>();
+            _mockBooksRepository = new Mock<IBooksRepository>();
+            _mockAuthorsRepository = new Mock<IAuthorsRepository>();
         }
         [Fact]
         public void CreateBook_ShouldReturn_BookDTO()
@@ -120,10 +105,10 @@ namespace LibraryWorkbenchTests.Services
             _mockBooksRepository.Setup(a => a.Create(It.IsAny<Book>())).Callback<Book>(p => _books.Add(p));
             _mockGenresRepository.Setup(a => a.GetAll()).Returns((new List<DimGenre> { _mapper.Map<DimGenre>(_genre1Dto)}).AsQueryable);
             //Act
-            var result = booksServices.CreateBook(_bookDto3);
+            var actual = booksServices.CreateBook(_bookDto3);
             //Assert
             Assert.Equal(expectedCount, _books.Count());
-            Assert.IsType<BookDto>(result);
+            Assert.IsType<BookDto>(actual);
         }
         [Fact]
         public void GetBook_ShouldReturn_BookDTO()
@@ -159,20 +144,35 @@ namespace LibraryWorkbenchTests.Services
         {
             //Arrenge
             int bookId = 2;
-            int okStatus = 200;
             _mockBooksRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(_books.First());
             _mockBooksRepository.Setup(a => a.Delete(It.IsAny<int>()))
-                .Callback(() => _books.Remove(_books.Where(x => x.BookId == bookId).FirstOrDefault()));
+                .Callback(() => _books.Remove(_books.FirstOrDefault(x => x.BookId == bookId)));
             _mockPersonsRepository.Setup(a => a.GetAll()).Returns(_persons.AsQueryable);
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
 
             //Act
-            int result = booksServices.DeleteBook(bookId);
+            booksServices.DeleteBook(bookId);
 
             //Assert
-            Assert.Equal(okStatus, result);
+            Assert.True(true);
+        }
+        [Fact]
+        public void DeleteBook_ShouldThrow_Exception()
+        {
+            //Arrenge
+            _mockBooksRepository.Setup(a => a.Get(It.IsAny<int>())).Throws(new Exception());
+            _mockBooksRepository.Setup(a => a.Delete(It.IsAny<int>()));
+            _mockPersonsRepository.Setup(a => a.GetAll()).Returns(_persons.AsQueryable);
+
+            BooksService booksServices = new BooksService(_mockBooksRepository.Object,
+                _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
+
+            //Act
+            //Assert
+            Assert.Throws<Exception>(() => booksServices.DeleteBook(It.IsAny<int>()));
+
         }
         [Fact]
         public void ChangeGanre_ShouldReturn_BookDTO()
@@ -197,14 +197,14 @@ namespace LibraryWorkbenchTests.Services
             string lastName = _authorDto.LastName;
             string middleName = _authorDto.MiddleName;
 
-            _mockBooksRepository.Setup(a => a.GetAll()).Returns(_books.AsQueryable);
+            _mockBooksRepository.Setup(a => a.GetAll()).Returns(_books.AsQueryable());
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
 
             var result = booksServices.GetBooksByAuthor(firstName, lastName, middleName);
 
-            Assert.Null(result.FirstOrDefault());
+            Assert.Equal(expecterCount, result.Count());
         }
         [Fact]
         public void GetBooksByGenre_ShouldReturn_ListOfBookDTO()

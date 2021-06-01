@@ -23,9 +23,9 @@ namespace LibraryWorkbench.Core.Services
             _books = booksRepository;
             _mapper = mapper;
         }
-        public IEnumerable<PersonDto> GetAllPersons()
+        public IQueryable<PersonDto> GetAllPersons()
         {
-            return _mapper.Map<IEnumerable<PersonDto>>(_persons.GetAll());
+            return _mapper.ProjectTo<PersonDto>(_persons.GetAll());
         }
         public PersonDto CreatePerson(PersonDto personDto)
         {
@@ -40,7 +40,7 @@ namespace LibraryWorkbench.Core.Services
                     Birthday = personDto.Birthday
                 };
                 _persons.Create(person);
-                return _mapper.Map<PersonDto>(_persons.Get(person.PersonId));
+                return _mapper.Map<PersonDto>(person);
             }
             else
                 throw new Exception($"Person {personDto.FirstName} {personDto.LastName} {personDto.MiddleName} birth {personDto.Birthday} already exist");
@@ -55,19 +55,11 @@ namespace LibraryWorkbench.Core.Services
             _persons.Update(person);
             return _mapper.Map<PersonDto>(person);
         }
-        public int DeletePersonById(int id)
+        public void DeletePersonById(int id)
         {
-            try
-            {
-                _persons.Delete(id);
-                return StatusCodes.Status200OK;
-            }
-            catch
-            {
-                return StatusCodes.Status404NotFound;
-            }
+            _persons.Delete(id);
         }
-        public int DeletePersonsByFullName(PersonDto personDto)
+        public void DeletePersonsByFullName(PersonDto personDto)
         {
             List<Person> personsToDelete = _persons.GetAll().Where(x => x.FirstName == personDto.FirstName
             && x.LastName == personDto.LastName && x.MiddleName == personDto.MiddleName).ToList();
@@ -75,10 +67,9 @@ namespace LibraryWorkbench.Core.Services
             {
                 foreach (var p in personsToDelete)
                     _persons.Delete(p.PersonId);
-                return StatusCodes.Status200OK;
             }
             else
-                return StatusCodes.Status404NotFound;
+                throw new Exception("Persons with same fullname not found");
         }
         public PersonExtDto GiveBook(int personId, int bookId)
         {
@@ -100,10 +91,10 @@ namespace LibraryWorkbench.Core.Services
 
             return _mapper.Map<PersonExtDto>(_persons.GetWithBooks(person.PersonId));
         }
-        public IEnumerable<BookDto> GetPersonBooksById (int personId)
+        public IQueryable<BookDto> GetPersonBooksById (int personId)
         {
-            var bookDtos = _mapper.Map<IEnumerable<BookDto>>(_persons.Get(personId).Books);
-            return bookDtos;
+            var books = _persons.Get(personId).Books;
+            return _mapper.ProjectTo<BookDto>(books.AsQueryable());
         }
     }
 }

@@ -14,60 +14,38 @@ namespace LibraryWorkbenchTests.Services
 {
     public class PersonsServiceTests
     {
-        private static IMapper _mapper;
-        private List<Person> _persons;
+        private readonly IMapper _mapper;
+        private readonly List<Person> _persons;
+        private readonly PersonDto _personDto;
+        private readonly Book _book;
         public PersonsServiceTests()
         {
-            if (_mapper == null)
+            var mappingConfig = new MapperConfiguration(mc =>
             {
-                var mappingConfig = new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new MappingProfile());
-                });
-                IMapper mapper = mappingConfig.CreateMapper();
-                _mapper = mapper;
-            }
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            _mapper = mapper;
 
             _persons = new List<Person>()
                 {
-                    new Person()
+                new Person()
                 {
                     PersonId = 1,
                     FirstName = "FirstName1",
                     LastName = "LastName1",
                     MiddleName = "MiddleName1",
                     Birthday = new DateTime(1985, 1, 1)
-                }
-                , new Person()
+                }, new Person()
                 {
                     PersonId = 2,
                     FirstName = "FirstName2",
                     LastName = "LastName2",
                     MiddleName = "MiddleName2",
                     Birthday = new DateTime(1984, 2, 5)
-                }};
-        }
-
-        [Fact]
-        public void GetPersons_ShouldReturn_TwoPersons()
-        {
-            //Arrange
-            const int expectedCount = 2;
-            var mockPersonsRepository = new Mock<IPersonsRepository>();
-            mockPersonsRepository.Setup(a => a.GetAll())
-                .Returns(_persons.AsQueryable());
-            var mockBooksRepository = new Mock<IBooksRepository>();
-            PersonsService genresServices = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
-            //Act
-            var result = genresServices.GetAllPersons();
-            //Assert
-            Assert.Equal(expectedCount, result.Count());
-        }
-        [Fact]
-        public void CreatePerson_ShouldReturn_PersonDTO()
-        {
-            //Arrage
-            var personDto = new PersonDto()
+                }
+            };
+            _personDto = new PersonDto()
             {
                 PersonId = 3,
                 FirstName = "FirstName3",
@@ -75,55 +53,69 @@ namespace LibraryWorkbenchTests.Services
                 MiddleName = "MiddleName3",
                 Birthday = new DateTime(1981, 7, 9)
             };
+            _book = new Book()
+            {
+                BookId = 1,
+                Name = "Book1",
+                Author = new Author(),
+                Genres = new List<DimGenre>() { new DimGenre(), new DimGenre() },
+                Year = 1900
+            };
+        }
+
+        [Fact]
+        public void GetAllPersons_ShouldReturn_ListOfPersonDto()
+        {
+            //Arrange
+            int expectedCount = _persons.Count();
+
             var mockBooksRepository = new Mock<IBooksRepository>();
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.GetAll())
                 .Returns(_persons.AsQueryable());
-            mockPersonsRepository.Setup(a => a.Create(It.IsAny<Person>())).Callback<Person>(p =>
-            {
-                _persons.Add(p);
-            });
-            mockPersonsRepository.Setup(a => a.Get(It.IsAny<int>()))
-                .Returns(_persons.Where(x => x.PersonId == _persons.Count()).FirstOrDefault());
+            
+            PersonsService genresServices = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
+            //Act
+            var actual = genresServices.GetAllPersons();
+            //Assert
+            Assert.Equal(expectedCount, actual.Count());
+        }
+        [Fact]
+        public void CreatePerson_ShouldReturn_PersonDto()
+        {
+            //Arrange
+            var mockBooksRepository = new Mock<IBooksRepository>();
+            var mockPersonsRepository = new Mock<IPersonsRepository>();
+            mockPersonsRepository.Setup(a => a.GetAll())
+                .Returns(_persons.AsQueryable());
+            mockPersonsRepository.Setup(a => a.Create(It.IsAny<Person>())).Callback(() =>
+                _persons.Add(_mapper.Map<Person>(_personDto))).Returns(() => _persons.Last());
+
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
-            var result = personsService.CreatePerson(personDto);
-
+            var actual = personsService.CreatePerson(_personDto);
             //Assert
-            Assert.IsType<PersonDto>(result);
-            Assert.Equal(personDto.PersonId, _persons.Count());
+            Assert.IsType<PersonDto>(actual);
+            Assert.Equal(_personDto.PersonId, _persons.Last().PersonId);
         }
         [Fact]
         public void CreatePerson_ShouldThrow_Exception()
         {
-            //Arrage
-            var personDto = new PersonDto()
-            {
-                PersonId = 3,
-                FirstName = "FirstName1",
-                LastName = "LastName1",
-                MiddleName = "MiddleName1",
-                Birthday = new DateTime(1985, 1, 1)
-            };
+            //Arrange
             var mockBooksRepository = new Mock<IBooksRepository>();
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.GetAll())
                 .Returns(_persons.AsQueryable());
-            mockPersonsRepository.Setup(a => a.Create(It.IsAny<Person>())).Callback<Person>(p =>
-            {
-                _persons.Add(p);
-            });
-            mockPersonsRepository.Setup(a => a.Get(It.IsAny<int>()))
-                .Returns(_persons.Where(x => x.PersonId == _persons.Count()).FirstOrDefault());
+            _persons.Add(_mapper.Map<Person>(_personDto));
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
             //Assert
-            Assert.Throws<Exception>(() => personsService.CreatePerson(personDto));
+            Assert.Throws<Exception>(() => personsService.CreatePerson(_personDto));
         }
         [Fact]
-        public void UpdatePerson_ShouldReturn_PersonDTO()
+        public void UpdatePerson_ShouldReturn_PersonDto()
         {
-            //Arrage
+            //Arrange
             var personDto = new PersonDto()
             {
                 PersonId = 1,
@@ -135,38 +127,38 @@ namespace LibraryWorkbenchTests.Services
             var mockBooksRepository = new Mock<IBooksRepository>();
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.Get(It.IsAny<int>()))
-                .Returns(_persons.Where(x=>x.PersonId == personDto.PersonId).FirstOrDefault());
+                .Returns(_persons.FirstOrDefault(x => x.PersonId == personDto.PersonId));
             mockPersonsRepository.Setup(a => a.Update(It.IsAny<Person>())).Callback<Person>(p =>
             {
-                Person person = _persons.Where(x => x.PersonId == p.PersonId).FirstOrDefault();
+                Person person = _persons.FirstOrDefault(x => x.PersonId == p.PersonId);
                 person = _mapper.Map<Person>(personDto);
             });
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
-            var result = personsService.UpdatePerson(personDto);
-
+            var actual = personsService.UpdatePerson(personDto);
             //Assert
-            Assert.IsType<PersonDto>(result);
+            Assert.IsType<PersonDto>(actual);
             Assert.Equal(personDto.FirstName, _persons.Where(x => x.PersonId == personDto.PersonId).Select(x => x.FirstName).FirstOrDefault());
         }
         [Fact]
-        public void PersonWasDeletedById()
+        public void DeletePersonById_PersonWasDeleted()
         {
+            //Arrange
             int personId = 2;
             var mockBooksRepository = new Mock<IBooksRepository>();
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.Delete(It.IsAny<int>()))
-                .Callback(() => _persons.Remove(_persons.Where(x => x.PersonId == personId).FirstOrDefault()));
+                .Callback(() => _persons.Remove(_persons.FirstOrDefault(x => x.PersonId == personId)));
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
             personsService.DeletePersonById(personId);
             //Assert
-            Assert.Null(_persons.Where(x => x.PersonId == personId).FirstOrDefault());
+            Assert.Null(_persons.FirstOrDefault(x => x.PersonId == personId));
         }
         [Fact]
-        public void PersonWasDeletedByFullName()
+        public void DeletePersonsByFullName_PersonWasDeleted()
         {
-            int ok = 200;
+            //Arrange
             PersonDto personDto = new PersonDto()
             {
                 PersonId = 10,
@@ -184,97 +176,69 @@ namespace LibraryWorkbenchTests.Services
                 .Callback(() => _persons.Remove(_persons.Where(x => x.PersonId == personDto.PersonId).FirstOrDefault()));
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
-            int result = personsService.DeletePersonsByFullName(personDto);
+            personsService.DeletePersonsByFullName(personDto);
             //Assert
-            Assert.Null(_persons.Where(x => x.PersonId == personDto.PersonId).FirstOrDefault());
-            Assert.Equal(ok, result);
+            Assert.Null(_persons.FirstOrDefault(x => x.PersonId == personDto.PersonId));
         }
         [Fact]
-        public void GiveBook_ShouldReturn_PersonExtDTO()
+        public void GiveBook_ShouldReturn_PersonExtDto()
         {
-            
+            //Arrange
             var mockBooksRepository = new Mock<IBooksRepository>();
             mockBooksRepository.Setup(a => a.Get(It.IsAny<int>()))
-                .Returns(new Book()
-                {
-                    Name = "Book1",
-                    Author = new Author(),
-                    Genres = new List<DimGenre>() { new DimGenre(), new DimGenre() },
-                    Year = 1900
-                });
+                .Returns(_book);
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.Get(It.IsAny<int>()))
                 .Returns(_persons.First());
             mockPersonsRepository.Setup(a => a.GetWithBooks(It.IsAny<int>()))
                 .Returns(_persons.First());
-
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
-
-            var result = personsService.GiveBook(It.IsAny<int>(), It.IsAny<int>());
-            Assert.IsType<PersonExtDto>(result);
-            Assert.NotNull(result.Books);
+            //Act
+            var actual = personsService.GiveBook(It.IsAny<int>(), It.IsAny<int>());
+            //Assert
+            Assert.IsType<PersonExtDto>(actual);
+            Assert.NotNull(actual.Books);
         }
         [Fact]
-        public void ReturnBook_ShouldReturn_PersonExtDTO()
+        public void ReturnBook_ShouldReturn_PersonExtDto()
         {
-            Book book = new Book()
-            {
-                BookId = 1,
-                Name = "Book1",
-                Author = new Author(),
-                Genres = new List<DimGenre>() { new DimGenre(), new DimGenre() },
-                Year = 1900
-            };
-            _persons.First().Books.Add(book);
+            //Arrange
+            _persons.First().Books = new List<Book>();
+            _persons.First().Books.Add(_book);
             var mockBooksRepository = new Mock<IBooksRepository>();
             mockBooksRepository.Setup(a => a.Get(It.IsAny<int>()))
-                .Returns(book);
+                .Returns(_book);
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.Get(It.IsAny<int>()))
                 .Returns(_persons.First());
             mockPersonsRepository.Setup(a => a.GetWithBooks(It.IsAny<int>()))
                 .Returns(_persons.First());
-
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
-
-            var result = personsService.ReturnBook(It.IsAny<int>(), It.IsAny<int>());
-            Assert.IsType<PersonExtDto>(result);
-            Assert.Empty(result.Books);
+            //Act
+            var actual = personsService.ReturnBook(It.IsAny<int>(), It.IsAny<int>());
+            //Assert
+            Assert.IsType<PersonExtDto>(actual);
+            Assert.Empty(actual.Books);
         }
         [Fact]
         public void GetPersonBooksById_ShouldReturn_TwoBooks()
         {
+            //Arrange
             int expectedCount = 2;
-            Book book1 = new Book()
-            {
-                BookId = 1,
-                Name = "Book1",
-                Author = new Author(),
-                Genres = new List<DimGenre>() { new DimGenre(), new DimGenre() },
-                Year = 1900
-            };
-            Book book2 = new Book()
-            {
-                BookId = 1,
-                Name = "Book1",
-                Author = new Author(),
-                Genres = new List<DimGenre>() { new DimGenre(), new DimGenre() },
-                Year = 1900
-            };
-            _persons.First().Books.Add(book1);
-            _persons.First().Books.Add(book2);
+            _persons.First().Books = new List<Book>();
+            _persons.First().Books.Add(_book);
+            _persons.First().Books.Add(_book);
             var mockBooksRepository = new Mock<IBooksRepository>();
             var mockPersonsRepository = new Mock<IPersonsRepository>();
             mockPersonsRepository.Setup(a => a.Get(It.IsAny<int>()))
                 .Returns(_persons.First());
             mockPersonsRepository.Setup(a => a.GetWithBooks(It.IsAny<int>()))
                 .Returns(_persons.First());
-
             PersonsService personsService = new PersonsService(mockPersonsRepository.Object, mockBooksRepository.Object, _mapper);
-
-            var result = personsService.GetPersonBooksById(_persons.First().PersonId);
-            Assert.IsType<List<BookDto>>(result);
-            Assert.Equal(expectedCount, result.Count());
+            //Act
+            var actual = personsService.GetPersonBooksById(_persons.First().PersonId);
+            //Assert
+            Assert.Equal(expectedCount, actual.Count());
         }
     }
     

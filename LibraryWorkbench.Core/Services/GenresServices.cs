@@ -21,19 +21,20 @@ namespace LibraryWorkbench.Core.Services
             _books = booksRepository;
             _mapper = mapper;
         }
-        public IEnumerable<DimGenreDto> GetGenres()
+        public IQueryable<DimGenreDto> GetAllGenres()
         {
             return _mapper.ProjectTo<DimGenreDto>(_genres.GetAll());
         }
 
-        public IEnumerable<GenresStatisticDto> GetGenresStat()
+        public IQueryable<GenresStatisticDto> GetGenresStat()
         {
-            IEnumerable<GenresStatisticDto> genreStatistic = _books.GetAll().SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new GenresStatisticDto()
+            IQueryable<GenresStatisticDto> genreStatisticDto = _books.GetAll()
+                .SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new GenresStatisticDto()
             {
                 GenreName = n,
                 GenreCount = c.Count()
             });
-            return genreStatistic;
+            return genreStatisticDto;
         }
 
         public void CreateGenre(DimGenreDto genre)

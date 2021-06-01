@@ -40,7 +40,6 @@ namespace LibraryWorkbench.Data
         {
             person.CreationDateTime = DateTimeOffset.Now;
             person.UpdationDateTime = person.CreationDateTime;
-            person.Version = 1;
             _context.Persons.Add(person);
             _context.SaveChanges();
             return person;
@@ -48,15 +47,13 @@ namespace LibraryWorkbench.Data
         public Person Update(Person person)
         {
             person.UpdationDateTime = DateTimeOffset.Now;
-            person.Version++;
             _context.Entry(person).State = EntityState.Modified;
             _context.SaveChanges();
             return person;
         }
         public void Delete(int id)
         {
-            Person person = _context.Persons.Include(b => b.Books).ThenInclude(a => a.Genres)
-                .Include(x => x.Books).ThenInclude(a => a.Author).FirstOrDefault(x => x.PersonId == id);
+            Person person = _context.Persons.FirstOrDefault(x => x.PersonId == id);
             if (person == null)
                 throw new Exception($"Person with Id {id} not found");
             _context.Persons.Remove(person);

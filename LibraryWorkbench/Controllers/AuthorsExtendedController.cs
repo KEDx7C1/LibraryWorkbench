@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 namespace LibraryWorkbench.Controllers
 {
+    /// <summary>
+    /// Author extended API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorsExtendedController : ControllerBase
@@ -22,12 +25,12 @@ namespace LibraryWorkbench.Controllers
         /// Get books by year (Hometask 2 8.2)
         /// </summary>
         [HttpGet("ByYear/{year}")]
-        public IEnumerable<AuthorDto> GetAuthorsByYear(int year, string order = "")
+        public IEnumerable<AuthorDto> GetAuthorsByYear(int year, bool isOrderByDesc = false)
         {
-            return _authorsService.GetAuthorsByYear(year, order);
+            return _authorsService.GetAuthorsByYear(year, isOrderByDesc);
         }
         /// <summary>
-        /// Get book by name (Hometask 2 8.3)
+        /// Get book by part of the name (Hometask 2 8.3)
         /// </summary>
         [HttpGet("ByBookName/{namePart}")]
         public IEnumerable<AuthorDto> GetAuthorsByBookNamepart(string namePart)

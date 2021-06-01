@@ -21,23 +21,25 @@ namespace LibraryWorkbenchTests.Controllers
         public void GetAuthorsByYear_ShouldReturn_ListOfAuthorDTO()
         {
             //Arrenge
-            _mockAuthorsService.Setup(a => a.GetAuthorsByYear(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<AuthorDto>());
+            int expectedCount = 1;
+            _mockAuthorsService.Setup(a => a.GetAuthorsByYear(It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<AuthorDto>() { new AuthorDto()}.AsQueryable());
             AuthorsExtendedController authorsExtendedController = new AuthorsExtendedController(_mockAuthorsService.Object);
             //Act
-            var result = authorsExtendedController.GetAuthorsByYear(It.IsAny<int>(), It.IsAny<string>());
+            var result = authorsExtendedController.GetAuthorsByYear(It.IsAny<int>(), It.IsAny<bool>());
             //Assert
-            Assert.IsType<List<AuthorDto>>(result);
+            Assert.Equal(expectedCount, result.Count());
         }
         [Fact]
-        public void GetBooksByAuthor_ShouldReturn_OkObjectResult()
+        public void GetBooksByAuthor_ShouldReturn_ListOfAuthorDto()
         {
             //Arrenge
-            _mockAuthorsService.Setup(a => a.GetAuthorsByBookNamepart(It.IsAny<string>())).Returns(new List<AuthorDto>());
+            int expectedCount = 1;
+            _mockAuthorsService.Setup(a => a.GetAuthorsByBookNamepart(It.IsAny<string>())).Returns(new List<AuthorDto>() { new AuthorDto()}.AsQueryable());
             AuthorsExtendedController authorsExtendedController = new AuthorsExtendedController(_mockAuthorsService.Object);
             //Act
             var result = authorsExtendedController.GetAuthorsByBookNamepart(It.IsAny<string>());
             //Assert
-            Assert.IsType<List<AuthorDto>>(result);
+            Assert.Equal(expectedCount, result.Count());
         }
     }
 }

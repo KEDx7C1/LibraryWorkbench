@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace LibraryWorkbench.Controllers
 {
+    /// <summary>
+    /// Genre API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GenresController : ControllerBase
@@ -15,29 +18,28 @@ namespace LibraryWorkbench.Controllers
             _genresServices = genresService;
         }
         /// <summary>
-        /// Hometask 2 7.4.1 Get all genres
+        /// Get all genres (Hometask 2 7.4.1)
         /// </summary>
         [HttpGet]
         public IEnumerable<DimGenreDto> GetGenres()
         {
-            return _genresServices.GetGenres();
+            return _genresServices.GetAllGenres();
         }
         /// <summary>
-        /// Hometask 2 7.4.3 Get book's genres statistic
+        /// Get book's genres statistic (Hometask 2 7.4.3)
         /// </summary>
         [HttpGet("stat")]
-        //[Route("stat")]
         public IActionResult GetStatByGenre()
         {
             return new OkObjectResult(_genresServices.GetGenresStat());
         }
         /// <summary>
-        /// Hometask 2 7.4.2 Create new genre
+        /// Create new genre (Hometask 2 7.4.2)
         /// </summary>
+        /// <param name="genre">DimGenreDto</param>
         [HttpPost]
         public void CreateGenre(DimGenreDto genre)
         {
-
             _genresServices.CreateGenre(genre);
         }
 

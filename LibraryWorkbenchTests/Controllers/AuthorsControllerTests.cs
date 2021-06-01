@@ -21,12 +21,13 @@ namespace LibraryWorkbenchTests.Controllers
         public void GetAuthors_ShouldReturn_ListOfAuthorDTO()
         {
             //Arrenge
-            _mockAuthorsService.Setup(a => a.GetAuthors()).Returns(new List<AuthorDto>());
+            int expectedCount = 2;
+            _mockAuthorsService.Setup(a => a.GetAllAuthors()).Returns(new List<AuthorDto>() { new AuthorDto(), new AuthorDto()}.AsQueryable());
             AuthorsController authorsController = new AuthorsController(_mockAuthorsService.Object);
             //Act
             var result = authorsController.GetAuthors();
             //Assert
-            Assert.IsType<List<AuthorDto>>(result);
+            Assert.Equal(expectedCount, result.Count());
         }
         [Fact]
         public void GetBooksByAuthor_ShouldReturn_OkObjectResult()
@@ -40,15 +41,14 @@ namespace LibraryWorkbenchTests.Controllers
             Assert.IsType<OkObjectResult>(result);
         }
         [Fact]
-        public void GetBooksByAuthor_ShouldReturn_BadRequestResult()
+        public void GetBooksByAuthor_ShouldThrow_Exception()
         {
             //Arrenge
             _mockAuthorsService.Setup(a => a.GetBooksByAuthor(It.IsAny<int>())).Throws(new Exception());
             AuthorsController authorsController = new AuthorsController(_mockAuthorsService.Object);
             //Act
-            var result = authorsController.GetBooksByAuthor(It.IsAny<int>());
             //Assert
-            Assert.IsType<BadRequestResult>(result);
+            Assert.Throws<Exception>(() => authorsController.GetBooksByAuthor(It.IsAny<int>()));
         }
         [Fact]
         public void CreateAuthor_ShouldReturn_AuthorDTO()
@@ -62,16 +62,15 @@ namespace LibraryWorkbenchTests.Controllers
             Assert.IsType<OkObjectResult>(result);
         }
         [Fact]
-        public void DeleteAuthor_ShouldReturn_StatusCode()
+        public void DeleteAuthor_ShouldReturn_OkResult()
         {
             //Arrenge
-            int statusCode = 200;
-            _mockAuthorsService.Setup(a => a.DeleteAuthor(It.IsAny<int>())).Returns(statusCode);
+            _mockAuthorsService.Setup(a => a.DeleteAuthor(It.IsAny<int>()));
             AuthorsController authorsController = new AuthorsController(_mockAuthorsService.Object);
             //Act
             var result = authorsController.DeleteAuthor(It.IsAny<int>());
             //Assert
-            Assert.IsType<StatusCodeResult>(result);
+            Assert.IsType<OkResult>(result);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace LibraryWorkbench.Data.Models
 {
-    public class DimGenre : Properties
+    public class DimGenre : BasicEntity
     {
         [Column("genre_id")]
         public int GenreId { get; set; }

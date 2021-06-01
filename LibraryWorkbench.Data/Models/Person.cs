@@ -9,7 +9,7 @@ namespace LibraryWorkbench.Data.Models
     /// <summary>
     /// 2.2.1, 2.2.2.Б
     /// </summary>
-    public abstract class PersonShort : Properties
+    public abstract class PersonShort : BasicEntity
     {
         [Required]
         [Column("first_name")]

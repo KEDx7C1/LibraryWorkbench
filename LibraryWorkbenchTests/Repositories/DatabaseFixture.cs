@@ -11,8 +11,8 @@ namespace LibraryWorkbenchTests.Repositories
 {
     public class DatabaseFixture : IDisposable
     {
-        DataContext context;
-        SqliteConnection connection;
+        readonly DataContext context;
+        readonly SqliteConnection connection;
         public DatabaseFixture()
         {
             connection = new SqliteConnection("DataSource=:memory:");

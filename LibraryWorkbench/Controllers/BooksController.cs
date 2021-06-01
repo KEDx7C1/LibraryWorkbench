@@ -9,16 +9,13 @@ using System.Collections.Generic;
 namespace LibraryWorkbench.Controllers
 {
     /// <summary>
-    /// 2.0.3
+    /// Books API (Hometask 1 2.0.3)
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
     {
         private readonly IBooksService _booksService;
-        /// <summary>
-        /// Books API
-        /// </summary>
         public BooksController(IBooksService booksService)
         {
             _booksService = booksService;
@@ -80,11 +77,8 @@ namespace LibraryWorkbench.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
-            int SCode = _booksService.DeleteBook(id);
-            if (SCode == 405)
-                return new BadRequestObjectResult("Книга у пользователя");
-            else
-                return new OkResult();
+            _booksService.DeleteBook(id);
+            return new OkResult();
         }
         /// <summary>
         /// Change genre for existing book (Hometask 2 7.2.3)

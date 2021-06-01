@@ -5,6 +5,7 @@ using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace LibraryWorkbenchTests.Controllers
 {
@@ -19,18 +20,19 @@ namespace LibraryWorkbenchTests.Controllers
         public void GetGenres_ShouldReturn_ListOfDimGenresDTO()
         {
             //Arrenge
-            _mockGenresServices.Setup(a => a.GetGenres()).Returns(new List<DimGenreDto>());
+            int expectedCount = 1;
+            _mockGenresServices.Setup(a => a.GetAllGenres()).Returns(new List<DimGenreDto>() { new DimGenreDto()}.AsQueryable());
             GenresController genresController = new GenresController(_mockGenresServices.Object);
             //Act
             var result = genresController.GetGenres();
             //Assert
-            Assert.IsType<List<DimGenreDto>>(result);
+            Assert.Equal(expectedCount, result.Count());
         }
         [Fact]
         public void GetStatByGenre_ShouldReturn_OkObjectResult()
         {
             //Arrenge
-            _mockGenresServices.Setup(a => a.GetGenresStat()).Returns(new List<GenresStatisticDto>());
+            _mockGenresServices.Setup(a => a.GetGenresStat()).Returns(new List<GenresStatisticDto>().AsQueryable());
             GenresController genresController = new GenresController(_mockGenresServices.Object);
             //Act
             var result = genresController.GetStatByGenre();

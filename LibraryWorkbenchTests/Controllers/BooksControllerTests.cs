@@ -45,13 +45,12 @@ namespace LibraryWorkbenchTests.Controllers
         {
             //Arrange
             int expectedCount = _books.Count();
-            _mockBooksService.Setup(a => a.GetAllBooks()).Returns(_books).Verifiable();
+            _mockBooksService.Setup(a => a.GetAllBooks()).Returns(_books.AsQueryable()).Verifiable();
             BooksController booksController = new BooksController(_mockBooksService.Object);
             //Act
             var result = booksController.GetAllBooks();
             //Assert
             Assert.Equal(expectedCount, result.Count());
-            Assert.IsType<List<BookDto>>(result);
         }
         [Fact]
         public void GetBooksByAuthor_ShouldReturn_OneBookDTO()
@@ -63,7 +62,7 @@ namespace LibraryWorkbenchTests.Controllers
             string middleNmae = book.Author.MiddleName;
             //Arrange
             _mockBooksService.Setup(a => a.GetBooksByAuthor(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(_books.Where(x => x.Author.FirstName == firstName));
+                .Returns(_books.Where(x => x.Author.FirstName == firstName).AsQueryable());
             BooksController booksController = new BooksController(_mockBooksService.Object);
             //Act
             var result = booksController.GetBooksByAuthor(firstName, lastName, middleNmae);
@@ -75,7 +74,7 @@ namespace LibraryWorkbenchTests.Controllers
         {
             //Arrenge
             int expectedCount = 1;
-            _mockBooksService.Setup(a => a.GetBooksByGenre(It.IsAny<string>())).Returns(new List<BookDto>() { new BookDto()}).Verifiable();
+            _mockBooksService.Setup(a => a.GetBooksByGenre(It.IsAny<string>())).Returns(new List<BookDto>() { new BookDto()}.AsQueryable()).Verifiable();
             BooksController booksController = new BooksController(_mockBooksService.Object);
             //Act
             var result = booksController.GetBooksByGenre(It.IsAny<string>());
@@ -94,15 +93,14 @@ namespace LibraryWorkbenchTests.Controllers
             Assert.IsType<OkObjectResult>(result);
         }
         [Fact]
-        public void GetBookById_ShouldReturn_BadRequestResult()
+        public void GetBookById_ShouldThrow_Exception()
         {
             //Arrenge
             _mockBooksService.Setup(a => a.GetBook(It.IsAny<int>())).Throws(new Exception()).Verifiable();
             BooksController booksController = new BooksController(_mockBooksService.Object);
             //Act
-            var result = booksController.GetBookById(It.IsAny<int>());
             //Assert
-            Assert.IsType<BadRequestResult>(result);
+            Assert.Throws<Exception>(() => booksController.GetBookById(It.IsAny<int>()));
         }
         [Fact]
         public void CreateBook_ShouldReturn_BookDTO()
@@ -119,8 +117,7 @@ namespace LibraryWorkbenchTests.Controllers
         public void DeleteBook_ShouldReturn_OkResult()
         {
             //Arrenge
-            int okStatusCode = 200;
-            _mockBooksService.Setup(a => a.DeleteBook(It.IsAny<int>())).Returns(okStatusCode).Verifiable();
+            _mockBooksService.Setup(a => a.DeleteBook(It.IsAny<int>()));
             BooksController booksController = new BooksController(_mockBooksService.Object);
             //Act
             var result = booksController.DeleteBook(It.IsAny<int>());
@@ -128,16 +125,14 @@ namespace LibraryWorkbenchTests.Controllers
             Assert.IsType<OkResult>(result);
         }
         [Fact]
-        public void DeleteBook_ShouldReturn_BadRequestObjectResult()
+        public void DeleteBook_ShouldThrow_Exception()
         {
             //Arrenge
-            int BadRequestStatusCode = 405;
-            _mockBooksService.Setup(a => a.DeleteBook(It.IsAny<int>())).Returns(BadRequestStatusCode).Verifiable();
+            _mockBooksService.Setup(a => a.DeleteBook(It.IsAny<int>())).Throws(new Exception());
             BooksController booksController = new BooksController(_mockBooksService.Object);
             //Act
-            var result = booksController.DeleteBook(It.IsAny<int>());
             //Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Throws<Exception>(() => booksController.DeleteBook(It.IsAny<int>()));
         }
         [Fact]
         public void ChangeGanre_ShouldReturn_BookDTO()

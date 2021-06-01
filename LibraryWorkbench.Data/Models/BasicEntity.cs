@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LibraryWorkbench.Data.Models
@@ -6,7 +7,7 @@ namespace LibraryWorkbench.Data.Models
     /// <summary>
     /// Hometask 2 9.1
     /// </summary>
-    public class Properties
+    public class BasicEntity
     {
         /// <summary>
         /// Hometask 2 9.1.1
@@ -22,6 +23,7 @@ namespace LibraryWorkbench.Data.Models
         /// Hometask 2 9.1.3
         /// </summary>
         [Column("version")]
-        public int Version { get; set; }
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

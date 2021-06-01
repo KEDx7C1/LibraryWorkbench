@@ -36,7 +36,6 @@ namespace LibraryWorkbench.Data
         {
             genre.CreationDateTime = DateTimeOffset.Now;
             genre.UpdationDateTime = DateTimeOffset.Now;
-            genre.Version = 1;
             _context.DimGenres.Add(genre);
             _context.SaveChanges();
             return genre;
@@ -45,7 +44,6 @@ namespace LibraryWorkbench.Data
         {
 
             genre.UpdationDateTime = DateTimeOffset.Now;
-            genre.Version++;
             _context.Entry(genre).State = EntityState.Modified;
             _context.SaveChanges();
             return genre;

@@ -9,6 +9,9 @@ using System.Collections.Generic;
 
 namespace LibraryWorkbench.Controllers
 {
+    /// <summary>
+    /// Author API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorsController : ControllerBase
@@ -19,33 +22,35 @@ namespace LibraryWorkbench.Controllers
             _authorsService = authorsService;
         }
         /// <summary>
-        /// HomeTask 2 7.3.1
+        /// Get all authors (HomeTask 2 7.3.1)
         /// </summary>
         [HttpGet]
         public IEnumerable<AuthorDto> GetAuthors()
         {
-            return _authorsService.GetAuthors();
+            return _authorsService.GetAllAuthors();
         }
         /// <summary>
-        /// Hometask 2 7.3.2
+        /// Get author by Id (Hometask 2 7.3.2)
         /// </summary>
+        /// <param name="id">AuthorId</param>
         [HttpGet("{id}/books")]
         public IActionResult GetBooksByAuthor(int id)
         {
             return new OkObjectResult(_authorsService.GetBooksByAuthor(id));
         }
         /// <summary>
-        /// Hometask 2 7.3.3
+        /// Create author with books (Hometask 2 7.3.3)
         /// </summary>
+        /// <param name="authorWithBooks">AuthorWithBooksDto</param>
         [HttpPost]
         public IActionResult CreateAuthor(AuthorWithBooksDto authorWithBooks)
         {
-            var result = _authorsService.CreateAuthorWithBooks(authorWithBooks);
-            return new OkObjectResult(result);
+            return new OkObjectResult(_authorsService.CreateAuthorWithBooks(authorWithBooks));
         }
         /// <summary>
-        /// Hometask 2 7.3.4
+        /// Delete author by Id (Hometask 2 7.3.4)
         /// </summary>
+        /// <param name="authorId">AuthorId</param>
         [HttpDelete("{authorId}")]
         public IActionResult DeleteAuthor(int authorId)
         {

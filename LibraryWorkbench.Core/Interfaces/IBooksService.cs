@@ -2,6 +2,7 @@
 using LibraryWorkbench.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace LibraryWorkbench.Core.Interfaces
@@ -10,10 +11,10 @@ namespace LibraryWorkbench.Core.Interfaces
     {
         BookDto CreateBook(BookDto bookDto);
         BookDto GetBook(int id);
-        IEnumerable<BookDto> GetAllBooks();
-        int DeleteBook(int id);
+        IQueryable<BookDto> GetAllBooks();
+        void DeleteBook(int id);
         BookDto ChangeGanre(BookDto bookDto);
-        IEnumerable<BookDto> GetBooksByAuthor(string firstName, string lastName, string middleName);
-        IEnumerable<BookDto> GetBooksByGenre(string genre);
+        IQueryable<BookDto> GetBooksByAuthor(string firstName, string lastName, string middleName);
+        IQueryable<BookDto> GetBooksByGenre(string genre);
     }
 }

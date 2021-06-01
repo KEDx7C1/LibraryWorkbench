@@ -8,12 +8,12 @@ namespace LibraryWorkbench.Core.Interfaces
 {
     public interface IAuthorsService
     {
-        IEnumerable<AuthorDto> GetAuthors();
+        IQueryable<AuthorDto> GetAllAuthors();
         AuthorWithBooksDto GetBooksByAuthor(int id);
         AuthorWithBooksDto CreateAuthorWithBooks(AuthorWithBooksDto authorWithBooks);
         AuthorDto CreateAuthor(AuthorDto authorDto);
         void DeleteAuthor(int authorId);
-        IEnumerable<AuthorDto> GetAuthorsByYear(int year, string order);
-        IEnumerable<AuthorDto> GetAuthorsByBookNamepart(string namePart);
+        IQueryable<AuthorDto> GetAuthorsByYear(int year, bool isOrderByDesc);
+        IQueryable<AuthorDto> GetAuthorsByBookNamepart(string namePart);
     }
 }

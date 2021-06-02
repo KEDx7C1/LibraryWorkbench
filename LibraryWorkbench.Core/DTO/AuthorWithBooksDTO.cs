@@ -1,7 +1,5 @@
-﻿using LibraryWorkbench.Data.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace LibraryWorkbench.Core.DTO
 {

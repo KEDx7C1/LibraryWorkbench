@@ -1,12 +1,11 @@
-﻿using LibraryWorkbench.Core.DTO;
+﻿using AutoMapper;
+using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
+using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using LibraryWorkbench.Data.Intefaces;
 
 namespace LibraryWorkbench.Core.Services
 {
@@ -30,10 +29,10 @@ namespace LibraryWorkbench.Core.Services
         {
             IQueryable<GenresStatisticDto> genreStatisticDto = _books.GetAll()
                 .SelectMany(g => g.Genres.Select(n => n.GenreName)).GroupBy(g => g, (n, c) => new GenresStatisticDto()
-            {
-                GenreName = n,
-                GenreCount = c.Count()
-            });
+                {
+                    GenreName = n,
+                    GenreCount = c.Count()
+                });
             return genreStatisticDto;
         }
 

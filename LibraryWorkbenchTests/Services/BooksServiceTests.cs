@@ -95,7 +95,7 @@ namespace LibraryWorkbenchTests.Services
             _mockAuthorsRepository = new Mock<IAuthorsRepository>();
         }
         [Fact]
-        public void CreateBook_ShouldReturn_BookDTO()
+        public void CreateBook_ShouldReturn_BookDto()
         {
             //Arrange
             int expectedCount = _books.Count() + 1;
@@ -111,7 +111,7 @@ namespace LibraryWorkbenchTests.Services
             Assert.IsType<BookDto>(actual);
         }
         [Fact]
-        public void GetBook_ShouldReturn_BookDTO()
+        public void GetBook_ShouldReturn_BookDto()
         {
             //Arrange
             _mockBooksRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(_mapper.Map<Book>(_bookDto1));
@@ -119,30 +119,29 @@ namespace LibraryWorkbenchTests.Services
             BooksService booksServices = new BooksService(_mockBooksRepository.Object, 
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
             //Act
-            var result = booksServices.GetBook(It.IsAny<int>());
+            var actual = booksServices.GetBook(It.IsAny<int>());
             //Assert
-            Assert.IsType<BookDto>(result);
-            Assert.Equal(_bookDto1.Name, result.Name);
+            Assert.IsType<BookDto>(actual);
+            Assert.Equal(_bookDto1.Name, actual.Name);
         }
         [Fact]
         public void GetAllBooks_ShouldReturn_BooksCount()
         {
-            //Arrenge
+            //Arrange
             int expectedCount = _books.Count();
             _mockBooksRepository.Setup(a => a.GetAll()).Returns(_books.AsQueryable());
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
-
             //Act
-            var result = booksServices.GetAllBooks();
+            var actual = booksServices.GetAllBooks();
             //Assert
-            Assert.Equal(expectedCount, result.Count());
+            Assert.Equal(expectedCount, actual.Count());
         }
         [Fact]
         public void DeleteBook_ShouldReturn_Status200()
         {
-            //Arrenge
+            //Arrange
             int bookId = 2;
             _mockBooksRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(_books.First());
             _mockBooksRepository.Setup(a => a.Delete(It.IsAny<int>()))
@@ -151,32 +150,30 @@ namespace LibraryWorkbenchTests.Services
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
-
             //Act
             booksServices.DeleteBook(bookId);
-
             //Assert
-            Assert.True(true);
+            Assert.Null(_books.FirstOrDefault(x => x.BookId == bookId));
         }
         [Fact]
         public void DeleteBook_ShouldThrow_Exception()
         {
-            //Arrenge
+            //Arrange
             _mockBooksRepository.Setup(a => a.Get(It.IsAny<int>())).Throws(new Exception());
             _mockBooksRepository.Setup(a => a.Delete(It.IsAny<int>()));
             _mockPersonsRepository.Setup(a => a.GetAll()).Returns(_persons.AsQueryable);
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
-
             //Act
             //Assert
             Assert.Throws<Exception>(() => booksServices.DeleteBook(It.IsAny<int>()));
 
         }
         [Fact]
-        public void ChangeGanre_ShouldReturn_BookDTO()
+        public void ChangeGanre_ShouldReturn_BookDto()
         {
+            //Arrange
             _mockGenresRepository.Setup(a => a.GetAll()).Returns(new List<DimGenre>()
             {
                 _mapper.Map<DimGenre>(_genre1Dto),
@@ -186,12 +183,15 @@ namespace LibraryWorkbenchTests.Services
             _mockBooksRepository.Setup(a => a.Update(It.IsAny<Book>())).Verifiable();
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
-            var result = booksServices.ChangeGanre(_bookDto1);
-            Assert.IsType<BookDto>(result);
+            //Act
+            var actual = booksServices.ChangeGanre(_bookDto1);
+            //Assert
+            Assert.IsType<BookDto>(actual);
         }
         [Fact]
-        public void GetBooksByAuthor_ShouldReturn_ListOfBookDTO()
+        public void GetBooksByAuthor_ShouldReturn_ListOfBookDto()
         {
+            //Arrange
             int expecterCount = _books.Count();
             string firstName = _authorDto.FirstName;
             string lastName = _authorDto.LastName;
@@ -201,22 +201,24 @@ namespace LibraryWorkbenchTests.Services
 
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
-
-            var result = booksServices.GetBooksByAuthor(firstName, lastName, middleName);
-
-            Assert.Equal(expecterCount, result.Count());
+            //Act
+            var actual = booksServices.GetBooksByAuthor(firstName, lastName, middleName);
+            //Assert
+            Assert.Equal(expecterCount, actual.Count());
         }
         [Fact]
-        public void GetBooksByGenre_ShouldReturn_ListOfBookDTO()
+        public void GetBooksByGenre_ShouldReturn_ListOfBookDto()
         {
+            //Arrange
             int expecterCount = _books.Count();
             string genreName = _genre1Dto.GenreName;
             _mockBooksRepository.Setup(a => a.GetAll()).Returns(_books.AsQueryable());
             BooksService booksServices = new BooksService(_mockBooksRepository.Object,
                 _mockPersonsRepository.Object, _mockGenresRepository.Object, _mockAuthorsRepository.Object, _mapper);
-            var result = booksServices.GetBooksByGenre(genreName);
-            int Count = result.Count();
-            Assert.Equal(expecterCount, Count);
+            //Act
+            var actual = booksServices.GetBooksByGenre(genreName);
+            //Assert
+            Assert.Equal(expecterCount, actual.Count());
         }
     }
 }

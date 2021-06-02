@@ -1,9 +1,6 @@
-﻿using LibraryWorkbench.Core.DTO;
+﻿using AutoMapper;
+using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
 
 namespace LibraryWorkbench
 {
@@ -58,7 +55,6 @@ namespace LibraryWorkbench
                 .ForMember(x => x.MiddleName, s => s.MapFrom(x => x.MiddleName))
                 .ForMember(x => x.Birthday, s => s.MapFrom(x => x.Birthday))
                 .ForMember(x => x.Books, s => s.MapFrom(x => x.Books));
-            CreateMap<Author, AuthorWithBooksDto>();
             CreateMap<BookWithoutAuthorDto, Book>()
                 .ForMember(x => x.BookId, s => s.MapFrom(x => x.BookId))
                 .ForMember(x => x.Name, s => s.MapFrom(x => x.Name))

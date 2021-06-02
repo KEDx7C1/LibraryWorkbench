@@ -4,44 +4,52 @@
         <name>LibraryWorkbench</name>
     </assembly>
     <members>
+        <member name="T:LibraryWorkbench.Controllers.AuthorsController">
+            <summary>
+            Author API
+            </summary>
+        </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsController.GetAuthors">
             <summary>
-            HomeTask 2 7.3.1
+            Get all authors (HomeTask 2 7.3.1)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsController.GetBooksByAuthor(System.Int32)">
             <summary>
-            Hometask 2 7.3.2
+            Get author by Id (Hometask 2 7.3.2)
             </summary>
+            <param name="id">AuthorId</param>
         </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsController.CreateAuthor(LibraryWorkbench.Core.DTO.AuthorWithBooksDto)">
             <summary>
-            Hometask 2 7.3.3
+            Create author with books (Hometask 2 7.3.3)
             </summary>
+            <param name="authorWithBooks">AuthorWithBooksDto</param>
         </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsController.DeleteAuthor(System.Int32)">
             <summary>
-            Hometask 2 7.3.4
+            Delete author by Id (Hometask 2 7.3.4)
+            </summary>
+            <param name="authorId">AuthorId</param>
+        </member>
+        <member name="T:LibraryWorkbench.Controllers.AuthorsExtendedController">
+            <summary>
+            Author extended API
             </summary>
         </member>
-        <member name="M:LibraryWorkbench.Controllers.AuthorsExtendedController.GetAuthorsByYear(System.Int32,System.String)">
+        <member name="M:LibraryWorkbench.Controllers.AuthorsExtendedController.GetAuthorsByYear(System.Int32,System.Boolean)">
             <summary>
             Get books by year (Hometask 2 8.2)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.AuthorsExtendedController.GetAuthorsByBookNamepart(System.String)">
             <summary>
-            Get book by name (Hometask 2 8.3)
+            Get book by part of the name (Hometask 2 8.3)
             </summary>
         </member>
         <member name="T:LibraryWorkbench.Controllers.BooksController">
             <summary>
-            2.0.3
-            </summary>
-        </member>
-        <member name="M:LibraryWorkbench.Controllers.BooksController.#ctor(LibraryWorkbench.Core.Interfaces.IBooksService)">
-            <summary>
-            Books API
+            Books API (Hometask 1 2.0.3)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.BooksController.GetAllBooks">
@@ -88,31 +96,36 @@
             </summary>
             <param name="bookDto">BookDTO</param>
         </member>
+        <member name="T:LibraryWorkbench.Controllers.GenresController">
+            <summary>
+            Genre API
+            </summary>
+        </member>
         <member name="M:LibraryWorkbench.Controllers.GenresController.GetGenres">
             <summary>
-            Hometask 2 7.4.1 Get all genres
+            Get all genres (Hometask 2 7.4.1)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.GenresController.GetStatByGenre">
             <summary>
-            Hometask 2 7.4.3 Get book's genres statistic
+            Get book's genres statistic (Hometask 2 7.4.3)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.GenresController.CreateGenre(LibraryWorkbench.Core.DTO.DimGenreDto)">
             <summary>
-            Hometask 2 7.4.2 Create new genre
+            Create new genre (Hometask 2 7.4.2)
             </summary>
+            <param name="genre">DimGenreDto</param>
         </member>
         <member name="T:LibraryWorkbench.Controllers.PersonsController">
             <summary>
-            Hometask 2 7.1
+            Person API (Hometask 2 7.1)
             </summary>
         </member>
         <member name="M:LibraryWorkbench.Controllers.PersonsController.GetAllPersons">
             <summary>
             Get all persons
             </summary>
-            <returns></returns>
         </member>
         <member name="M:LibraryWorkbench.Controllers.PersonsController.GetPersonBooksById(System.Int32)">
             <summary>

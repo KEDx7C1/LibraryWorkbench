@@ -35,6 +35,7 @@ namespace LibraryWorkbenchTests.Services
             mockGenresRepository.Setup(a => a.GetAll())
                 .Returns(new List<DimGenre>() { new DimGenre(), new DimGenre() }.AsQueryable());
             var mockBooksRepository = new Mock<IBooksRepository>();
+
             GenresServices genresServices = new GenresServices(mockGenresRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
             var actual = genresServices.GetAllGenres();
@@ -42,7 +43,7 @@ namespace LibraryWorkbenchTests.Services
             Assert.Equal(expectedCount, actual.Count());
         }
         [Fact]
-        public void CreateGenre_DimGenreDto()
+        public void CreateGenre_ShouldReturn_DimGenreDto()
         {
             //Arrange
             const int expectedCount = 2;
@@ -58,6 +59,7 @@ namespace LibraryWorkbenchTests.Services
                 });
                 
             var mockBooksRepository = new Mock<IBooksRepository>();
+
             GenresServices genresServices = new GenresServices(mockGenresRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
             genresServices.CreateGenre(dimGenreDTO);
@@ -79,8 +81,8 @@ namespace LibraryWorkbenchTests.Services
                 {
                     genres.Add(dimGenre);
                 });
-
             var mockBooksRepository = new Mock<IBooksRepository>();
+
             GenresServices genresServices = new GenresServices(mockGenresRepository.Object, mockBooksRepository.Object, _mapper);
             //Act
             //Assert

@@ -1,6 +1,5 @@
 using AutoMapper;
 using LibraryWorkbench.Converters;
-using LibraryWorkbench.Core;
 using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Core.Services;
 using LibraryWorkbench.Data;
@@ -11,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Text.Json.Serialization;
-using System;
-using System.Reflection;
-using System.IO;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace LibraryWorkbench
 {
@@ -43,12 +42,12 @@ namespace LibraryWorkbench
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString,
-                b=>b.MigrationsAssembly("LibraryWorkbench")));
+                b => b.MigrationsAssembly("LibraryWorkbench")));
 
             services.AddScoped<PersonsService>();
-            services.AddScoped<IPersonsService, PersonsService>(sp=>sp.GetService<PersonsService>());
+            services.AddScoped<IPersonsService, PersonsService>(sp => sp.GetService<PersonsService>());
             services.AddScoped<BooksService>();
-            services.AddScoped<IBooksService, BooksService>(sp => sp.GetService <BooksService>());
+            services.AddScoped<IBooksService, BooksService>(sp => sp.GetService<BooksService>());
             services.AddScoped<GenresServices>();
             services.AddScoped<IGenresServices, GenresServices>(sp => sp.GetService<GenresServices>());
             services.AddScoped<AuthorsService>();
@@ -93,7 +92,6 @@ namespace LibraryWorkbench
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryWorkbench API");
-                //c.RoutePrefix = string.Empty;
             });
 
             app.UseRouting();

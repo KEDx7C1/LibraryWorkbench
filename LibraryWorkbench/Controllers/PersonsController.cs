@@ -1,11 +1,6 @@
-﻿using LibraryWorkbench.Core;
-using LibraryWorkbench.Core.DTO;
+﻿using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
-using LibraryWorkbench.Data;
-using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
 namespace LibraryWorkbench.Controllers
 {
@@ -95,7 +90,7 @@ namespace LibraryWorkbench.Controllers
         /// </summary>
         /// <param name="personDto">PersonDto</param>
         [HttpDelete("byFullName")]
-        public IActionResult DeletePersonsByFullName([FromBody]PersonDto personDto)
+        public IActionResult DeletePersonsByFullName([FromBody] PersonDto personDto)
         {
             _personsService.DeletePersonsByFullName(personDto);
             return new OkResult();

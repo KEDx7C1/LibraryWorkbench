@@ -16,7 +16,7 @@ namespace LibraryWorkbenchTests.Repositories
             database = fixture;
         }
         [Fact]
-        public void PersonWasCreated()
+        public void Create_ShouldReturn_Person()
         {
             //Arrange
             const int expectedCount = 1;
@@ -29,13 +29,14 @@ namespace LibraryWorkbenchTests.Repositories
                 MiddleName = "MiddleName"
             };
             //Act
-            repository.Create(person);
+            var actual = repository.Create(person);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", person.PersonId);
                 int count = Convert.ToInt32(cmd.ExecuteScalar());
                 Assert.Equal(expectedCount, count);
+                Assert.IsType<Person>(actual);
             }
         }
         [Fact]
@@ -95,12 +96,12 @@ namespace LibraryWorkbenchTests.Repositories
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", person.PersonId);
-                string result = cmd.ExecuteScalar().ToString();
-                Assert.Equal(result, firstName);
+                string actual = cmd.ExecuteScalar().ToString();
+                Assert.Equal(firstName, actual);
             }
         }
         [Fact]
-        public void PersonWasDeleted()
+        public void Delete_PersonWasDeleted()
         {
             //Arrange
             var repository = new PersonsRepository(database.Context);

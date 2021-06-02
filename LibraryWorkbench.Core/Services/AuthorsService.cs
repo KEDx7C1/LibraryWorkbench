@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
-using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +34,7 @@ namespace LibraryWorkbench.Core.Services
                 Books = _mapper.ProjectTo<BookWithoutAuthorDto>(_books.GetAll().Where(x => x.AuthorId == authorId))
             };
             return authorWithBooksDTO;
-            
+
         }
         public AuthorWithBooksDto CreateAuthorWithBooks(AuthorWithBooksDto authorWithBooks)
         {

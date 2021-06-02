@@ -62,86 +62,112 @@ namespace LibraryWorkbenchTests.Services
             };
         }
         [Fact]
-        public void GetAuthors_ShouldReturn_TwoAuthorDTO()
+        public void GetAuthors_ShouldReturn_TwoAuthorDto()
         {
-            //Arrenge
+            //Arrange
             int expectedCount = 2;
             _mockAuthorsRepository.Setup(a => a.GetAll()).Returns(new List<Author>() { new Author(), new Author() }.AsQueryable);
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
             //Act
-            var result = authorsService.GetAllAuthors();
+            var actual = authorsService.GetAllAuthors();
             //Assert
-            Assert.Equal(expectedCount, result.Count());
-            Assert.IsType<AuthorDto>(result.FirstOrDefault());
+            Assert.Equal(expectedCount, actual.Count());
+            Assert.IsType<AuthorDto>(actual.FirstOrDefault());
         }
         [Fact]
         public void GetBooksByAuthor_ShouldReturn_AuthorWithBooksDto()
         {
+            //Arrange
             _mockAuthorsRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(new Author());
             _mockBooksRepository.Setup(a => a.GetAll()).Returns(new List<Book>().AsQueryable());
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
-
-            var result = authorsService.GetBooksByAuthor(It.IsAny<int>());
-
-            Assert.IsType<AuthorWithBooksDto>(result);
+            //Act
+            var actual = authorsService.GetBooksByAuthor(It.IsAny<int>());
+            //Assert
+            Assert.IsType<AuthorWithBooksDto>(actual);
         }
         [Fact]
         public void CreateAuthorWithBooks_ShouldReturn_AuthorWithBooksDto()
         {
+            //Arrange
+            var books = new List<BookDto>() { new BookDto() { BookId = 1, Name = "Name", Author = _mapper.Map<AuthorDto>(_author1),
+                Genres = new List<DimGenreDto>(){ new DimGenreDto() {GenreId = 1, GenreName = "genre"} } } };
+            var authorWithBooks = new AuthorWithBooksDto() { Author = _mapper.Map<AuthorDto>(_author1), Books = books };
+            _mockAuthorsRepository.Setup(a => a.GetAll()).Returns(new List<Author>() { _author2 }.AsQueryable());
+            _mockAuthorsRepository.Setup(a => a.Create(It.IsAny<Author>())).Returns(_author1);
 
+            _mockBookService.Setup(a => a.GetBooksByAuthor(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(books.AsQueryable());
+
+            AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
+            //Act
+            var actual = authorsService.CreateAuthorWithBooks(authorWithBooks);
+            //Assert
+            Assert.IsType<AuthorWithBooksDto>(actual);
         }
         [Fact]
         public void CreateAuthor_ShouldReturn_AuthorDto()
         {
+            //Arrange
             _mockAuthorsRepository.Setup(a => a.GetAll()).Returns(new List<Author>() { _author2 }.AsQueryable());
             _mockAuthorsRepository.Setup(a => a.Create(It.IsAny<Author>())).Returns(_author1);
 
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
-
-            var result = authorsService.CreateAuthor(_mapper.Map<AuthorDto>(_author1));
-
-            Assert.IsType<AuthorDto>(result);
+            //Act
+            var actual = authorsService.CreateAuthor(_mapper.Map<AuthorDto>(_author1));
+            //Assert
+            Assert.IsType<AuthorDto>(actual);
         }
         [Fact]
         public void CreateAuthor_ShouldThrow_Exception()
         {
+            //Arrange
             _mockAuthorsRepository.Setup(a => a.GetAll()).Returns(new List<Author>() { _author1 }.AsQueryable());
             _mockAuthorsRepository.Setup(a => a.Create(It.IsAny<Author>())).Verifiable();
 
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
-
+            //Act
+            //Assert
             Assert.Throws<Exception>(() => authorsService.CreateAuthor(_mapper.Map<AuthorDto>(_author1)));
         }
         [Fact]
-        public void AuthorWasDeleted()
+        public void DeleteAuthor_AuthorWasDeleted()
         {
-            _mockAuthorsRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(_author1);
-            _mockAuthorsRepository.Setup(a => a.Delete(It.IsAny<int>())).Verifiable();
+            //Arrange
+            var authors = new List<Author>() { _author1};
+            _mockAuthorsRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(authors.FirstOrDefault());
+            _mockAuthorsRepository.Setup(a => a.Delete(It.IsAny<int>())).Callback(() => authors.Remove(authors.FirstOrDefault(x=>x.AuthorId == _author1.AuthorId)))
+                .Verifiable();
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
-
+            //Act
             authorsService.DeleteAuthor(It.IsAny<int>());
+            //Assert
+            Assert.Null(authors.FirstOrDefault(x => x.AuthorId == _author1.AuthorId));
         }
         [Fact]
         public void DeleteAuthor_ShouldThrow_Exception()
         {
+            //Arrange
             _mockAuthorsRepository.Setup(a => a.Get(It.IsAny<int>())).Returns(It.IsAny<Author>());
             _mockAuthorsRepository.Setup(a => a.Delete(It.IsAny<int>())).Verifiable();
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
-
+            //Act
+            //Assert
             Assert.Throws<Exception>(() => authorsService.DeleteAuthor(It.IsAny<int>()));
         }
         [Fact]
         public void GetAuthorsByYear_ShouldReturn_TwoAuthorDto()
         {
+            //Arrange
             int expectedCount = 2;
             bool isOrderByDesc = false;
             _mockBooksRepository.Setup(a => a.GetAll()).Returns(new List<Book>() { _book1, _book2, _book3 }.AsQueryable());
 
             AuthorsService authorsService = new AuthorsService(_mockAuthorsRepository.Object, _mockBooksRepository.Object, _mapper, _mockBookService.Object);
-
-            var result = authorsService.GetAuthorsByYear(_book1.Year, isOrderByDesc);
-
-            Assert.Equal(expectedCount, result.Count());
+            //Act
+            var actual = authorsService.GetAuthorsByYear(_book1.Year, isOrderByDesc);
+            //Assert
+            Assert.Equal(expectedCount, actual.Count());
         }
     }
 }

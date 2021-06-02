@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LibraryWorkbench.Core.DTO
+﻿namespace LibraryWorkbench.Core.DTO
 {
     public class GenresStatisticDto
     {

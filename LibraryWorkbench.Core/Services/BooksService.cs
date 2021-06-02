@@ -4,11 +4,9 @@ using LibraryWorkbench.Core.Interfaces;
 using LibraryWorkbench.Data;
 using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LibraryWorkbench.Core.Services
 {
@@ -88,11 +86,11 @@ namespace LibraryWorkbench.Core.Services
                 else
                     genres.Add(genre);
             }
-            
+
             book.Genres.RemoveAll(g => !bookDto.Genres.ToList()
                 .Exists(gg => gg.GenreName.ToLower().Equals(g.GenreName.ToLower())));
             book.Genres.AddRange(genres.Where(g => !book.Genres
-                .Any(x=>x.GenreName.ToLower().Equals(g.GenreName.ToLower()))));
+                .Any(x => x.GenreName.ToLower().Equals(g.GenreName.ToLower()))));
 
             _books.Update(book);
             return _mapper.Map<BookDto>(book);
@@ -108,7 +106,7 @@ namespace LibraryWorkbench.Core.Services
         }
         public IQueryable<BookDto> GetBooksByGenre(string genre)
         {
-            IQueryable <BookDto> books = _mapper.ProjectTo<BookDto>(_books.GetAll()
+            IQueryable<BookDto> books = _mapper.ProjectTo<BookDto>(_books.GetAll()
                 .AsQueryable().Where(x => x.Genres.Any(y => y.GenreName.Equals(genre))));
             return books;
         }

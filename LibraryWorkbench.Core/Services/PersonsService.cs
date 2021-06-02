@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
-using LibraryWorkbench.Data;
+using LibraryWorkbench.Data.Intefaces;
 using LibraryWorkbench.Data.Models;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using LibraryWorkbench.Data.Intefaces;
 
 namespace LibraryWorkbench.Core.Services
 {
@@ -45,7 +42,7 @@ namespace LibraryWorkbench.Core.Services
             else
                 throw new Exception($"Person {personDto.FirstName} {personDto.LastName} {personDto.MiddleName} birth {personDto.Birthday} already exist");
         }
-        public PersonDto UpdatePerson (PersonDto personDto)
+        public PersonDto UpdatePerson(PersonDto personDto)
         {
             Person person = _persons.Get(personDto.PersonId);
             person.FirstName = personDto.FirstName;
@@ -75,10 +72,10 @@ namespace LibraryWorkbench.Core.Services
         {
             Book book = _books.Get(bookId);
             Person person = _persons.Get(personId);
-            
+
             person.Books.Add(book);
             _persons.Update(person);
-            
+
             return _mapper.Map<PersonExtDto>(_persons.GetWithBooks(person.PersonId));
         }
         public PersonExtDto ReturnBook(int personId, int bookId)
@@ -91,7 +88,7 @@ namespace LibraryWorkbench.Core.Services
 
             return _mapper.Map<PersonExtDto>(_persons.GetWithBooks(person.PersonId));
         }
-        public IQueryable<BookDto> GetPersonBooksById (int personId)
+        public IQueryable<BookDto> GetPersonBooksById(int personId)
         {
             var books = _persons.Get(personId).Books;
             return _mapper.ProjectTo<BookDto>(books.AsQueryable());

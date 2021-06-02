@@ -2,7 +2,6 @@
 using LibraryWorkbench.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace LibraryWorkbench.Data
@@ -20,7 +19,7 @@ namespace LibraryWorkbench.Data
         }
         public IQueryable<Book> GetAll()
         {
-            return _context.Books.Include(x=>x.Author).Include(x=>x.Genres);
+            return _context.Books.Include(x => x.Author).Include(x => x.Genres);
         }
         public Book Get(int id)
         {

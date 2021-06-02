@@ -1,9 +1,5 @@
-﻿using LibraryWorkbench.Core;
-using LibraryWorkbench.Core.DTO;
+﻿using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
-using LibraryWorkbench.Data;
-using LibraryWorkbench.Data.Intefaces;
-using LibraryWorkbench.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 

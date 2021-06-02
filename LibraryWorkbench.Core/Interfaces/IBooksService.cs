@@ -1,9 +1,5 @@
 ﻿using LibraryWorkbench.Core.DTO;
-using LibraryWorkbench.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LibraryWorkbench.Core.Interfaces
 {

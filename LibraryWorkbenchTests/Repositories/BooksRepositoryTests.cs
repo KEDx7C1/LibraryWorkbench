@@ -18,7 +18,7 @@ namespace LibraryWorkbenchTests.Repositories
             database = fixture;
         }
         [Fact]
-        public void BookWasCreated()
+        public void Create_ShouldReturn_Book()
         {
             //Arrange
             const int expectedCount = 1;
@@ -41,13 +41,14 @@ namespace LibraryWorkbenchTests.Repositories
                 Year = 1900
             };
             //Act
-            repository.Create(book);
+            var actual = repository.Create(book);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", book.BookId);
                 int count = Convert.ToInt32(cmd.ExecuteScalar());
                 Assert.Equal(expectedCount, count);
+                Assert.IsType<Book>(actual);
             }
         }
         [Fact]
@@ -92,7 +93,7 @@ namespace LibraryWorkbenchTests.Repositories
             Assert.Equal(expectedCount, books.Count());
         }
         [Fact]
-        public void BookWasUpdated()
+        public void Update_ShouldReturn_Book()
         {
             //Arrange
             var repository = new BooksRepository(database.Context);
@@ -102,17 +103,18 @@ namespace LibraryWorkbenchTests.Repositories
             Book book = repository.Get(bookId);
             //Act
             book.Name = name;
-            repository.Update(book);
+            var actual = repository.Update(book);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", book.BookId);
                 string result = cmd.ExecuteScalar().ToString();
                 Assert.Equal(result, name);
+                Assert.IsType<Book>(actual);
             }
         }
         [Fact]
-        public void BookWasDeleted()
+        public void Delete_BookWasDeleted()
         {
             //Arrange
             var repository = new BooksRepository(database.Context);

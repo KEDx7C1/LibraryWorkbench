@@ -16,7 +16,7 @@ namespace LibraryWorkbenchTests.Repositories
             database = fixture;
         }
         [Fact]
-        public void GenreWasCreated()
+        public void Create_ShoulReturn_DimGenre()
         {
             //Arrange
             const int expectedCount = 1;
@@ -24,17 +24,18 @@ namespace LibraryWorkbenchTests.Repositories
             string sql = "SELECT COUNT(*) FROM dim_genre WHERE genre_id=@id;";
             DimGenre genre = new DimGenre() { GenreName = "Роман" };
             //Act
-            repository.Create(genre);
+            var actual = repository.Create(genre);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", genre.GenreId);
                 int count = Convert.ToInt32(cmd.ExecuteScalar());
                 Assert.Equal(expectedCount, count);
+                Assert.IsType<DimGenre>(actual);
             }
         }
         [Fact]
-        public void Get_ShouldReturn_Genre()
+        public void Get_ShouldReturn_DimGenre()
         {
             //Arrange
             var repository = new GenresRepository(database.Context);
@@ -75,7 +76,7 @@ namespace LibraryWorkbenchTests.Repositories
             Assert.Equal(expectedCount, genres.Count());
         }
         [Fact]
-        public void GenreWasUpdated()
+        public void Update_ShouldRetunr_DimGenre()
         {
             //Arrange
             var repository = new GenresRepository(database.Context);
@@ -85,17 +86,18 @@ namespace LibraryWorkbenchTests.Repositories
             DimGenre genre = repository.Get(genreId);
             //Act
             genre.GenreName = genreName;
-            repository.Update(genre);
+            var actual = repository.Update(genre);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", genre.GenreId);
                 string result = cmd.ExecuteScalar().ToString();
                 Assert.Equal(result, genreName);
+                Assert.IsType<DimGenre>(actual);
             }
         }
         [Fact]
-        public void GenreWasDeleted()
+        public void Delete_GenreWasDeleted()
         {
             //Arrange
             var repository = new GenresRepository(database.Context);

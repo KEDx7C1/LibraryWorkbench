@@ -17,7 +17,7 @@ namespace LibraryWorkbenchTests.Repositories
             database = fixture;
         }
         [Fact]
-        public void AuthorWasCreated()
+        public void Create_ShouldReturn_Author()
         {
             //Arrange
             const int expectedCount = 1;
@@ -29,13 +29,14 @@ namespace LibraryWorkbenchTests.Repositories
                 MiddleName = "MiddleName"
             };
             //Act
-            repository.Create(author);
+            var actual = repository.Create(author);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", author.AuthorId);
                 int count = Convert.ToInt32(cmd.ExecuteScalar());
                 Assert.Equal(expectedCount, count);
+                Assert.IsType<Author>(actual);
             }
         }
         [Fact]
@@ -80,7 +81,7 @@ namespace LibraryWorkbenchTests.Repositories
             Assert.Equal(expectedCount, authors.Count());
         }
         [Fact]
-        public void AuthorWasUpdated()
+        public void Update_ShouldReturn_Author()
         {
             //Arrange
             var repository = new AuthorsRepository(database.Context);
@@ -88,19 +89,20 @@ namespace LibraryWorkbenchTests.Repositories
             string firstName = "ChengedFirstName";
             string sql = "SELECT first_name FROM author WHERE author_id=@id;";
             Author author = repository.Get(authorId);
-            //Act
             author.FirstName = firstName;
-            repository.Update(author);
+            //Act
+            var actual = repository.Update(author);
             //Assert
             using (SqliteCommand cmd = new SqliteCommand(sql, database.Connection))
             {
                 cmd.Parameters.AddWithValue("@id", author.AuthorId);
                 string result = cmd.ExecuteScalar().ToString();
                 Assert.Equal(result, firstName);
+                Assert.IsType<Author>(actual);
             }
         }
         [Fact]
-        public void AuthorWasDeleted()
+        public void Delete_AuthorWasDeleted()
         {
             //Arrange
             var repository = new AuthorsRepository(database.Context);

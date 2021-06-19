@@ -1,32 +1,35 @@
-﻿using LibraryWorkbench.Core.DTO;
+﻿using System.Collections.Generic;
+using LibraryWorkbench.Core.DTO;
 using LibraryWorkbench.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace LibraryWorkbench.Controllers
 {
     /// <summary>
-    /// Author API
+    ///     Author API
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorsService _authorsService;
+
         public AuthorsController(IAuthorsService authorsService)
         {
             _authorsService = authorsService;
         }
+
         /// <summary>
-        /// Get all authors (HomeTask 2 7.3.1)
+        ///     Get all authors (HomeTask 2 7.3.1)
         /// </summary>
         [HttpGet]
         public IEnumerable<AuthorDto> GetAuthors()
         {
             return _authorsService.GetAllAuthors();
         }
+
         /// <summary>
-        /// Get author by Id (Hometask 2 7.3.2)
+        ///     Get author by Id (Hometask 2 7.3.2)
         /// </summary>
         /// <param name="id">AuthorId</param>
         [HttpGet("{id}/books")]
@@ -34,8 +37,9 @@ namespace LibraryWorkbench.Controllers
         {
             return new OkObjectResult(_authorsService.GetBooksByAuthor(id));
         }
+
         /// <summary>
-        /// Create author with books (Hometask 2 7.3.3)
+        ///     Create author with books (Hometask 2 7.3.3)
         /// </summary>
         /// <param name="authorWithBooks">AuthorWithBooksDto</param>
         [HttpPost]
@@ -43,8 +47,9 @@ namespace LibraryWorkbench.Controllers
         {
             return new OkObjectResult(_authorsService.CreateAuthorWithBooks(authorWithBooks));
         }
+
         /// <summary>
-        /// Delete author by Id (Hometask 2 7.3.4)
+        ///     Delete author by Id (Hometask 2 7.3.4)
         /// </summary>
         /// <param name="authorId">AuthorId</param>
         [HttpDelete("{authorId}")]

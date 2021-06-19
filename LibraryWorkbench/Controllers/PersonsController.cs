@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryWorkbench.Controllers
 {
     /// <summary>
-    /// Person API (Hometask 2 7.1)
+    ///     Person API (Hometask 2 7.1)
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -17,16 +17,18 @@ namespace LibraryWorkbench.Controllers
         {
             _personsService = personsService;
         }
+
         /// <summary>
-        /// Get all persons
+        ///     Get all persons
         /// </summary>
         [HttpGet]
         public IActionResult GetAllPersons()
         {
             return new OkObjectResult(_personsService.GetAllPersons());
         }
+
         /// <summary>
-        /// Get person's book (Hometask 2.0.4.C)
+        ///     Get person's book (Hometask 2.0.4.C)
         /// </summary>
         /// <param name="id">PersonId</param>
         [HttpGet("{id}/book")]
@@ -34,29 +36,31 @@ namespace LibraryWorkbench.Controllers
         {
             return new OkObjectResult(_personsService.GetPersonBooksById(id));
         }
+
         /// <summary>
-        /// Create new peson (Hometask 2 7.1.1)
+        ///     Create new peson (Hometask 2 7.1.1)
         /// </summary>
         /// <param name="personDto">PersonDTO</param>
         [HttpPost]
         public IActionResult CreatePerson(PersonDto personDto)
         {
-            PersonDto result = _personsService.CreatePerson(personDto);
+            var result = _personsService.CreatePerson(personDto);
             if (result != null)
                 return new OkObjectResult(result);
-            else
-                return new BadRequestObjectResult("Person already exist");
+            return new BadRequestObjectResult("Person already exist");
         }
+
         /// <summary>
-        /// Update existing person (Hometask 2 7.1.2)
+        ///     Update existing person (Hometask 2 7.1.2)
         /// </summary>
         [HttpPut]
         public PersonDto UpdatePerson(PersonDto personDto)
         {
             return _personsService.UpdatePerson(personDto);
         }
+
         /// <summary>
-        /// Give book to person (Hometask 2 7.1.6)
+        ///     Give book to person (Hometask 2 7.1.6)
         /// </summary>
         /// <param name="bookId">BookId</param>
         /// <param name="personId">PersonId</param>
@@ -65,8 +69,9 @@ namespace LibraryWorkbench.Controllers
         {
             return _personsService.GiveBook(personId, bookId);
         }
+
         /// <summary>
-        /// Return person book (Hometask 2 7.1.7)
+        ///     Return person book (Hometask 2 7.1.7)
         /// </summary>
         /// <param name="personId">PersonId</param>
         /// <param name="bookId">BookId</param>
@@ -75,8 +80,9 @@ namespace LibraryWorkbench.Controllers
         {
             return _personsService.ReturnBook(personId, bookId);
         }
+
         /// <summary>
-        /// Delete person by Id (Hometask 2 7.1.3)
+        ///     Delete person by Id (Hometask 2 7.1.3)
         /// </summary>
         /// <param name="id">PersonId</param>
         [HttpDelete("{id}")]
@@ -85,8 +91,9 @@ namespace LibraryWorkbench.Controllers
             _personsService.DeletePersonById(id);
             return new OkResult();
         }
+
         /// <summary>
-        /// Delete persons by fullname (Hometask 2 7.1.4)
+        ///     Delete persons by fullname (Hometask 2 7.1.4)
         /// </summary>
         /// <param name="personDto">PersonDto</param>
         [HttpDelete("byFullName")]

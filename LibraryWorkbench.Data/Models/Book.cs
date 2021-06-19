@@ -21,31 +21,31 @@ namespace LibraryWorkbench.Data.Models
     //}
 
     /// <summary>
-    /// 2.0.2, 2.2.1
+    ///     2.0.2, 2.2.1
     /// </summary>
     public class Book : BasicEntity, IBook
     {
         [Required]
-        [Column("name")]
-        public string Name { get; set; }
-        [Required]
         [Column("author_id")]
         [JsonIgnore]
         public int AuthorId { get; set; }
-        public Author Author { get; set; }
-        [Column("book_id")]
-        public int BookId { get; set; }
-        [Required]
-        public List<DimGenre> Genres { get; set; } = new List<DimGenre>();
-        [JsonIgnore]
-        public virtual List<Person> Persons { get; set; } = new List<Person>();
+
+        [Required] public List<DimGenre> Genres { get; set; } = new List<DimGenre>();
+
+        [JsonIgnore] public virtual List<Person> Persons { get; set; } = new List<Person>();
+
         /// <summary>
-        /// Hometask 2 8.1
+        ///     Hometask 2 8.1
         /// </summary>
         [Column("year")]
         public int Year { get; set; }
-        [JsonIgnore]
-        public List<LibraryCard> LibraryCards { get; set; } = new List<LibraryCard>();
-        
+
+        [JsonIgnore] public List<LibraryCard> LibraryCards { get; set; } = new List<LibraryCard>();
+
+        [Required] [Column("name")] public string Name { get; set; }
+
+        public Author Author { get; set; }
+
+        [Column("book_id")] public int BookId { get; set; }
     }
 }

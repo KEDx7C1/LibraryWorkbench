@@ -1,94 +1,97 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using LibraryWorkbench.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWorkbench.Data
 {
     public class DataContext : DbContext, IDataContext
     {
-        public DbSet<Models.Person> Persons { get; set; }
-        public DbSet<Models.DimGenre> DimGenres { get; set; }
-        public DbSet<Models.Author> Authors { get; set; }
-        public DbSet<Models.Book> Books { get; set; }
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<DimGenre> DimGenres { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Book> Books { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
-            modelBuilder.Entity<Models.Author>(
+            modelBuilder.Entity<Author>(
                 j =>
                 {
                     j.HasKey(p => p.AuthorId);
                     j.ToTable("author");
                 }
-                );
+            );
 
-            modelBuilder.Entity<Models.Book>(
+            modelBuilder.Entity<Book>(
                 j =>
                 {
                     j.HasKey(p => p.BookId);
                     j.ToTable("book");
                     j.HasOne(p => p.Author);
                 }
-                );
+            );
 
-            modelBuilder.Entity<Models.Person>(
+            modelBuilder.Entity<Person>(
                 j =>
                 {
                     j.HasKey(p => p.PersonId);
                     j.ToTable("person");
                 }
-                );
+            );
 
-            modelBuilder.Entity<Models.DimGenre>(
+            modelBuilder.Entity<DimGenre>(
                 j =>
                 {
                     j.HasKey(p => p.GenreId);
                     j.ToTable("dim_genre");
                 }
-                );
+            );
 
-            modelBuilder.Entity<Models.Book>()
+            modelBuilder.Entity<Book>()
                 .HasMany(g => g.Genres)
                 .WithMany(b => b.Books)
                 .UsingEntity<Dictionary<string, object>>
                 ("book_genre_lnk",
-                g => g.HasOne<Models.DimGenre>().WithMany()
-                .HasForeignKey("genre_id"),
-                b => b.HasOne<Models.Book>().WithMany()
-                .HasForeignKey("book_id"),
-                j=>
-                {
-                    j.HasKey("genre_id", "book_id");
-                    j.ToTable("book_genre_lnk");
-                    
-                });
+                    g => g.HasOne<DimGenre>().WithMany()
+                        .HasForeignKey("genre_id"),
+                    b => b.HasOne<Book>().WithMany()
+                        .HasForeignKey("book_id"),
+                    j =>
+                    {
+                        j.HasKey("genre_id", "book_id");
+                        j.ToTable("book_genre_lnk");
+                    });
 
-            modelBuilder.Entity<Models.Book>()
+            modelBuilder.Entity<Book>()
                 .HasMany(c => c.Persons)
                 .WithMany(s => s.Books)
-                .UsingEntity<Models.LibraryCard>
+                .UsingEntity<LibraryCard>
                 (
                     j => j
-                    .HasOne(pt => pt.Person)
-                    .WithMany(t => t.LibraryCards)
-                    .HasForeignKey(pt => pt.PersonId),
+                        .HasOne(pt => pt.Person)
+                        .WithMany(t => t.LibraryCards)
+                        .HasForeignKey(pt => pt.PersonId),
                     j => j
-                    .HasOne(pt => pt.Book)
-                    .WithMany(p => p.LibraryCards)
-                    .HasForeignKey(pt => pt.BookId),
+                        .HasOne(pt => pt.Book)
+                        .WithMany(p => p.LibraryCards)
+                        .HasForeignKey(pt => pt.BookId),
                     j =>
                     {
                         j.Property(pt => pt.IssueDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                        j.HasKey(t => new { t.BookId, t.PersonId });
+                        j.HasKey(t => new {t.BookId, t.PersonId});
                         j.ToTable("library_card");
                     }
                 );
+
             #region "Initial Data"
 
-            modelBuilder.Entity<Models.Person>().HasData(
-                new Models.Person()
+            modelBuilder.Entity<Person>().HasData(
+                new Person
                 {
                     PersonId = 1,
                     FirstName = "Иван",
@@ -98,7 +101,7 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-                new Models.Person()
+                new Person
                 {
                     PersonId = 2,
                     FirstName = "Петр",
@@ -108,7 +111,7 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-                new Models.Person()
+                new Person
                 {
                     PersonId = 3,
                     FirstName = "Николай",
@@ -118,8 +121,8 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 });
-            modelBuilder.Entity<Models.Author>().HasData(
-                new Models.Author()
+            modelBuilder.Entity<Author>().HasData(
+                new Author
                 {
                     AuthorId = 1,
                     FirstName = "Лев",
@@ -128,7 +131,7 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-                new Models.Author()
+                new Author
                 {
                     AuthorId = 2,
                     FirstName = "Джон",
@@ -137,7 +140,7 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-                new Models.Author()
+                new Author
                 {
                     AuthorId = 3,
                     FirstName = "Станислав",
@@ -146,29 +149,29 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 });
-            modelBuilder.Entity<Models.DimGenre>().HasData(
-                new Models.DimGenre()
+            modelBuilder.Entity<DimGenre>().HasData(
+                new DimGenre
                 {
                     GenreId = 1,
                     GenreName = "Роман",
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-                new Models.DimGenre()
+                new DimGenre
                 {
                     GenreId = 2,
                     GenreName = "Трагендия",
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-                new Models.DimGenre()
+                new DimGenre
                 {
                     GenreId = 3,
                     GenreName = "Фентези",
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
-                }, 
-                new Models.DimGenre()
+                },
+                new DimGenre
                 {
                     GenreId = 4,
                     GenreName = "Фантастика",
@@ -176,8 +179,8 @@ namespace LibraryWorkbench.Data
                     UpdationDateTime = DateTimeOffset.Now
                 });
 
-            modelBuilder.Entity<Models.Book>().HasData(
-                new Models.Book()
+            modelBuilder.Entity<Book>().HasData(
+                new Book
                 {
                     BookId = 1,
                     AuthorId = 1,
@@ -186,52 +189,50 @@ namespace LibraryWorkbench.Data
                     CreationDateTime = DateTimeOffset.Now,
                     UpdationDateTime = DateTimeOffset.Now
                 },
-            new Models.Book()
-            {
-                BookId = 2,
-                AuthorId =  1,
-                Name = "Анна Каренина",
-                Year = 1839,
-                CreationDateTime = DateTimeOffset.Now,
-                UpdationDateTime = DateTimeOffset.Now
-            },
-            new Models.Book()
-            {
-                BookId = 3,
-                AuthorId = 2,
-                Name = "Властелин колец",
-                Year = 1955,
-                CreationDateTime = DateTimeOffset.Now,
-                UpdationDateTime = DateTimeOffset.Now
-            },
-            new Models.Book()
-            {
-                BookId = 4,
-                AuthorId = 2,
-                Name = "Хоббит",
-                Year = 1955,
-                CreationDateTime = DateTimeOffset.Now,
-                UpdationDateTime = DateTimeOffset.Now
-            },
-            new Models.Book()
-            {
-                BookId = 5,
-                AuthorId = 3,
-                Name = "Солярис",
-                Year = 1934,
-                CreationDateTime = DateTimeOffset.Now,
-                UpdationDateTime = DateTimeOffset.Now
-            });
+                new Book
+                {
+                    BookId = 2,
+                    AuthorId = 1,
+                    Name = "Анна Каренина",
+                    Year = 1839,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Book
+                {
+                    BookId = 3,
+                    AuthorId = 2,
+                    Name = "Властелин колец",
+                    Year = 1955,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Book
+                {
+                    BookId = 4,
+                    AuthorId = 2,
+                    Name = "Хоббит",
+                    Year = 1955,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                },
+                new Book
+                {
+                    BookId = 5,
+                    AuthorId = 3,
+                    Name = "Солярис",
+                    Year = 1934,
+                    CreationDateTime = DateTimeOffset.Now,
+                    UpdationDateTime = DateTimeOffset.Now
+                });
 
-            modelBuilder.Entity<Models.LibraryCard>().HasData(
-                new Models.LibraryCard() { BookId = 1, PersonId = 1, IssueDate = DateTimeOffset.Now },
-                new Models.LibraryCard() { BookId = 2, PersonId = 1, IssueDate = DateTimeOffset.Now },
-                new Models.LibraryCard() { BookId = 5, PersonId = 2, IssueDate = DateTimeOffset.Now }
-                );
+            modelBuilder.Entity<LibraryCard>().HasData(
+                new LibraryCard {BookId = 1, PersonId = 1, IssueDate = DateTimeOffset.Now},
+                new LibraryCard {BookId = 2, PersonId = 1, IssueDate = DateTimeOffset.Now},
+                new LibraryCard {BookId = 5, PersonId = 2, IssueDate = DateTimeOffset.Now}
+            );
 
             #endregion
         }
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        { }
     }
 }

@@ -6,8 +6,8 @@ using System.Text.Json.Serialization;
 namespace LibraryWorkbench.Converters
 {
     /// <summary>
-    /// 2.0
-    /// Реализовано для отсечения времени из даты рождения
+    ///     2.0
+    ///     Реализовано для отсечения времени из даты рождения
     /// </summary>
     public class DateTimeConverter : JsonConverter<DateTime>
     {

@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using LibraryWorkbench.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWorkbench.Data
 {
     public interface IDataContext
     {
-        public DbSet<Models.Person> Persons { get; set; }
-        public DbSet<Models.DimGenre> DimGenres { get; set; }
-        public DbSet<Models.Author> Authors { get; set; }
-        public DbSet<Models.Book> Books { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<DimGenre> DimGenres { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Book> Books { get; set; }
     }
 }

@@ -7,14 +7,10 @@ namespace LibraryWorkbench.Data.Models
 {
     public class DimGenre : BasicEntity
     {
-        [Column("genre_id")]
-        public int GenreId { get; set; }
-        [Required]
-        [Column("genre_name")]
-        public string GenreName { get; set; }
+        [Column("genre_id")] public int GenreId { get; set; }
 
-        [Column("book_id")]
-        [JsonIgnore]
-        public List<Book> Books { get; set; } = new List<Book>();
+        [Required] [Column("genre_name")] public string GenreName { get; set; }
+
+        [Column("book_id")] [JsonIgnore] public List<Book> Books { get; set; } = new List<Book>();
     }
 }

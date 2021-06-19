@@ -6,11 +6,12 @@ using System.Text.Json.Serialization;
 namespace LibraryWorkbench
 {
     /// <summary>
-    /// 2.1.4
+    ///     2.1.4
     /// </summary>
     public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
     {
-        public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
         {
             Debug.Assert(typeToConvert == typeof(DateTimeOffset));
             return DateTimeOffset.Parse(reader.GetString());

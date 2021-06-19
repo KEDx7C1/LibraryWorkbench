@@ -1,0 +1,11 @@
+/LibraryWorkbench/bin
+/LibraryWorkbench/obj
+/LibraryWorkbench.Core/bin
+/LibraryWorkbench.Core/obj
+/LibraryWorkbench.Data/bin
+/LibraryWorkbench.Data/obj
+/LibraryWorkbenchTests/bin
+/LibraryWorkbenchTests/obj
+/.vs/
+/.idea/
+

@@ -1,6 +1,6 @@
 # LibraryWorkbench
 
-##Description
+## Description
 
 Backend application for libraries.
 
@@ -8,12 +8,11 @@ Backend application for libraries.
 
 The application was developed as part of a Backend workshop from the IT company SimbirSoft.
 
----
 
-##Описание
+## Описание
 
 Backend приложение для библиотечного сервиса.
 
-##Примечание
+## Примечание
 
 Приложение разрабатывалось в рамках Backend-практикума от IT-компании SimbirSoft.
